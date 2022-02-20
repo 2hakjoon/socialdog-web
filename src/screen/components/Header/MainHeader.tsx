@@ -1,5 +1,6 @@
-import { theme } from 'assets/styles/theme';
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { routes } from 'screen/routes';
 import styled from 'styled-components';
 
 const Wrapper = styled.header`
@@ -22,8 +23,12 @@ function MainHeader() {
   return (
     <Wrapper>
       <InnerWrapper>
-        <div>홈으로</div>
-        <div>프로필</div>
+        <Link to={routes.home}>
+          <div>홈으로</div>
+        </Link>
+        <Link to={routes.login}>
+          <div>로그인</div>
+        </Link>
       </InnerWrapper>
     </Wrapper>
   );
