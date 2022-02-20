@@ -1,3 +1,4 @@
+import { theme } from 'assets/styles/theme';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -5,11 +6,11 @@ const Wrapper = styled.header`
   width: 100%;
   height: 58px;
   background-color: white;
-  border-bottom: 2px solid ${({ theme }) => theme.achromatic.lightGray};
+  border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
 `;
 
 const InnerWrapper = styled.div`
-  max-width: 975px;
+  max-width: ${({ theme }) => theme.layout.maxWidth};
   width: 100%;
   display: flex;
   align-items: center;

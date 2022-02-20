@@ -4,9 +4,6 @@ const color = {
   blue:{
     primaryBlue: '#2962ff',
   },
-  white:{
-    primaryWhite: '#f5f5f5',
-  },
   achromatic:{
     primaryWhite: '#FAFAFA',
     white: '#FFFFFF',
@@ -16,7 +13,12 @@ const color = {
   },
 }
 
+const layout = {
+  maxWidth : '975px'
+}
+
 export const theme = {
-  ...color
+  color,
+  layout
 }
 export type Theme = typeof theme
