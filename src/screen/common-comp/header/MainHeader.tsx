@@ -11,7 +11,7 @@ const Wrapper = styled.header`
 `;
 
 const InnerWrapper = styled.div`
-  max-width: ${({ theme }) => theme.layout.maxWidth};
+  max-width: ${({ theme }) => theme.layout.screenMaxWidth};
   width: 100%;
   display: flex;
   align-items: center;
