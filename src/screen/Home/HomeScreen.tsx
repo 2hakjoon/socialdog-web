@@ -5,7 +5,7 @@ import styled from 'styled-components';
 import PostCard from './components/PostCard';
 
 const PostsWrapper = styled.div`
-  width: 612px;
+  width: 70%;
   height: 100%;
 `;
 
