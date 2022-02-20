@@ -14,7 +14,7 @@ const color = {
 }
 
 const layout = {
-  maxWidth : '975px'
+  screenMaxWidth : '975px'
 }
 
 export const theme = {

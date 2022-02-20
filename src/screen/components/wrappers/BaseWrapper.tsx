@@ -3,7 +3,7 @@ import React, { ReactChild } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
-  max-width: ${({ theme }) => theme.layout.maxWidth};
+  max-width: ${({ theme }) => theme.layout.screenMaxWidth};
   background-color: ${({ theme }) => theme.color.achromatic.primaryWhite};
   margin: 0 auto;
   width: 100%;
