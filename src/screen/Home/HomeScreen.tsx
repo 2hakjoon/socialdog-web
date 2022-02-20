@@ -1,7 +1,13 @@
 import React from 'react';
+import MainHeader from 'screen/components/Header/MainHeader';
 
 function HomeScreen() {
-  return <div>home</div>;
+  return (
+    <>
+      <MainHeader />
+      <div>home</div>
+    </>
+  );
 }
 
 export default HomeScreen;

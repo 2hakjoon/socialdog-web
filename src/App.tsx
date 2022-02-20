@@ -1,10 +1,10 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import HomeScreen from 'screen/Home/HomeScreen';
+import HomeScreen from 'screen/home/HomeScreen';
 import LoginScreen from 'screen/Login/LoginScreen';
 import PostScreen from 'screen/Post/PostScreen';
 import { ThemeProvider } from 'styled-components';
-import { theme } from 'theme';
+import { theme } from 'assets/styles/theme';
 
 function App() {
   return (
