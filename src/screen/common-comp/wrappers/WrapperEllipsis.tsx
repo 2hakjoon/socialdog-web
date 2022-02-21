@@ -1,0 +1,36 @@
+import React from 'react';
+import { ReactNode } from 'react';
+import styled from 'styled-components';
+
+const Wrapper = styled.p<IWrapperEllipsis>`
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  display: -webkit-box;
+  -webkit-line-clamp: ${(p) => p.line}; /* ellipsis line */
+  -webkit-box-orient: vertical;
+  /* webkit 엔진을 사용하지 않는 브라우저를 위한 속성. */
+  /* height = line-height * line = 1.2em * 3 = 3.6em  */
+  line-height: ${(p) => p.lineHeight}em;
+  height: ${(p) => p.lineHeight! * p.line}em;
+`;
+
+interface IWrapperEllipsis {
+  line: number;
+  lineHeight?: number;
+  children: ReactNode;
+}
+
+function WrapperEllipsis({ line, children, lineHeight }: IWrapperEllipsis) {
+  return (
+    <Wrapper line={line} lineHeight={lineHeight}>
+      {children}
+    </Wrapper>
+  );
+}
+
+WrapperEllipsis.defaultProps = {
+  lineHeight: 1.2,
+};
+
+export default WrapperEllipsis;
