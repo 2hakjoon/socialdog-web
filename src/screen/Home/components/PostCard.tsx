@@ -38,11 +38,11 @@ function PostCard() {
   return (
     <Wrapper>
       <TopBar>
-        <ImageRound size="30px" url="https://t1.daumcdn.net/cfile/tistory/24283C3858F778CA2E" />
+        <ImageRound size="30px" url="https://t1.daumcdn.net/cfile/blog/2455914A56ADB1E315" />
         <TextBase text="사용자 이름" m="0 8px" />
       </TopBar>
       <WrapperSquare>
-        <ImageBase url="http://blog.jinbo.net/attach/615/200937431.jpg" />
+        <ImageBase url="https://t1.daumcdn.net/cfile/blog/2455914A56ADB1E315" />
       </WrapperSquare>
       <Contents>
         <WrapperRow jc="space-between" w="100%" p="8px 0">

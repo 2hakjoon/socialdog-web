@@ -3,8 +3,11 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomeScreen from 'screen/home/HomeScreen';
 import LoginScreen from 'screen/Login/LoginScreen';
 import PostScreen from 'screen/Post/PostScreen';
-import styled, { ThemeProvider } from 'styled-components';
+import { ThemeProvider } from 'styled-components';
 import { theme } from 'assets/styles/theme';
+
+window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
+window.Kakao.isInitialized();
 
 function App() {
   return (
