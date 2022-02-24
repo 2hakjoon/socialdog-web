@@ -1,4 +1,14 @@
+import { gql } from '@apollo/client';
 import React from 'react';
+
+const KAKAO_LOGIN = gql`
+  mutation MKakaoLogin($args: KakaoLoginInputDto!) {
+    kakaoLogin(args: $args) {
+      ok
+      error
+    }
+  }
+`;
 
 function LoginScreen() {
   const loginWithKakao = () => {
@@ -11,6 +21,7 @@ function LoginScreen() {
       },
     });
   };
+
   return (
     <>
       <div>Login </div>

@@ -31,7 +31,8 @@
     "eject": "react-scripts eject",
     "prettier": "prettier --write --config ./.prettierrc \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint './src/**/*.{ts,tsx}'",
-    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'"
+    "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
+    "codegen": "sudo apollo client:codegen __generated__ --target=typescript --outputFlat"
   },
   "eslintConfig": {
     "extends": [
@@ -52,9 +53,11 @@
     ]
   },
   "devDependencies": {
+    "@types/graphql": "^14.5.0",
     "@types/styled-components": "^5.1.23",
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
+    "apollo": "^2.33.9",
     "eslint": "^8.9.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.4.0",
