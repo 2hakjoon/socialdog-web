@@ -1,5 +1,5 @@
-import { loginState } from 'apollo-setup';
 import React from 'react';
+import { loginState } from 'apollo-setup';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import { removeAllTokens } from 'utils/local-storage';
@@ -13,9 +13,16 @@ function ProfileScreen() {
     navigate(routes.home);
   };
 
+  const moveToEditPost = () => {
+    navigate(routes.postEdit);
+  };
+
   return (
     <>
       <div>프로필 스크린 </div>
+      <button type="button" onClick={moveToEditPost}>
+        포스트 작성
+      </button>
       <button type="button" onClick={logout}>
         로그아웃
       </button>

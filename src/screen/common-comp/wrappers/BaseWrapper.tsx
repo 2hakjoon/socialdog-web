@@ -1,5 +1,6 @@
 import { theme } from 'assets/styles/theme';
 import React, { ReactChild } from 'react';
+import { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div`
@@ -11,7 +12,7 @@ const Wrapper = styled.div`
 `;
 
 interface IBaseWrapper {
-  children: ReactChild;
+  children: React.ReactNode;
 }
 
 function BaseWrapper({ children }: IBaseWrapper) {

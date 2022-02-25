@@ -1,6 +1,6 @@
 export const routes = {
   home: '/',
-  post: '/post',
+  postEdit: '/post-edit',
   profile: '/profile',
   login: '/login',
   join: '/join',

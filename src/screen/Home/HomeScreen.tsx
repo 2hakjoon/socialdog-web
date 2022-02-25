@@ -5,7 +5,6 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import styled from 'styled-components';
 import PostCard from './components/PostCard';
 import { QGetSubscribingPosts } from '../../../__generated__/QGetSubscribingPosts';
-import { alretError } from 'utils/alret';
 
 const SectionWrapper = styled.div`
   @media (max-width: 999px) {

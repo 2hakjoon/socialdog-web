@@ -1,4 +1,4 @@
-import { ApolloClient, ApolloLink, concat, gql, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
+import { ApolloClient, ApolloLink, concat, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
 import { getAccessToken } from "utils/local-storage";
 
 

@@ -7,6 +7,29 @@
 // START Enums and Input Objects
 //==============================================================
 
+/**
+ * upload file type.
+ */
+export enum FileType {
+  IMAGE = "IMAGE",
+}
+
+export interface CreatePostInputDto {
+  address: string;
+  placeId: string;
+  contents: string;
+  photos: string[];
+}
+
+export interface CreatePreSignedUrlsInputDto {
+  files: FileInputDto[];
+}
+
+export interface FileInputDto {
+  filename: string;
+  fileType: FileType;
+}
+
 export interface KakaoLoginInputDto {
   accessToken: string;
   accessTokenExpiresAt?: string | null;

@@ -1,10 +1,8 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { getAccessToken, setAccessToken, setRefreshToken } from 'utils/local-storage';
+import { setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
-import { useNavigate } from 'react-router-dom';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../../__generated__/MKakaoLogin';
-import { routes } from 'screen/routes';
 import { loginState } from 'apollo-setup';
 
 const KAKAO_LOGIN = gql`
@@ -28,7 +26,6 @@ interface IkakaoLoginSuccess {
 
 function LoginScreen() {
   const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
-  const navigate = useNavigate();
 
   const loginWithKakao = async () => {
     try {
@@ -54,7 +51,7 @@ function LoginScreen() {
             alert(kakaoLoginResult?.error);
           }
         },
-        fail: (err: any) => {
+        fail: () => {
           alert('카카오 로그인에 실패하였습니다.');
         },
       });
