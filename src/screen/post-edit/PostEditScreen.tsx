@@ -2,11 +2,15 @@ import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import { MCreatePost, MCreatePostVariables } from '../../../__generated__/MCreatePost';
-import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../../__generated__/MCreatePreSignedUrls';
-import { CreatePostInputDto, CreatePreSignedUrlsInputDto } from '../../../__generated__/globalTypes';
+import { MCreatePost, MCreatePostVariables } from '../../__generated__/MCreatePost';
+import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
+import { CreatePostInputDto, FileInputDto, FileType } from '../../__generated__/globalTypes';
 import { useForm } from 'react-hook-form';
 import { useState } from 'react';
+import axios from 'axios';
+import { alretError } from 'utils/alret';
+import { USER_PHOTO } from 'utils/constants';
+import dayjs from 'dayjs';
 
 const CREATE_POST = gql`
   mutation MCreatePost($args: CreatePostInputDto!) {
@@ -22,6 +26,7 @@ const CREATE_PRESIGNED_URL = gql`
     createPreSignedUrls(args: $args) {
       ok
       error
+      urls
     }
   }
 `;
@@ -32,13 +37,58 @@ function PostEditScreen() {
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>();
   const [fileUpload, setFileUpload] = useState<FileList | null>();
 
-  const onSubmitForm = (data: CreatePostInputDto) => {
+  const requestSignedUrl = async () => {
     console.log(fileUpload);
-    const filesDto = [];
+    const filesDto: FileInputDto[] = [];
     if (fileUpload) {
-      for (let i = 0; i < Object.keys(fileUpload).length; i = +1) {
-        console.log(fileUpload[i]);
+      for (let i = 0; i < Object.keys(fileUpload).length; i++) {
+        filesDto.push({ filename: USER_PHOTO + dayjs() + fileUpload[i].name, fileType: FileType.IMAGE });
       }
+    }
+    return createPreSignedURl({
+      variables: {
+        args: { files: filesDto },
+      },
+    });
+  };
+
+  const uploadFilesToS3 = async (files: FileList, urls: string[]) => {
+    const promisedUpload = urls.map((url, idx) => axios.put(url, files[idx]));
+    return Promise.all(promisedUpload).catch(() => {
+      throw new Error('s3 업로드 에러');
+    });
+  };
+
+  const onSubmitForm = async (formData: CreatePostInputDto) => {
+    try {
+      const res = await requestSignedUrl();
+      const preSignedUrls = res.data?.createPreSignedUrls;
+      if (!preSignedUrls?.ok) {
+        throw new Error('PreSignedUrl 요청 에러');
+      }
+      const uploadResult = await uploadFilesToS3(fileUpload!, preSignedUrls.urls!);
+      const uploadedUrl = uploadResult.map((result) => {
+        if (result.status !== 200) {
+          throw new Error('s3 업로드 에러');
+        }
+        if (!result.config.url) {
+          throw new Error('s3 업로드 에러');
+        }
+        return result.config.url.split('?Content')[0];
+      });
+      console.log(uploadedUrl);
+      await createPost({
+        variables: {
+          args: {
+            ...formData,
+            photos: uploadedUrl,
+          },
+        },
+      });
+      window.alert('게시물 업로드를 성공했습니다.');
+    } catch (e) {
+      console.log(e);
+      alretError();
     }
   };
 

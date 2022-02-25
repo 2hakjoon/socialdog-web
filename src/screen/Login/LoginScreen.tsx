@@ -2,7 +2,7 @@ import React from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
-import { MKakaoLogin, MKakaoLoginVariables } from '../../../__generated__/MKakaoLogin';
+import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
 
 const KAKAO_LOGIN = gql`

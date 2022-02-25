@@ -13,6 +13,7 @@ export interface MCreatePreSignedUrls_createPreSignedUrls {
   __typename: "CreatePreSignedUrlsOutputDto";
   ok: boolean;
   error: string | null;
+  urls: string[];
 }
 
 export interface MCreatePreSignedUrls {
