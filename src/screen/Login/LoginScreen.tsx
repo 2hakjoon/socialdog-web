@@ -31,33 +31,36 @@ function LoginScreen() {
   const navigate = useNavigate();
 
   const loginWithKakao = async () => {
-    window.Kakao.Auth.login({
-      success: async (authObj: IkakaoLoginSuccess) => {
-        console.log(authObj);
-        const res = await kakaoLogin({
-          variables: {
-            args: {
-              accessToken: authObj.access_token,
-              accessTokenExpiresAt: dayjs().add(authObj.expires_in, 's').toISOString(),
-              refreshToken: authObj.refresh_token,
-              refreshTokenExpiresAt: dayjs().add(authObj.refresh_token_expires_in, 's').toISOString(),
-              scopes: authObj.token_type,
+    try {
+      window.Kakao.Auth.login({
+        success: async (authObj: IkakaoLoginSuccess) => {
+          const res = await kakaoLogin({
+            variables: {
+              args: {
+                accessToken: authObj.access_token,
+                accessTokenExpiresAt: dayjs().add(authObj.expires_in, 's').toISOString(),
+                refreshToken: authObj.refresh_token,
+                refreshTokenExpiresAt: dayjs().add(authObj.refresh_token_expires_in, 's').toISOString(),
+                scopes: authObj.token_type,
+              },
             },
-          },
-        });
-        const kakaoLoginResult = res.data?.kakaoLogin;
-        if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
-          setAccessToken(kakaoLoginResult.accessToken);
-          setRefreshToken(kakaoLoginResult.refreshToken);
-          loginState(true);
-        } else {
-          alert(kakaoLoginResult?.error);
-        }
-      },
-      fail: (err: any) => {
-        alert('카카오 로그인에 실패하였습니다.');
-      },
-    });
+          });
+          const kakaoLoginResult = res.data?.kakaoLogin;
+          if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
+            setAccessToken(kakaoLoginResult.accessToken);
+            setRefreshToken(kakaoLoginResult.refreshToken);
+            loginState(true);
+          } else {
+            alert(kakaoLoginResult?.error);
+          }
+        },
+        fail: (err: any) => {
+          alert('카카오 로그인에 실패하였습니다.');
+        },
+      });
+    } catch (e) {
+      window.alert('에러가 발생했습니다.');
+    }
   };
 
   return (

@@ -5,18 +5,17 @@ import { getAccessToken } from "utils/local-storage";
 
 const httpLink = new HttpLink({ uri: 'http://121.154.94.120/graphql' });
 
+console.log(getAccessToken())
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: localStorage.getItem('token') || null,
+      authorization: `Bearer ${ getAccessToken() || null}`,
     },
   }));
 
   return forward(operation);
 });
-
-
 export const loginState = makeVar(Boolean(getAccessToken()))
 
 export const cache = new InMemoryCache({
