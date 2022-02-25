@@ -13,6 +13,8 @@ export interface MKakaoLogin_kakaoLogin {
   __typename: "LoginOutputDto";
   ok: boolean;
   error: string | null;
+  accessToken: string | null;
+  refreshToken: string | null;
 }
 
 export interface MKakaoLogin {

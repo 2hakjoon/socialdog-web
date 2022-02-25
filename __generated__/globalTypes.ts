@@ -9,10 +9,10 @@
 
 export interface KakaoLoginInputDto {
   accessToken: string;
-  accessTokenExpiresAt: string;
-  refreshToken: string;
-  refreshTokenExpiresAt: string;
-  scopes: string;
+  accessTokenExpiresAt?: string | null;
+  refreshToken?: string | null;
+  refreshTokenExpiresAt?: string | null;
+  scopes?: string | null;
 }
 
 //==============================================================

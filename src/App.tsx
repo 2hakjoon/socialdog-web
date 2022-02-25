@@ -6,6 +6,7 @@ import PostScreen from 'screen/Post/PostScreen';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'assets/styles/theme';
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat, ApolloProvider } from '@apollo/client';
+import dayjs from 'dayjs';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
