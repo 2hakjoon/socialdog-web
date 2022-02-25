@@ -1,12 +1,15 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import HomeScreen from 'screen/home/HomeScreen';
-import LoginScreen from 'screen/Login/LoginScreen';
-import PostScreen from 'screen/Post/PostScreen';
+import LoginScreen from 'screen/login/LoginScreen';
+import PostScreen from 'screen/post/PostScreen';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'assets/styles/theme';
 import { ApolloClient, HttpLink, ApolloLink, InMemoryCache, concat, ApolloProvider } from '@apollo/client';
 import dayjs from 'dayjs';
+import { routes } from 'screen/routes';
+import ProfileScreen from 'screen/profile/ProfileScreen';
+import { getAccessToken } from 'utils/local-storage';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -30,14 +33,16 @@ const client = new ApolloClient({
 });
 
 function App() {
+  console.log(getAccessToken());
   return (
     <ApolloProvider client={client}>
       <ThemeProvider theme={theme}>
         <Router>
           <Routes>
-            <Route path="/" element={<HomeScreen />} />
-            <Route path="/login" element={<LoginScreen />} />
-            <Route path="/post" element={<PostScreen />} />
+            <Route path={routes.home} element={<HomeScreen />} />
+            <Route path={routes.login} element={<LoginScreen />} />
+            <Route path={routes.post} element={<PostScreen />} />
+            <Route path={routes.profile} element={<ProfileScreen />} />
           </Routes>
         </Router>
       </ThemeProvider>

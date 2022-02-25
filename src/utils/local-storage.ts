@@ -16,3 +16,8 @@ export const setRefreshToken = (refreshToken:string) => {
 export const getRefreshToken = () => {
   return localStorage.getItem(USER_REFRESH_TOKEN)
 }
+
+export const removeAllTokens = () => {
+  localStorage.setItem(USER_ACCESS_TOKEN, '')
+  localStorage.setItem(USER_REFRESH_TOKEN, '')
+}

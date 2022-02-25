@@ -2,6 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
+import { getAccessToken } from 'utils/local-storage';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -26,9 +27,15 @@ function MainHeader() {
         <Link to={routes.home}>
           <div>홈으로</div>
         </Link>
-        <Link to={routes.login}>
-          <div>로그인</div>
-        </Link>
+        {getAccessToken() ? (
+          <Link to={routes.profile}>
+            <div>프로필</div>
+          </Link>
+        ) : (
+          <Link to={routes.login}>
+            <div>로그인</div>
+          </Link>
+        )}
       </InnerWrapper>
     </Wrapper>
   );
