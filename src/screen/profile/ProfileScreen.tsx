@@ -1,3 +1,4 @@
+import { loginState } from 'apollo-setup';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
@@ -8,6 +9,7 @@ function ProfileScreen() {
 
   const logout = () => {
     removeAllTokens();
+    loginState(false);
     navigate(routes.home);
   };
 

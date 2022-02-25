@@ -5,7 +5,7 @@ import dayjs from 'dayjs';
 import { useNavigate } from 'react-router-dom';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../../__generated__/MKakaoLogin';
 import { routes } from 'screen/routes';
-import { useEffect } from 'react';
+import { loginState } from 'apollo-setup';
 
 const KAKAO_LOGIN = gql`
   mutation MKakaoLogin($args: KakaoLoginInputDto!) {
@@ -30,12 +30,6 @@ function LoginScreen() {
   const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    if (getAccessToken()) {
-      navigate(routes.home);
-    }
-  }, []);
-
   const loginWithKakao = async () => {
     window.Kakao.Auth.login({
       success: async (authObj: IkakaoLoginSuccess) => {
@@ -55,7 +49,7 @@ function LoginScreen() {
         if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
           setAccessToken(kakaoLoginResult.accessToken);
           setRefreshToken(kakaoLoginResult.refreshToken);
-          navigate(routes.home);
+          loginState(true);
         } else {
           alert(kakaoLoginResult?.error);
         }
