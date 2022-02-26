@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { BaseSyntheticEvent } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import { alretError } from 'utils/alret';
 import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
+import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 
 const CREATE_POST = gql`
   mutation MCreatePost($args: CreatePostInputDto!) {
@@ -37,12 +38,20 @@ function PostEditScreen() {
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>();
   const [fileUpload, setFileUpload] = useState<FileList | null>();
 
+  const inputFileHandler = (e: BaseSyntheticEvent) => {
+    if (Object.keys(e.target.files).length > 4) {
+      window.alert('파일은 최대 5개만 업로드 할 수 있습니다.');
+      return;
+    }
+    setFileUpload(e.target.files);
+  };
+
   const requestSignedUrl = async () => {
     console.log(fileUpload);
     const filesDto: FileInputDto[] = [];
     if (fileUpload) {
       for (let i = 0; i < Object.keys(fileUpload).length; i++) {
-        filesDto.push({ filename: USER_PHOTO + dayjs() + fileUpload[i].name, fileType: FileType.IMAGE });
+        filesDto.push({ filename: `${USER_PHOTO}${dayjs()}_${fileUpload[i].name}`, fileType: FileType.IMAGE });
       }
     }
     return createPreSignedURl({
@@ -91,18 +100,14 @@ function PostEditScreen() {
       alretError();
     }
   };
+  console.log(process.env.REACT_APP_GOOGLE_API_KEY);
 
   return (
     <BaseWrapper>
+      <GooglePlacesAutocomplete apiKey={process.env.REACT_APP_GOOGLE_API_KEY} />
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <WrapperColumn>
-          <input
-            type="file"
-            name={'이미지 업로드'}
-            onChange={(e) => setFileUpload(e.target.files)}
-            multiple
-            accept="image/*"
-          />
+          <input type="file" name={'이미지 업로드'} onChange={inputFileHandler} multiple accept="image/*" />
           <input {...register('address', { required: true, maxLength: 50 })} type={'text'} />
           <input {...register('contents', { required: true, maxLength: 300 })} type={'text'} />
           <input {...register('placeId', { required: true, maxLength: 50 })} type={'text'} />
