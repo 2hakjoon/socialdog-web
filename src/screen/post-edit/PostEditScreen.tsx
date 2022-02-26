@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent } from 'react';
+import React, { BaseSyntheticEvent, useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -37,6 +37,11 @@ function PostEditScreen() {
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>();
   const [fileUpload, setFileUpload] = useState<FileList | null>();
+  const [searchValue, setSearchValue] = useState();
+
+  useEffect(() => {
+    console.log(searchValue);
+  }, [searchValue]);
 
   const inputFileHandler = (e: BaseSyntheticEvent) => {
     if (Object.keys(e.target.files).length > 4) {
@@ -104,7 +109,20 @@ function PostEditScreen() {
 
   return (
     <BaseWrapper>
-      <GooglePlacesAutocomplete apiKey={process.env.REACT_APP_GOOGLE_API_KEY} />
+      <GooglePlacesAutocomplete
+        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+        apiOptions={{ language: 'ko', region: 'ko' }}
+        debounce={500}
+        autocompletionRequest={{
+          componentRestrictions: {
+            country: ['kr'],
+          },
+        }}
+        selectProps={{
+          searchValue,
+          onChange: setSearchValue,
+        }}
+      />
       <form onSubmit={handleSubmit(onSubmitForm)}>
         <WrapperColumn>
           <input type="file" name={'이미지 업로드'} onChange={inputFileHandler} multiple accept="image/*" />
