@@ -1,9 +1,9 @@
 import React, { ReactChild } from 'react';
 import styled from 'styled-components';
 
-const ImgWrapper = styled.div`
+const ImgWrapper = styled.div<IWrapperSquare>`
   & {
-    width: 100%;
+    width: ${(p) => p.w};
     position: relative;
   }
   &:after {
@@ -18,10 +18,15 @@ const ImgWrapper = styled.div`
 
 interface IWrapperSquare {
   children: ReactChild;
+  w?: string;
 }
 
-function WrapperSquare({ children }: IWrapperSquare) {
-  return <ImgWrapper>{children}</ImgWrapper>;
+function WrapperSquare({ children, w }: IWrapperSquare) {
+  return <ImgWrapper w={w}>{children}</ImgWrapper>;
 }
+
+WrapperSquare.defaultProps = {
+  w: '100%',
+};
 
 export default WrapperSquare;

@@ -15,6 +15,8 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import styled from 'styled-components';
 import TextBase from 'screen/common-comp/Texts/TextBase';
 import MainHeader from 'screen/common-comp/header/MainHeader';
+import UploadImgViewer from './components/UploadImgViewer';
+import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -67,7 +69,7 @@ function PostEditScreen() {
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
-  const [fileUpload, setFileUpload] = useState<FileList | null>();
+  const [uploadedFiles, setUploadedFIles] = useState<FileList | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
   const [searchResultEmpty, setSearchResultEmpty] = useState<boolean>(false);
   const [textAreaHeight, setTextAreaHeight] = useState<string>('50px');
@@ -79,19 +81,19 @@ function PostEditScreen() {
   }, [searchResult]);
 
   const inputFileHandler = (e: BaseSyntheticEvent) => {
-    if (Object.keys(e.target.files).length > 4) {
+    if (Object.keys(e.target.files).length > 5) {
       window.alert('파일은 최대 5개만 업로드 할 수 있습니다.');
       return;
     }
-    setFileUpload(e.target.files);
+    setUploadedFIles(e.target.files);
   };
 
   const requestSignedUrl = async () => {
-    console.log(fileUpload);
+    console.log(uploadedFiles);
     const filesDto: FileInputDto[] = [];
-    if (fileUpload) {
-      for (let i = 0; i < Object.keys(fileUpload).length; i++) {
-        filesDto.push({ filename: `${USER_PHOTO}${dayjs()}_${fileUpload[i].name}`, fileType: FileType.IMAGE });
+    if (uploadedFiles) {
+      for (let i = 0; i < Object.keys(uploadedFiles).length; i++) {
+        filesDto.push({ filename: `${USER_PHOTO}${dayjs()}_${uploadedFiles[i].name}`, fileType: FileType.IMAGE });
       }
     }
     return createPreSignedURl({
@@ -117,7 +119,7 @@ function PostEditScreen() {
   };
 
   const onSubmitForm = async (formData: CreatePostInputDto) => {
-    if (!fileUpload) {
+    if (!uploadedFiles) {
       window.alert('파일을 업로드 해주세요.');
       return;
     }
@@ -131,7 +133,7 @@ function PostEditScreen() {
       if (!preSignedUrls?.ok) {
         throw new Error('PreSignedUrl 요청 에러');
       }
-      const uploadResult = await uploadFilesToS3(fileUpload!, preSignedUrls.urls!);
+      const uploadResult = await uploadFilesToS3(uploadedFiles!, preSignedUrls.urls!);
       const uploadedUrl = uploadResult.map((result) => {
         if (result.status !== 200) {
           throw new Error('s3 업로드 에러');
@@ -165,7 +167,7 @@ function PostEditScreen() {
       <BaseWrapper p={'0 16px'}>
         <form onSubmit={handleSubmit(onSubmitForm)}>
           <WrapperColumn>
-            <input type="file" name={'이미지 업로드'} onChange={inputFileHandler} multiple accept="image/*" />
+            <UploadImgViewer uploadedFiles={uploadedFiles} inputFileHandler={inputFileHandler} />
             <PlaceSearchContainer>
               <TextBase text="주소 검색" />
               <GooglePlacesAutocomplete
@@ -184,14 +186,17 @@ function PostEditScreen() {
               />
             </PlaceSearchContainer>
             {searchResultEmpty && <TextBase text="장소를 입력해주세요." />}
-            <TextAreaComponent
-              {...register('contents', { required: '내용을 입력해주세요', maxLength: 300 })}
-              placeholder=""
-              onChange={({ target }) => {
-                setTextAreaHeight(`${target.scrollHeight - 4}px`);
-              }}
-              height={textAreaHeight}
-            />
+            <WrapperRow w="100%">
+              <TextBase text="내용" />
+              <TextAreaComponent
+                {...register('contents', { required: '내용을 입력해주세요', maxLength: 300 })}
+                placeholder=""
+                onChange={({ target }) => {
+                  setTextAreaHeight(`${target.scrollHeight - 4}px`);
+                }}
+                height={textAreaHeight}
+              />
+            </WrapperRow>
             {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
             <button type="submit">작성완료</button>
           </WrapperColumn>
