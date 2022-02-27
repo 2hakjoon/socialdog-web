@@ -6,7 +6,7 @@ import { getAccessToken } from 'utils/local-storage';
 
 const Wrapper = styled.header`
   width: 100%;
-  height: 58px;
+  height: 60px;
   background-color: white;
   border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
 `;

@@ -26,7 +26,9 @@ function App() {
               <Route path={routes.profile} element={<ProfileScreen />} />
             </>
           ) : (
-            <Route path={routes.home} element={<LoginScreen />} />
+            <Route path={routes.home} element={<PostEditScreen />} />
+
+            // <Route path={routes.home} element={<LoginScreen />} />
           )}
         </Routes>
       </Router>

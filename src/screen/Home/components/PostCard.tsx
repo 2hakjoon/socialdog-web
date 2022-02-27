@@ -20,7 +20,7 @@ const Wrapper = styled.article`
 `;
 
 const TopBar = styled.div`
-  width: calc(100% - 2px);
+  width: 100%;
   height: 58px;
   border: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
   display: flex;
@@ -29,7 +29,7 @@ const TopBar = styled.div`
 `;
 
 const Contents = styled.div`
-  width: calc(100% - 34px);
+  width: 100%;
   border: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
   padding: 0 16px;
 `;
