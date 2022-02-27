@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
-import socialDogLogo from '../../../assets/svg/social-dog-blue.svg';
+import socialDogLogoBlue from '../../../assets/svg/social-dog-blue.svg';
+import socialDogLogoBlack from '../../../assets/svg/social-dog-black.svg';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -25,6 +26,8 @@ function MainHeader() {
   return (
     <Wrapper>
       <InnerWrapper>
+        <img alt="asdf" src={socialDogLogoBlue} />
+        <img alt="asdf" src={socialDogLogoBlack} />
         <Link to={routes.home}>
           <div>홈으로</div>
         </Link>
