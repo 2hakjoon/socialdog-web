@@ -12,6 +12,30 @@ import { alretError } from 'utils/alret';
 import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
+import styled from 'styled-components';
+import TextBase from 'screen/common-comp/Texts/TextBase';
+import MainHeader from 'screen/common-comp/header/MainHeader';
+
+const PlaceSearchContainer = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  > :nth-child(2) {
+    width: 500px;
+  }
+  .css-1wy0on6 {
+    display: none;
+  }
+`;
+
+interface ITextAreaComponent {
+  height: string;
+}
+
+const TextAreaComponent = styled.textarea<ITextAreaComponent>`
+  width: 100%;
+  height: ${(p) => p.height};
+`;
 
 const CREATE_POST = gql`
   mutation MCreatePost($args: CreatePostInputDto!) {
@@ -32,16 +56,27 @@ const CREATE_PRESIGNED_URL = gql`
   }
 `;
 
+interface IPlaceSerchResult {
+  value: {
+    place_id: string;
+    description: string;
+  };
+}
+
 function PostEditScreen() {
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
-  const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>();
+  const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
   const [fileUpload, setFileUpload] = useState<FileList | null>();
-  const [searchValue, setSearchValue] = useState();
+  const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
+  const [searchResultEmpty, setSearchResultEmpty] = useState<boolean>(false);
+  const [textAreaHeight, setTextAreaHeight] = useState<string>('50px');
 
   useEffect(() => {
-    console.log(searchValue);
-  }, [searchValue]);
+    if (searchResult) {
+      changeSearchResultError();
+    }
+  }, [searchResult]);
 
   const inputFileHandler = (e: BaseSyntheticEvent) => {
     if (Object.keys(e.target.files).length > 4) {
@@ -73,7 +108,23 @@ function PostEditScreen() {
     });
   };
 
+  const changeSearchResultError = () => {
+    if (searchResult?.value.description && searchResult?.value.place_id) {
+      setSearchResultEmpty(false);
+    } else {
+      setSearchResultEmpty(true);
+    }
+  };
+
   const onSubmitForm = async (formData: CreatePostInputDto) => {
+    if (!fileUpload) {
+      window.alert('파일을 업로드 해주세요.');
+      return;
+    }
+    if (!(searchResult?.value.description && searchResult.value.place_id)) {
+      changeSearchResultError();
+      return;
+    }
     try {
       const res = await requestSignedUrl();
       const preSignedUrls = res.data?.createPreSignedUrls;
@@ -95,6 +146,8 @@ function PostEditScreen() {
         variables: {
           args: {
             ...formData,
+            address: searchResult.value.description,
+            placeId: searchResult.value.place_id,
             photos: uploadedUrl,
           },
         },
@@ -105,34 +158,46 @@ function PostEditScreen() {
       alretError();
     }
   };
-  console.log(process.env.REACT_APP_GOOGLE_API_KEY);
 
   return (
-    <BaseWrapper>
-      <GooglePlacesAutocomplete
-        apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-        apiOptions={{ language: 'ko', region: 'ko' }}
-        debounce={500}
-        autocompletionRequest={{
-          componentRestrictions: {
-            country: ['kr'],
-          },
-        }}
-        selectProps={{
-          searchValue,
-          onChange: setSearchValue,
-        }}
-      />
-      <form onSubmit={handleSubmit(onSubmitForm)}>
-        <WrapperColumn>
-          <input type="file" name={'이미지 업로드'} onChange={inputFileHandler} multiple accept="image/*" />
-          <input {...register('address', { required: true, maxLength: 50 })} type={'text'} />
-          <input {...register('contents', { required: true, maxLength: 300 })} type={'text'} />
-          <input {...register('placeId', { required: true, maxLength: 50 })} type={'text'} />
-          <button type="submit">작성완료</button>
-        </WrapperColumn>
-      </form>
-    </BaseWrapper>
+    <>
+      <MainHeader />
+      <BaseWrapper p={'0 16px'}>
+        <form onSubmit={handleSubmit(onSubmitForm)}>
+          <WrapperColumn>
+            <input type="file" name={'이미지 업로드'} onChange={inputFileHandler} multiple accept="image/*" />
+            <PlaceSearchContainer>
+              <TextBase text="주소 검색" />
+              <GooglePlacesAutocomplete
+                apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+                apiOptions={{ language: 'ko', region: 'ko' }}
+                debounce={500}
+                autocompletionRequest={{
+                  componentRestrictions: {
+                    country: ['kr'],
+                  },
+                }}
+                selectProps={{
+                  searchResult,
+                  onChange: setSearchResult,
+                }}
+              />
+            </PlaceSearchContainer>
+            {searchResultEmpty && <TextBase text="장소를 입력해주세요." />}
+            <TextAreaComponent
+              {...register('contents', { required: '내용을 입력해주세요', maxLength: 300 })}
+              placeholder=""
+              onChange={({ target }) => {
+                setTextAreaHeight(`${target.scrollHeight - 4}px`);
+              }}
+              height={textAreaHeight}
+            />
+            {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
+            <button type="submit">작성완료</button>
+          </WrapperColumn>
+        </form>
+      </BaseWrapper>
+    </>
   );
 }
 
