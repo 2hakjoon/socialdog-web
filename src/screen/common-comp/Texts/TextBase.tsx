@@ -7,7 +7,7 @@ const Text = styled.span<ITextBase>`
 `;
 
 interface ITextBase {
-  text?: string;
+  text?: string | null;
   m?: string;
   p?: string;
 }

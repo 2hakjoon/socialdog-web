@@ -9,11 +9,13 @@ import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faLocationDot, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
 import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
+import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
+import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
-const text =
-  '국가는 농수산물의 수급균형과 유통구조의 개선에 노력하여 가격안정을 도모함으로써 농·어민의 이익을 보호한다. 국가는 균형있는 국민경제의 성장 및 안정과 적정한 소득의 분배를 유지하고, 시장의 지배와 경제력의 남용을 방지하며, 경제주체간의 조화를 통한 경제의 민주화를 위하여 경제에 관한 규제와 조정을 할 수 있다. 모든 국민은 법률이 정하는 바에 의하여 공무담임권을 가진다. 국가는 대외무역을 육성하며, 이를 규제·조정할 수 있다. 대통령의 임기연장 또는 중임변경을 위한 헌법개정은 그 헌법개정 제안 당시의 대통령에 대하여는 효력이 없다.';
+import { Carousel } from 'react-responsive-carousel';
 
 const Wrapper = styled.article`
+  margin: 16px 0;
   max-width: 612px;
   width: 100%;
   background-color: white;
@@ -34,16 +36,31 @@ const Contents = styled.div`
   padding: 0 16px;
 `;
 
-function PostCard() {
+const ImgWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+function PostCard({ id, user, address, photos, contents }: QGetSubscribingPosts_getSubscribingPosts_data) {
+  const parsedPhotos: string[] = JSON.parse(photos);
   return (
-    <Wrapper>
+    <Wrapper key={id}>
       <TopBar>
-        <ImageRound size="30px" url="https://t1.daumcdn.net/cfile/blog/2455914A56ADB1E315" />
-        <TextBase text="사용자 이름" m="0 8px" />
+        <ImageRound size="30px" url={user.photo ? user.photo : ''} />
+        <TextBase text={user.username} m="0 8px" />
       </TopBar>
-      <WrapperSquare>
-        <ImageBase url="https://t1.daumcdn.net/cfile/blog/2455914A56ADB1E315" />
-      </WrapperSquare>
+      {/* <WrapperSquare> */}
+      <Carousel showThumbs={false} dynamicHeight>
+        {parsedPhotos.map((photo, idx) => (
+          <WrapperSquare>
+            <ImgWrapper>
+              <ImageBase url={photo} />
+            </ImgWrapper>
+          </WrapperSquare>
+        ))}
+      </Carousel>
+      {/* </WrapperSquare> */}
       <Contents>
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
@@ -68,12 +85,12 @@ function PostCard() {
               color={theme.color.blue.primaryBlue}
               style={{ marginRight: 10 }}
             />
-            <TextBase text="전라북도 전주시 덕진구 동부대로 680 (우아동3가)" />
+            <TextBase text={address} />
           </WrapperRow>
           <FontAwesomeIcon icon={faEllipsisH} size="2x" color={theme.color.achromatic.black} />
         </WrapperRow>
         <WrapperEllipsis line={3}>
-          <TextBase text={text} />
+          <TextBase text={contents} />
         </WrapperEllipsis>
       </Contents>
     </Wrapper>

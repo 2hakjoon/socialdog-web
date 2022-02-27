@@ -5,6 +5,7 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import styled from 'styled-components';
 import PostCard from './components/PostCard';
 import { QGetSubscribingPosts } from '../../__generated__/QGetSubscribingPosts';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 
 const SectionWrapper = styled.div`
   @media (max-width: 999px) {
@@ -23,6 +24,7 @@ const SectionWrapper = styled.div`
       width: 30%;
     }
   }
+  display: flex;
 `;
 
 const GET_SUBSCRIBING_POSTS = gql`
@@ -60,7 +62,12 @@ function HomeScreen() {
           <MainHeader />
           <BaseWrapper>
             <SectionWrapper>
-              <PostCard />
+              <WrapperColumn>
+                {postsData?.getSubscribingPosts.data.map((post, idx) => (
+                  <PostCard key={post.id} {...post} />
+                ))}
+              </WrapperColumn>
+              <div>옆에 올 컨텐츠</div>
             </SectionWrapper>
           </BaseWrapper>
         </>

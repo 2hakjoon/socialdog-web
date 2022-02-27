@@ -1,7 +1,7 @@
 import React, { ReactChild } from 'react';
 import styled from 'styled-components';
 
-const ImgWrapper = styled.div<IWrapperSquare>`
+const Wrapper = styled.div<IWrapperSquare>`
   & {
     width: ${(p) => p.w};
     position: relative;
@@ -22,7 +22,7 @@ interface IWrapperSquare {
 }
 
 function WrapperSquare({ children, w }: IWrapperSquare) {
-  return <ImgWrapper w={w}>{children}</ImgWrapper>;
+  return <Wrapper w={w}>{children}</Wrapper>;
 }
 
 WrapperSquare.defaultProps = {
