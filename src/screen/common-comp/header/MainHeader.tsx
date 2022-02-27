@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
+import socialDogLogo from '../../../assets/svg/social-dog-blue.svg';
 
 const Wrapper = styled.header`
   width: 100%;
