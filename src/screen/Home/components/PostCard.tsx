@@ -19,6 +19,9 @@ const Wrapper = styled.article`
   max-width: 612px;
   width: 100%;
   background-color: white;
+  -webkit-box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
 `;
 
 const TopBar = styled.div`

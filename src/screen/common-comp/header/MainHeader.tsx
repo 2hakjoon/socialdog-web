@@ -1,9 +1,12 @@
 import React from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
 import socialDogLogoBlack from '../../../assets/svg/social-dog-black.svg';
+import IconBook from 'assets/svg/IconBook';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -40,7 +43,7 @@ function MainHeader() {
         </Link>
         {getAccessToken() ? (
           <Link to={routes.profile}>
-            <div>프로필</div>
+            <IconBook size={30} />
           </Link>
         ) : (
           <Link to={routes.login}>

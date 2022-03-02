@@ -62,7 +62,7 @@ function HomeScreen() {
           <MainHeader />
           <BaseWrapper>
             <SectionWrapper>
-              <WrapperColumn>
+              <WrapperColumn p="0 8px">
                 {postsData?.getSubscribingPosts.data.map((post, idx) => (
                   <PostCard key={post.id} {...post} />
                 ))}
