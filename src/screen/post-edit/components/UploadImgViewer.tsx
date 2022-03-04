@@ -1,6 +1,6 @@
 import React, { BaseSyntheticEvent, useEffect } from 'react';
 import { useState } from 'react';
-import ImageBase from 'screen/common-comp/Image/ImageBase';
+import ImageBase from 'screen/common-comp/image/ImageBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
