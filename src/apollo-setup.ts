@@ -1,7 +1,7 @@
 import { ApolloClient, ApolloLink, concat, from, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
 import { getAccessToken } from "utils/local-storage";
 import { onError } from "@apollo/client/link/error";
-import { QGetMyPosts_getMyPosts } from "__generated__/QgetMyPosts";
+import { QGetMyPosts_getMyPosts } from "__generated__/QGetMyPosts";
 
 
 
