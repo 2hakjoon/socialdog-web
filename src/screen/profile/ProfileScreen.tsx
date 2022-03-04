@@ -7,7 +7,7 @@ import TextBase from 'screen/common-comp/Texts/TextBase';
 import { QMeAll } from '__generated__/QMeAll';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QgetMyPosts';
+import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import PostSmallBox from './components/PostSmallBox';
 import styled from 'styled-components';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
