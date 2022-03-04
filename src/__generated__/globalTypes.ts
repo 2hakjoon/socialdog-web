@@ -30,6 +30,13 @@ export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
 }
 
+export interface EditProfileInputDto {
+  username?: string | null;
+  dogname?: string | null;
+  photo?: string | null;
+  password?: string | null;
+}
+
 export interface FileInputDto {
   filename: string;
   fileType: FileType;

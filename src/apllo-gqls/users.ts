@@ -27,3 +27,12 @@ export const GET_MYPOSTS = gql`
     }
   }
 `
+
+export const EDIT_PROFILE = gql`
+  mutation MEditProfile($args: EditProfileInputDto!) {
+  editProfile(args: $args) {
+    ok
+    error
+  }
+}
+`
