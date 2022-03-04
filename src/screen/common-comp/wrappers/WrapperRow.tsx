@@ -8,6 +8,7 @@ const Wrapper = styled.div<IWrapperRow>`
   justify-content: ${(p) => p.jc};
   width: ${(p) => p.w};
   height: ${(p) => p.h};
+  background-color: ${(p) => p.bc};
 `;
 
 interface IWrapperRow {
@@ -16,11 +17,13 @@ interface IWrapperRow {
   p?: string;
   w?: string;
   h?: string;
+  bc?: string;
+  m?: string;
 }
 
-function WrapperRow({ children, jc, p, w, h }: IWrapperRow) {
+function WrapperRow({ children, jc, p, w, h, bc, m }: IWrapperRow) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h}>
+    <Wrapper jc={jc} p={p} w={w} h={h} bc={bc} m={m}>
       {children}
     </Wrapper>
   );
@@ -31,6 +34,8 @@ WrapperRow.defaultProps = {
   p: '0',
   w: '',
   h: '',
+  m: '',
+  bc: 'none',
 };
 
 export default WrapperRow;

@@ -37,7 +37,7 @@
     "prettier": "prettier --write --config ./.prettierrc \"./src/**/*.{ts,tsx}\"",
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
-    "codegen": "sudo apollo client:codegen __generated__ --target=typescript --outputFlat"
+    "codegen": "sudo apollo client:codegen src/__generated__ --target=typescript --outputFlat"
   },
   "eslintConfig": {
     "extends": [

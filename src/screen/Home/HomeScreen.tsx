@@ -6,6 +6,7 @@ import styled from 'styled-components';
 import PostCard from './components/PostCard';
 import { QGetSubscribingPosts } from '../../__generated__/QGetSubscribingPosts';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import { GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
 
 const SectionWrapper = styled.div`
   @media (max-width: 999px) {
@@ -25,27 +26,6 @@ const SectionWrapper = styled.div`
     }
   }
   display: flex;
-`;
-
-const GET_SUBSCRIBING_POSTS = gql`
-  query QGetSubscribingPosts {
-    getSubscribingPosts {
-      ok
-      error
-      data {
-        id
-        photos
-        placeId
-        address
-        contents
-        user {
-          photo
-          username
-          id
-        }
-      }
-    }
-  }
 `;
 
 function HomeScreen() {

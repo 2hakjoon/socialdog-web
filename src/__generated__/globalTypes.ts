@@ -14,6 +14,11 @@ export enum FileType {
   IMAGE = "IMAGE",
 }
 
+export enum LoginStrategy {
+  KAKAO = "KAKAO",
+  LOCAL = "LOCAL",
+}
+
 export interface CreatePostInputDto {
   address: string;
   placeId: string;
@@ -28,6 +33,11 @@ export interface CreatePreSignedUrlsInputDto {
 export interface FileInputDto {
   filename: string;
   fileType: FileType;
+}
+
+export interface GetMyPostsInputDto {
+  offset: number;
+  limit: number;
 }
 
 export interface KakaoLoginInputDto {

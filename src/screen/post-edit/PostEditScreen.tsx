@@ -17,6 +17,7 @@ import TextBase from 'screen/common-comp/Texts/TextBase';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import UploadImgViewer from './components/UploadImgViewer';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import { CREATE_POST, CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -37,25 +38,6 @@ interface ITextAreaComponent {
 const TextAreaComponent = styled.textarea<ITextAreaComponent>`
   width: 100%;
   height: ${(p) => p.height};
-`;
-
-const CREATE_POST = gql`
-  mutation MCreatePost($args: CreatePostInputDto!) {
-    createPost(args: $args) {
-      ok
-      error
-    }
-  }
-`;
-
-const CREATE_PRESIGNED_URL = gql`
-  mutation MCreatePreSignedUrls($args: CreatePreSignedUrlsInputDto!) {
-    createPreSignedUrls(args: $args) {
-      ok
-      error
-      urls
-    }
-  }
 `;
 
 interface IPlaceSerchResult {

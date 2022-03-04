@@ -45,7 +45,7 @@ const ImgWrapper = styled.div`
   overflow: hidden;
 `;
 
-function PostCard({ id, user, address, photos, contents }: QGetSubscribingPosts_getSubscribingPosts_data) {
+function PostCard({ id, user, address, photos, contents, isLiked }: QGetSubscribingPosts_getSubscribingPosts_data) {
   const parsedPhotos: string[] = JSON.parse(photos);
   return (
     <Wrapper key={id}>
@@ -53,21 +53,19 @@ function PostCard({ id, user, address, photos, contents }: QGetSubscribingPosts_
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" />
       </TopBar>
-      {/* <WrapperSquare> */}
       <Carousel showThumbs={false} dynamicHeight>
         {parsedPhotos.map((photo, idx) => (
-          <WrapperSquare>
+          <WrapperSquare key={photo}>
             <ImgWrapper>
               <ImageBase url={photo} />
             </ImgWrapper>
           </WrapperSquare>
         ))}
       </Carousel>
-      {/* </WrapperSquare> */}
       <Contents>
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
-            {false ? (
+            {isLiked ? (
               <FontAwesomeIcon
                 icon={faPaw}
                 size="2x"

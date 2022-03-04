@@ -4,17 +4,7 @@ import { setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
-
-const KAKAO_LOGIN = gql`
-  mutation MKakaoLogin($args: KakaoLoginInputDto!) {
-    kakaoLogin(args: $args) {
-      ok
-      error
-      accessToken
-      refreshToken
-    }
-  }
-`;
+import { KAKAO_LOGIN } from 'apllo-gqls/auth';
 
 interface IkakaoLoginSuccess {
   access_token: string;

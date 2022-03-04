@@ -1,11 +1,12 @@
-import { ApolloClient, ApolloLink, concat, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
+import { ApolloClient, ApolloLink, concat, from, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
 import { getAccessToken } from "utils/local-storage";
+import { onError } from "@apollo/client/link/error";
+import { QGetMyPosts_getMyPosts } from "__generated__/QgetMyPosts";
 
 
 
 const httpLink = new HttpLink({ uri: 'http://121.154.94.120/graphql' });
 
-console.log(getAccessToken())
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
@@ -16,6 +17,20 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
   return forward(operation);
 });
+
+
+// Log any GraphQL errors or network error that occurred
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
+
 export const loginState = makeVar(Boolean(getAccessToken()))
 
 export const cache = new InMemoryCache({
@@ -26,6 +41,22 @@ export const cache = new InMemoryCache({
           read() {
             return loginState()
           }
+        },
+        getMyPosts: {
+          // @ts-ignore
+          read(existing, {args:{args:{offset, limit}}}) {
+            if(!existing){
+              return undefined
+            }
+            // console.log("read", existing, existing?.data.slice(offset, limit), offset, limit)
+            return {__typename: existing.__typename, data: existing.data.slice(offset, limit)};
+            
+          },
+          keyArgs: false,
+          merge(existing = {data:[]} , incomming:QGetMyPosts_getMyPosts) {
+            // console.log("merge", existing, incomming)
+            return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
+          },
         }
       }
     }
@@ -34,6 +65,6 @@ export const cache = new InMemoryCache({
 
 export const client = new ApolloClient({
   cache,
-  link: concat(authMiddleware, httpLink),
+  link: from([authMiddleware, errorLink.concat(httpLink)]),
 });
 
