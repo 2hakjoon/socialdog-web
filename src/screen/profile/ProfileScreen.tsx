@@ -81,7 +81,7 @@ function ProfileScreen() {
               </>
             )}
             <PostsGrid>
-              {posts?.map((post, idx) => (
+              {posts?.map((post) => (
                 <WrapperSquare key={post.id}>
                   <BaseWrapper>
                     <PostSmallBox {...post} />

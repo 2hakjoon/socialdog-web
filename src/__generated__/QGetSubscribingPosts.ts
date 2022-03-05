@@ -15,14 +15,14 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data_user {
 }
 
 export interface QGetSubscribingPosts_getSubscribingPosts_data {
-  __typename: "Posts";
+  __typename: "PostAll";
   id: string;
   photos: string;
   placeId: string;
   address: string;
   contents: string;
-  likes: number;
-  isLiked: boolean;
+  likes: number | null;
+  isLiked: boolean | null;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
 }
 

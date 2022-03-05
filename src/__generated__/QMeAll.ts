@@ -10,7 +10,7 @@ import { LoginStrategy } from "./globalTypes";
 // ====================================================
 
 export interface QMeAll_me_data {
-  __typename: "UserProfile";
+  __typename: "UserProfileAll";
   id: string;
   username: string | null;
   dogname: string | null;

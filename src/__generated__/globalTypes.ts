@@ -30,13 +30,6 @@ export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
 }
 
-export interface EditProfileInputDto {
-  username?: string | null;
-  dogname?: string | null;
-  photo?: string | null;
-  password?: string | null;
-}
-
 export interface FileInputDto {
   filename: string;
   fileType: FileType;
@@ -53,6 +46,10 @@ export interface KakaoLoginInputDto {
   refreshToken?: string | null;
   refreshTokenExpiresAt?: string | null;
   scopes?: string | null;
+}
+
+export interface ToggleLikePostInputDto {
+  postId: string;
 }
 
 //==============================================================

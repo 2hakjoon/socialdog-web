@@ -13,6 +13,9 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
 import { Carousel } from 'react-responsive-carousel';
+import { useMutation } from '@apollo/client';
+import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
+import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -45,8 +48,20 @@ const ImgWrapper = styled.div`
   overflow: hidden;
 `;
 
+const OnClickWrapper = styled.button`
+  border: none;
+  background-color: white;
+`;
+
 function PostCard({ id, user, address, photos, contents, isLiked }: QGetSubscribingPosts_getSubscribingPosts_data) {
+  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
   const parsedPhotos: string[] = JSON.parse(photos);
+
+  const toggleLikeHandler = async (postId: string) => {
+    const res = await toggleLike({ variables: { args: { postId } } });
+    console.log(res);
+  };
+
   return (
     <Wrapper key={id}>
       <TopBar>
@@ -65,21 +80,23 @@ function PostCard({ id, user, address, photos, contents, isLiked }: QGetSubscrib
       <Contents>
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
-            {isLiked ? (
-              <FontAwesomeIcon
-                icon={faPaw}
-                size="2x"
-                color={theme.color.blue.primaryBlue}
-                style={{ marginRight: 10 }}
-              />
-            ) : (
-              <FontAwesomeIcon
-                icon={faPaw}
-                size="2x"
-                color={theme.color.achromatic.darkGray}
-                style={{ marginRight: 10 }}
-              />
-            )}
+            <OnClickWrapper onClick={() => toggleLikeHandler(id)}>
+              {isLiked ? (
+                <FontAwesomeIcon
+                  icon={faPaw}
+                  size="2x"
+                  color={theme.color.blue.primaryBlue}
+                  style={{ marginRight: 10 }}
+                />
+              ) : (
+                <FontAwesomeIcon
+                  icon={faPaw}
+                  size="2x"
+                  color={theme.color.achromatic.darkGray}
+                  style={{ marginRight: 10 }}
+                />
+              )}
+            </OnClickWrapper>
             <FontAwesomeIcon
               icon={faLocationDot}
               size="2x"

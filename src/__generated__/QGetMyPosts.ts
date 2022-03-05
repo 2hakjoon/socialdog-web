@@ -10,10 +10,10 @@ import { GetMyPostsInputDto } from "./globalTypes";
 // ====================================================
 
 export interface QGetMyPosts_getMyPosts_data {
-  __typename: "Posts";
+  __typename: "PostAll";
   photos: string;
   id: string;
-  likes: number;
+  likes: number | null;
 }
 
 export interface QGetMyPosts_getMyPosts {

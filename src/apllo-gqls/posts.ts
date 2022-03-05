@@ -42,3 +42,12 @@ export const CREATE_PRESIGNED_URL = gql`
     }
   }
 `;
+
+export const TOGGLE_LIKE_POST = gql`
+  mutation MToggleLikePost($args: ToggleLikePostInputDto!) {
+    toggleLikePost(args: $args) {
+      ok
+      error
+    }
+  }
+`
