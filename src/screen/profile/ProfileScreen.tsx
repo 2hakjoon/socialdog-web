@@ -14,6 +14,8 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { routes } from 'screen/routes';
+import { Link } from 'react-router-dom';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -62,13 +64,15 @@ function ProfileScreen() {
             {user && (
               <>
                 <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
-                  <WrapperColumn h="140px" jc="space-around">
-                    <ImageRound size="90px" url={user.photo || ''} />
-                    <WrapperRow>
-                      <TextBase text={user.username} p="0 6px" />
-                      <FontAwesomeIcon icon={faPenToSquare} size="1x" />
-                    </WrapperRow>
-                  </WrapperColumn>
+                  <Link to={routes.profileEdit}>
+                    <WrapperColumn h="140px" jc="space-around">
+                      <ImageRound size="90px" url={user.photo || ''} />
+                      <WrapperRow>
+                        <TextBase text={user.username} p="0 6px" />
+                        <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                      </WrapperRow>
+                    </WrapperColumn>
+                  </Link>
                   <WrapperColumn h="50px" jc="space-around">
                     <TextBase text={'구독중'} />
                     <TextBase text={user.subscribings} />
