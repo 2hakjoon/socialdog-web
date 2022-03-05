@@ -1,8 +1,8 @@
 import React from 'react';
 import { theme } from 'assets/styles/theme';
-import ImageBase from 'screen/common-comp/Image/ImageBase';
-import ImageRound from 'screen/common-comp/Image/ImageRound';
-import TextBase from 'screen/common-comp/Texts/TextBase';
+import ImageBase from 'screen/common-comp/image/ImageBase';
+import ImageRound from 'screen/common-comp/image/ImageRound';
+import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';

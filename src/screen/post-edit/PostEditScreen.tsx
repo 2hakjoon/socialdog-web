@@ -13,7 +13,7 @@ import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import styled from 'styled-components';
-import TextBase from 'screen/common-comp/Texts/TextBase';
+import TextBase from 'screen/common-comp/texts/TextBase';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import UploadImgViewer from './components/UploadImgViewer';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
