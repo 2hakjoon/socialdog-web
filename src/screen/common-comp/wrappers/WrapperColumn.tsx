@@ -4,7 +4,7 @@ import styled from 'styled-components';
 const Wrapper = styled.div<IWrapperColumn>`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: ${(p) => p.ai};
   padding: ${(p) => p.p};
   justify-content: ${(p) => p.jc};
   width: ${(p) => p.w};
@@ -17,11 +17,12 @@ interface IWrapperColumn {
   p?: string;
   w?: string;
   h?: string;
+  ai?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
 }
 
-function WrapperColumn({ children, jc, p, w, h }: IWrapperColumn) {
+function WrapperColumn({ children, jc, p, w, h, ai }: IWrapperColumn) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h}>
+    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai}>
       {children}
     </Wrapper>
   );
@@ -32,6 +33,7 @@ WrapperColumn.defaultProps = {
   p: '0',
   w: '',
   h: '',
+  ai: 'center',
 };
 
 export default WrapperColumn;
