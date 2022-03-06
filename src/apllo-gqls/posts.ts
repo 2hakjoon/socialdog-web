@@ -11,8 +11,9 @@ export const GET_SUBSCRIBING_POSTS = gql`
         placeId
         address
         contents
-        likes
-        isLiked
+        likedUsers {
+          like
+        }
         user {
           photo
           username

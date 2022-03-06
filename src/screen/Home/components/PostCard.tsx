@@ -53,7 +53,7 @@ const OnClickWrapper = styled.button`
   background-color: white;
 `;
 
-function PostCard({ id, user, address, photos, contents, isLiked }: QGetSubscribingPosts_getSubscribingPosts_data) {
+function PostCard({ id, user, address, photos, contents, likedUsers }: QGetSubscribingPosts_getSubscribingPosts_data) {
   const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
   const parsedPhotos: string[] = JSON.parse(photos);
 
@@ -81,7 +81,7 @@ function PostCard({ id, user, address, photos, contents, isLiked }: QGetSubscrib
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
             <OnClickWrapper onClick={() => toggleLikeHandler(id)}>
-              {isLiked ? (
+              {likedUsers?.[0]?.like ? (
                 <FontAwesomeIcon
                   icon={faPaw}
                   size="2x"

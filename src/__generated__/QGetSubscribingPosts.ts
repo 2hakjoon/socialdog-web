@@ -7,6 +7,11 @@
 // GraphQL query operation: QGetSubscribingPosts
 // ====================================================
 
+export interface QGetSubscribingPosts_getSubscribingPosts_data_likedUsers {
+  __typename: "Likes";
+  like: boolean;
+}
+
 export interface QGetSubscribingPosts_getSubscribingPosts_data_user {
   __typename: "UserProfile";
   photo: string | null;
@@ -21,8 +26,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data {
   placeId: string;
   address: string;
   contents: string;
-  likes: number | null;
-  isLiked: boolean | null;
+  likedUsers: QGetSubscribingPosts_getSubscribingPosts_data_likedUsers[] | null;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
 }
 
