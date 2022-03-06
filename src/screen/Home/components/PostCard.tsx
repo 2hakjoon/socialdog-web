@@ -13,9 +13,9 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
 import { Carousel } from 'react-responsive-carousel';
-import { useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { GET_SUBSCRIBING_POSTS, TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -53,13 +53,58 @@ const OnClickWrapper = styled.button`
   background-color: white;
 `;
 
-function PostCard({ id, user, address, photos, contents, likedUsers }: QGetSubscribingPosts_getSubscribingPosts_data) {
-  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
+function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribingPosts_getSubscribingPosts_data) {
+  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST, {
+    update(cache) {
+      console.log(cache);
+    },
+  });
+  const client = useApolloClient();
   const parsedPhotos: string[] = JSON.parse(photos);
 
   const toggleLikeHandler = async (postId: string) => {
-    const res = await toggleLike({ variables: { args: { postId } } });
+    const res = await toggleLike({
+      variables: { args: { postId } },
+      update(cache) {
+        cache.modify({
+          fields: {
+            PostAll(existingPostData = {}) {
+              const newTodoRef = cache.writeFragment({
+                fragment: gql`
+                  fragment newPostData on PostAll {
+                    id
+                    __typename
+                    likedUsers {
+                      like
+                    }
+                  }
+                `,
+                data: {
+                  __typename: 'PostAll',
+                  id: postId,
+                  like: [{ like: true }],
+                },
+              });
+              return [...existingPostData, newTodoRef];
+            },
+          },
+        });
+      },
+    });
     console.log(res);
+    if (res.data?.toggleLikePost.ok) {
+      client.cache.writeFragment({
+        id: `PostAll:${postId}`,
+        fragment: gql`
+          fragment post on PostAll {
+            liked
+          }
+        `,
+        data: {
+          liked: !liked,
+        },
+      });
+    }
   };
 
   return (
@@ -81,7 +126,7 @@ function PostCard({ id, user, address, photos, contents, likedUsers }: QGetSubsc
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
             <OnClickWrapper onClick={() => toggleLikeHandler(id)}>
-              {likedUsers?.[0]?.like ? (
+              {liked ? (
                 <FontAwesomeIcon
                   icon={faPaw}
                   size="2x"

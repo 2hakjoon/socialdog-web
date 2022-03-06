@@ -13,7 +13,7 @@ export interface QGetMyPosts_getMyPosts_data {
   __typename: "PostAll";
   photos: string;
   id: string;
-  likes: number | null;
+  likes: number;
 }
 
 export interface QGetMyPosts_getMyPosts {
