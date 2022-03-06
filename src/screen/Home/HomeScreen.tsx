@@ -31,6 +31,7 @@ const SectionWrapper = styled.div`
 function HomeScreen() {
   const { data: postsData, loading: postsLoading } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
     onError: (e) => console.log(e),
+    fetchPolicy: 'cache-first',
   });
   console.log(postsData, postsLoading);
   return (

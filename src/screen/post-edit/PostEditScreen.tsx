@@ -1,5 +1,5 @@
 import React, { BaseSyntheticEvent, useEffect } from 'react';
-import { gql, useMutation } from '@apollo/client';
+import { gql, makeReference, useApolloClient, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { MCreatePost, MCreatePostVariables } from '../../__generated__/MCreatePost';
@@ -17,7 +17,7 @@ import TextBase from 'screen/common-comp/texts/TextBase';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import UploadImgViewer from './components/UploadImgViewer';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import { CREATE_POST, CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
+import { CREATE_POST, CREATE_PRESIGNED_URL, GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -38,6 +38,8 @@ interface ITextAreaComponent {
 const TextAreaComponent = styled.textarea<ITextAreaComponent>`
   width: 100%;
   height: ${(p) => p.height};
+  min-height: 200px;
+  padding: 6px;
 `;
 
 interface IPlaceSerchResult {
@@ -48,6 +50,7 @@ interface IPlaceSerchResult {
 }
 
 function PostEditScreen() {
+  const client = useApolloClient();
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
@@ -56,6 +59,7 @@ function PostEditScreen() {
   const [searchResultEmpty, setSearchResultEmpty] = useState<boolean>(false);
   const [textAreaHeight, setTextAreaHeight] = useState<string>('50px');
 
+  console.log(textAreaHeight);
   useEffect(() => {
     if (searchResult) {
       changeSearchResultError();
@@ -126,13 +130,40 @@ function PostEditScreen() {
         return result.config.url.split('?Content')[0];
       });
       console.log(uploadedUrl);
-      await createPost({
+      const createPostRes = await createPost({
         variables: {
           args: {
             ...formData,
             address: searchResult.value.description,
             placeId: searchResult.value.place_id,
             photos: uploadedUrl,
+          },
+        },
+      });
+      if (!createPostRes.data?.createPost.ok) {
+        window.alert('게시물 업로드에 실패했습니다.');
+        return;
+      }
+      client.cache.modify({
+        id: client.cache.identify(makeReference('ROOT_QUERY')),
+        fields: {
+          getSubscribingPosts(existingData) {
+            console.log(existingData.data);
+            return {
+              ...existingData,
+              data: [
+                {
+                  __typename: 'PostAll',
+                  id: `${Date.now}`,
+                  photos: JSON.stringify(uploadedUrl),
+                  placeId: searchResult.value.place_id,
+                  address: searchResult.value.description,
+                  contents: formData.contents,
+                  liked: false,
+                },
+                ...existingData.data,
+              ],
+            };
           },
         },
       });
