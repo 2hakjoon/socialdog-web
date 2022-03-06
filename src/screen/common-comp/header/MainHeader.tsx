@@ -7,6 +7,9 @@ import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
 import socialDogLogoBlack from '../../../assets/svg/social-dog-black.svg';
 import IconBook from 'assets/svg/IconBook';
+import IconPlus from 'assets/svg/IconPlus';
+import WrapperRow from '../wrappers/WrapperRow';
+import IconClipBoard from 'assets/svg/IconClipBoard';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -41,15 +44,20 @@ function MainHeader() {
             <img alt="asdf" src={socialDogLogoBlack} />
           </LogoWrapper>
         </Link>
-        {getAccessToken() ? (
-          <Link to={routes.profile}>
-            <IconBook size={30} />
+        <WrapperRow w="60px" jc={'space-between'}>
+          <Link to={routes.postEdit}>
+            <IconClipBoard size={24} />
           </Link>
-        ) : (
-          <Link to={routes.login}>
-            <div>로그인</div>
-          </Link>
-        )}
+          {getAccessToken() ? (
+            <Link to={routes.profile}>
+              <IconBook size={30} />
+            </Link>
+          ) : (
+            <Link to={routes.login}>
+              <div>로그인</div>
+            </Link>
+          )}
+        </WrapperRow>
       </InnerWrapper>
     </Wrapper>
   );
