@@ -36,3 +36,18 @@ export const EDIT_PROFILE = gql`
   }
 }
 `
+
+export const FIND_USER_BY_USERNAME = gql`
+  query QFindUserByUsername($args: FindUserByUsernameInputDto!){
+    findUsersByUsername(args: $args) {
+      data {
+        photo
+        username
+        dogname
+        id
+      }
+      ok
+      error
+    }
+  }
+`

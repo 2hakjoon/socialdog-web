@@ -42,6 +42,10 @@ export interface FileInputDto {
   fileType: FileType;
 }
 
+export interface FindUserByUsernameInputDto {
+  username: string;
+}
+
 export interface GetMyPostsInputDto {
   offset: number;
   limit: number;
