@@ -36,3 +36,26 @@ export const EDIT_PROFILE = gql`
   }
 }
 `
+
+export const GET_MY_SUBSCRIBINGS_REQUESTS = gql`
+  query QGetMySubscribingsRequests {
+    getMySubscribings {
+      ok
+      data {
+        photo
+        username
+        id
+        dogname
+      }
+    }
+    getSubscribingRequests {
+      data {
+        updatedAt
+        id
+        username
+        dogname
+        photo
+      }
+    }
+  }
+`

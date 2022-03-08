@@ -21,7 +21,6 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data {
   placeId: string;
   address: string;
   contents: string;
-  likes: number;
   liked: boolean;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
 }

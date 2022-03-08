@@ -3,6 +3,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
+import TextBase from '../texts/TextBase';
 
 const Wrapper = styled.div`
   width: 90vw;
@@ -16,13 +17,16 @@ const Wrapper = styled.div`
 
 interface IModalRound {
   children: ReactNode;
+  title: string;
   closeModal: () => void;
 }
 
-function ModalRound({ children, closeModal }: IModalRound) {
+function ModalRound({ children, title, closeModal }: IModalRound) {
   return (
     <Wrapper>
-      <WrapperRow jc={'flex-end'} p={'10px 16px 6px 10px'}>
+      <WrapperRow w={'100%'} jc={'space-between'} p={'10px 16px 6px 10px'}>
+        <FontAwesomeIcon icon={faXmark} size="2x" color="white" />
+        <TextBase text={title} />
         <WrapperRow w="" h="" onClick={closeModal}>
           <FontAwesomeIcon icon={faXmark} size="2x" />
         </WrapperRow>

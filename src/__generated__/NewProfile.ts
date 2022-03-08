@@ -4,10 +4,12 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL fragment: post
+// GraphQL fragment: NewProfile
 // ====================================================
 
-export interface post {
-  __typename: "PostAll";
-  liked: boolean;
+export interface NewProfile {
+  __typename: "UserProfile";
+  id: string;
+  username: string | null;
+  photo: string | null;
 }
