@@ -8,7 +8,7 @@ const Wrapper = styled.div`
   background-color: rgba(100, 100, 100, 0.8);
   opacity: 0.5;
   position: absolute;
-  top: 0;
+  top: ${() => window.scrollY}px;
   left: 0;
 `;
 
@@ -29,6 +29,7 @@ function ModalBase({ children, closeModal }: IModalBase) {
 
   useEffect(() => {
     bodyOverflowHidden();
+    console.log(window.scrollY);
     return () => closeModalAndOverflowScroll();
   }, []);
   return <Wrapper onClick={closeModalAndOverflowScroll}>{children}</Wrapper>;
