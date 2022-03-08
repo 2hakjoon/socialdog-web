@@ -111,7 +111,7 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
     <Wrapper key={id}>
       <TopBar>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
-        <TextBase text={user.username} m="0 8px" />
+        <TextBase text={user.username} m="0 8px" fontFamily="nanum" fontWeight={700} />
       </TopBar>
       <Carousel showThumbs={false} dynamicHeight>
         {parsedPhotos.map((photo, idx) => (
