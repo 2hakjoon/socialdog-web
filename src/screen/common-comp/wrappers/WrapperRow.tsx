@@ -19,11 +19,12 @@ interface IWrapperRow {
   h?: string;
   bc?: string;
   m?: string;
+  onClick?: () => void;
 }
 
-function WrapperRow({ children, jc, p, w, h, bc, m }: IWrapperRow) {
+function WrapperRow({ children, jc, p, w, h, bc, m, onClick }: IWrapperRow) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} bc={bc} m={m}>
+    <Wrapper jc={jc} p={p} w={w} h={h} bc={bc} m={m} onClick={onClick}>
       {children}
     </Wrapper>
   );
@@ -36,6 +37,7 @@ WrapperRow.defaultProps = {
   h: '',
   m: '',
   bc: 'none',
+  onClick: () => {},
 };
 
 export default WrapperRow;

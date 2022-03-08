@@ -13,10 +13,11 @@ import styled from 'styled-components';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { Link } from 'react-router-dom';
-import ModalBase from 'screen/common-comp/modal/ModalBase';
+import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import DiscribingAndRequests from './templates/DiscribingAndRequests';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -40,7 +41,7 @@ function ProfileScreen() {
   });
   console.log(postsData, postsLoading);
   const posts = postsData?.getMyPosts.data;
-  const [modalOpen, setModalOpen] = useState(false);
+  const [modalType, setModalType] = useState<string | null>(null);
 
   // 다음페이지 데이터 요청
   useEffect(() => {
@@ -56,11 +57,11 @@ function ProfileScreen() {
   };
 
   const openModal = () => {
-    setModalOpen(true);
+    setModalType('true');
   };
 
   const closeModal = () => {
-    setModalOpen(false);
+    setModalType(null);
   };
 
   return (
@@ -109,7 +110,11 @@ function ProfileScreen() {
           </BaseWrapper>
         </>
       )}
-      {modalOpen && <ModalBase closeModal={closeModal}>sadfasfd</ModalBase>}
+      {modalType && (
+        <ModalBackground closeModal={closeModal}>
+          <DiscribingAndRequests closeModal={closeModal} />
+        </ModalBackground>
+      )}
     </>
   );
 }
