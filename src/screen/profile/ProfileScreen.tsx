@@ -17,9 +17,9 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { Link } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
-import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
+import SubscribingAndRequests from './templates/SubscribingAndRequests';
 
 const PostsGrid = styled.div`
   width: 100%;

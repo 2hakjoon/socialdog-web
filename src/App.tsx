@@ -10,6 +10,7 @@ import LoginScreen from 'screen/login/LoginScreen';
 import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
 import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
+import SearchScreen from 'screen/search/SearchScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -26,6 +27,7 @@ function App() {
               <Route path={routes.postEdit} element={<PostEditScreen />} />
               <Route path={routes.profile} element={<ProfileScreen />} />
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
+              <Route path={routes.search} element={<SearchScreen />} />
             </>
           ) : (
             <Route path={routes.home} element={<LoginScreen />} />

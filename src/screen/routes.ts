@@ -5,4 +5,5 @@ export const routes = {
   profileEdit: '/profile-edit',
   login: '/login',
   join: '/join',
+  search: '/search'
 };

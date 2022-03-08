@@ -10,6 +10,7 @@ import IconBook from 'assets/svg/IconBook';
 import IconPlus from 'assets/svg/IconPlus';
 import WrapperRow from '../wrappers/WrapperRow';
 import IconClipBoard from 'assets/svg/IconClipBoard';
+import IconUserSearch from 'assets/svg/IconUserSearch';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -44,7 +45,10 @@ function MainHeader() {
             <img alt="asdf" src={socialDogLogoBlack} />
           </LogoWrapper>
         </Link>
-        <WrapperRow w="60px" jc={'space-between'}>
+        <WrapperRow w="100px" jc={'space-between'}>
+          <Link to={routes.search}>
+            <IconUserSearch size={24} />
+          </Link>
           <Link to={routes.postEdit}>
             <IconClipBoard size={24} />
           </Link>
