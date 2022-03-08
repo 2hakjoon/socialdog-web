@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { EventHandler, MouseEventHandler } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div<IWrapperColumn>`
@@ -18,11 +18,12 @@ interface IWrapperColumn {
   w?: string;
   h?: string;
   ai?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
+  onClick?: (e: any) => void;
 }
 
-function WrapperColumn({ children, jc, p, w, h, ai }: IWrapperColumn) {
+function WrapperColumn({ children, jc, p, w, h, ai, onClick }: IWrapperColumn) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai}>
+    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} onClick={onClick}>
       {children}
     </Wrapper>
   );
@@ -34,6 +35,7 @@ WrapperColumn.defaultProps = {
   w: '',
   h: '',
   ai: 'center',
+  onClick: (e: any) => {},
 };
 
 export default WrapperColumn;

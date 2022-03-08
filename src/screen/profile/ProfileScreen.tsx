@@ -16,6 +16,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBars, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { Link } from 'react-router-dom';
+import ModalBase from 'screen/common-comp/modal/ModalBase';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -39,6 +40,7 @@ function ProfileScreen() {
   });
   console.log(postsData, postsLoading);
   const posts = postsData?.getMyPosts.data;
+  const [modalOpen, setModalOpen] = useState(false);
 
   // 다음페이지 데이터 요청
   useEffect(() => {
@@ -51,6 +53,10 @@ function ProfileScreen() {
 
   const toNextPage = async () => {
     setPostsLimit((prev) => prev + 3);
+  };
+
+  const openModal = () => {
+    setModalOpen(true);
   };
 
   return (
@@ -73,7 +79,7 @@ function ProfileScreen() {
                       </WrapperRow>
                     </WrapperColumn>
                   </Link>
-                  <WrapperColumn h="50px" jc="space-around">
+                  <WrapperColumn h="50px" jc="space-around" onClick={openModal}>
                     <TextBase text={'구독중'} />
                     <TextBase text={user.subscribings} />
                   </WrapperColumn>
@@ -99,6 +105,7 @@ function ProfileScreen() {
           </BaseWrapper>
         </>
       )}
+      {modalOpen && <ModalBase>sadfasfd</ModalBase>}
     </>
   );
 }
