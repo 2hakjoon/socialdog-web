@@ -59,6 +59,10 @@ function ProfileScreen() {
     setModalOpen(true);
   };
 
+  const closeModal = () => {
+    setModalOpen(false);
+  };
+
   return (
     <>
       {userDataLoading ? (
@@ -105,7 +109,7 @@ function ProfileScreen() {
           </BaseWrapper>
         </>
       )}
-      {modalOpen && <ModalBase>sadfasfd</ModalBase>}
+      {modalOpen && <ModalBase closeModal={closeModal}>sadfasfd</ModalBase>}
     </>
   );
 }

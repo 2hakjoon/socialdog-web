@@ -14,13 +14,24 @@ const Wrapper = styled.div`
 
 interface IModalBase {
   children: ReactNode;
+  closeModal: () => void;
 }
 
-function ModalBase({ children }: IModalBase) {
+function ModalBase({ children, closeModal }: IModalBase) {
+  const bodyOverflowHidden = () => {
+    document.body.style.overflow = 'hidden';
+  };
+
+  const closeModalAndOverflowScroll = () => {
+    document.body.style.overflow = 'scroll';
+    closeModal();
+  };
+
   useEffect(() => {
-    console.log('ASdf');
+    bodyOverflowHidden();
+    return () => closeModalAndOverflowScroll();
   }, []);
-  return <Wrapper>{children}</Wrapper>;
+  return <Wrapper onClick={closeModalAndOverflowScroll}>{children}</Wrapper>;
 }
 
 export default ModalBase;
