@@ -7,7 +7,7 @@ import ModalRound from 'screen/common-comp/modal/ModalRound';
 import { useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import { GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/users';
+import { GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/subscribes';
 import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
 
 interface ITabBox {
@@ -22,11 +22,11 @@ const TabBox = styled.div<ITabBox>`
   border-bottom: 2px solid ${(p) => (p.selected ? p.theme.color.blue.primaryBlue : p.theme.color.achromatic.lightGray)};
 `;
 
-interface IDiscribingAndRequests {
+interface ISubscribingAndRequests {
   closeModal: () => void;
 }
 
-function DiscribingAndRequests({ closeModal }: IDiscribingAndRequests) {
+function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const { data: mySubscribingsRequests } = useQuery<QGetMySubscribingsRequests>(GET_MY_SUBSCRIBINGS_REQUESTS);
   const subscribingUsers = mySubscribingsRequests?.getMySubscribings.data;
@@ -72,4 +72,4 @@ function DiscribingAndRequests({ closeModal }: IDiscribingAndRequests) {
   );
 }
 
-export default DiscribingAndRequests;
+export default SubscribingAndRequests;

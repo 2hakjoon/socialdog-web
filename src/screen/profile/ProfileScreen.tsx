@@ -17,7 +17,9 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { Link } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
-import DiscribingAndRequests from './templates/DiscribingAndRequests';
+import SubscribingAndRequests from './templates/SubscribingAndRequests';
+import { SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
+import SubscriberAndRequests from './templates/SubscriberAndRequests';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -56,8 +58,11 @@ function ProfileScreen() {
     setPostsLimit((prev) => prev + 3);
   };
 
-  const openModal = () => {
-    setModalType('true');
+  const openSubscribingModal = () => {
+    setModalType(SUBSCRIBING);
+  };
+  const openSubscriberModal = () => {
+    setModalType(SUBSCRIBER);
   };
 
   const closeModal = () => {
@@ -84,11 +89,11 @@ function ProfileScreen() {
                       </WrapperRow>
                     </WrapperColumn>
                   </Link>
-                  <WrapperColumn h="50px" jc="space-around" onClick={openModal}>
+                  <WrapperColumn h="50px" jc="space-around" onClick={openSubscribingModal}>
                     <TextBase text={'구독중'} />
                     <TextBase text={user.subscribings} />
                   </WrapperColumn>
-                  <WrapperColumn h="50px" jc="space-around">
+                  <WrapperColumn h="50px" jc="space-around" onClick={openSubscriberModal}>
                     <TextBase text={'삼촌-이모들'} />
                     <TextBase text={user.subscribers} />
                   </WrapperColumn>
@@ -112,7 +117,8 @@ function ProfileScreen() {
       )}
       {modalType && (
         <ModalBackground closeModal={closeModal}>
-          <DiscribingAndRequests closeModal={closeModal} />
+          {modalType === SUBSCRIBING && <SubscribingAndRequests closeModal={closeModal} />}
+          {modalType === SUBSCRIBER && <SubscriberAndRequests closeModal={closeModal} />}
         </ModalBackground>
       )}
     </>
