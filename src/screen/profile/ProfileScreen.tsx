@@ -39,7 +39,8 @@ type Params = {
 
 function ProfileScreen() {
   const navigate = useNavigate();
-  const [postsLimit, setPostsLimit] = useState<number>(3);
+  const pageItemsCount = 6;
+  const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -47,7 +48,6 @@ function ProfileScreen() {
   }
   const { data: authUserData } = useQuery<QMeAll>(MYPROFILE);
   const authUser = authUserData?.me.data;
-
   const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
     GET_USER_PROFILE,
     {
@@ -69,12 +69,16 @@ function ProfileScreen() {
 
   // 다음페이지 데이터 요청
   useEffect(() => {
-    if (posts && postsLimit > 3) {
-      if (posts.length + 3 === postsLimit) {
-        fetchPostsMore({ variables: { args: { username, offset: posts?.length, limit: 3 } } });
+    if (posts && postsLimit > pageItemsCount) {
+      if (posts.length + pageItemsCount === postsLimit) {
+        fetchPostsMore({ variables: { args: { username, offset: posts?.length, limit: pageItemsCount } } });
       }
     }
   }, [postsData]);
+
+  useEffect(() => {
+    setPostsLimit(pageItemsCount);
+  }, [username]);
 
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
@@ -90,7 +94,7 @@ function ProfileScreen() {
   };
 
   const toNextPage = async () => {
-    setPostsLimit((prev) => prev + 3);
+    setPostsLimit((prev) => prev + pageItemsCount);
   };
 
   const openSubscribingModal = () => {
@@ -106,68 +110,56 @@ function ProfileScreen() {
 
   return (
     <>
-      {userDataLoading ? (
-        <TextBase text={'로딩 중'} />
-      ) : (
-        <>
-          <MainHeader />
-          <BaseWrapper>
-            {user && (
-              <>
-                <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
-                  <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
-                    <ImageRound size="90px" url={user.photo || ''} />
-                    <WrapperRow>
-                      <TextBase text={user.username} p="0 6px" />
-                      <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+      <>
+        <MainHeader />
+        <BaseWrapper>
+          {user && (
+            <>
+              <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
+                <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
+                  <ImageRound size="90px" url={user.photo || ''} />
+                  <WrapperRow>
+                    <TextBase text={user.username} p="0 6px" />
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                  </WrapperRow>
+                </WrapperColumn>
+                <WrapperColumn jc="space-around">
+                  <WrapperRow>
+                    <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
+                      <TextBase text={'구독중'} />
+                      <TextBase text={user.subscribings} />
+                    </WrapperColumn>
+                    <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
+                      <TextBase text={'삼촌-이모들'} />
+                      <TextBase text={user.subscribers} />
+                    </WrapperColumn>
+                  </WrapperRow>
+                  {!isMyProfile() && (
+                    <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
+                      <button type="button" onClick={() => onRequestSubscribe(user.id)}>
+                        구독신청
+                      </button>
+                      <button type="button">차단</button>
                     </WrapperRow>
-                  </WrapperColumn>
-                  <WrapperColumn jc="space-around">
-                    <WrapperRow>
-                      <WrapperColumn
-                        h="50px"
-                        jc="space-around"
-                        onClick={isMyProfile() ? openSubscribingModal : () => {}}
-                      >
-                        <TextBase text={'구독중'} />
-                        <TextBase text={user.subscribings} />
-                      </WrapperColumn>
-                      <WrapperColumn
-                        h="50px"
-                        jc="space-around"
-                        onClick={isMyProfile() ? openSubscriberModal : () => {}}
-                      >
-                        <TextBase text={'삼촌-이모들'} />
-                        <TextBase text={user.subscribers} />
-                      </WrapperColumn>
-                    </WrapperRow>
-                    {!isMyProfile() && (
-                      <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
-                        <button type="button" onClick={() => onRequestSubscribe(user.id)}>
-                          구독신청
-                        </button>
-                        <button type="button">차단</button>
-                      </WrapperRow>
-                    )}
-                  </WrapperColumn>
-                </WrapperRow>
-              </>
-            )}
-            <PostsGrid>
-              {posts?.map((post) => (
-                <WrapperSquare key={post.id}>
-                  <BaseWrapper>
-                    <PostSmallBox {...post} />
-                  </BaseWrapper>
-                </WrapperSquare>
-              ))}
-            </PostsGrid>
-            <button type="button" onClick={toNextPage}>
-              더 불러오기
-            </button>
-          </BaseWrapper>
-        </>
-      )}
+                  )}
+                </WrapperColumn>
+              </WrapperRow>
+            </>
+          )}
+          <PostsGrid>
+            {posts?.map((post) => (
+              <WrapperSquare key={post.id}>
+                <BaseWrapper>
+                  <PostSmallBox {...post} />
+                </BaseWrapper>
+              </WrapperSquare>
+            ))}
+          </PostsGrid>
+          <button type="button" onClick={toNextPage}>
+            더 불러오기
+          </button>
+        </BaseWrapper>
+      </>
       {modalType && (
         <ModalBackground closeModal={closeModal}>
           {modalType === SUBSCRIBING && <SubscribingAndRequests closeModal={closeModal} />}
