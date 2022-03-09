@@ -48,6 +48,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             <>
               {subscribingUsers?.map((subscribingUser) => (
                 <UserCardThin
+                  onClick={closeModal}
                   username={subscribingUser.username}
                   dogname={subscribingUser.dogname}
                   photo={subscribingUser.photo}
@@ -56,15 +57,16 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             </>
           )}
           {selectedTab === 1 && (
-            <>
+            <WrapperColumn onClick={closeModal}>
               {subscribingRequests?.map((subscribingRequest) => (
                 <UserCardThin
+                  onClick={closeModal}
                   username={subscribingRequest.username}
                   dogname={subscribingRequest.dogname}
                   photo={subscribingRequest.photo}
                 />
               ))}
-            </>
+            </WrapperColumn>
           )}
         </>
       </WrapperColumn>

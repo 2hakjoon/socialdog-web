@@ -19,13 +19,19 @@ interface IUserCardThin {
   username: string | null;
   photo: string | null;
   dogname: string | null;
+  onClick?: () => void;
 }
 
-function UserCardThin({ username, photo, dogname }: IUserCardThin) {
+function UserCardThin({ username, photo, dogname, onClick = () => {} }: IUserCardThin) {
   const navigate = useNavigate();
 
   return (
-    <Wrapper onClick={() => navigate(`/${username}`)}>
+    <Wrapper
+      onClick={() => {
+        onClick();
+        navigate(`/${username}`);
+      }}
+    >
       <ProfilePhoto url={photo} size="48px" />
       <WrapperColumn m={'0 16px'} jc="space-around">
         <TextBase text={username} />
@@ -34,5 +40,9 @@ function UserCardThin({ username, photo, dogname }: IUserCardThin) {
     </Wrapper>
   );
 }
+
+UserCardThin.defaultProps = {
+  onClick: () => {},
+};
 
 export default UserCardThin;

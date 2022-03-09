@@ -141,7 +141,7 @@ function ProfileScreen() {
                         <TextBase text={user.subscribers} />
                       </WrapperColumn>
                     </WrapperRow>
-                    {isMyProfile() && (
+                    {!isMyProfile() && (
                       <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                         <button type="button" onClick={() => onRequestSubscribe(user.id)}>
                           구독신청
