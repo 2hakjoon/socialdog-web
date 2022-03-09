@@ -3,6 +3,7 @@ import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { FIND_USER_BY_USERNAME } from 'apllo-gqls/users';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import FormInput from 'screen/common-comp/input/FormInput';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
@@ -45,16 +46,15 @@ function SearchScreen() {
   const [findUserByUsername] = useLazyQuery<QFindUserByUsername, QFindUserByUsernameVariables>(FIND_USER_BY_USERNAME);
   const { register, getValues } = useForm<FindUserByUsernameInputDto>();
   const [findResults, setFindresults] = useState<QFindUserByUsername_findUsersByUsername_data[] | null | undefined>();
-  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
+  const navigage = useNavigate();
 
   const onSearch = async () => {
     const findUserResult = await findUserByUsername({ variables: { args: getValues() } });
     setFindresults(findUserResult.data?.findUsersByUsername.data);
   };
 
-  const onRequestSubscribe = async (toId: string) => {
-    const res = await requestSubscribe({ variables: { args: { to: toId } } });
-    console.log(res);
+  const moveToProfile = (username: string) => {
+    navigage(`/${username}`);
   };
 
   return (
@@ -66,16 +66,13 @@ function SearchScreen() {
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
         {findResults?.map((findResult) => (
-          <WrapperRow>
+          <WrapperRow onClick={() => moveToProfile(findResult?.username || '')}>
             <UserCardThin
               key={findResult.id}
               photo={findResult.photo}
               username={findResult.username}
               dogname={findResult.dogname}
             />
-            <button type="button" onClick={() => onRequestSubscribe(findResult.id)}>
-              구독신청
-            </button>
           </WrapperRow>
         ))}
       </BaseWrapper>

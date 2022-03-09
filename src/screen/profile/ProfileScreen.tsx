@@ -1,13 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
-import { GET_MYPOSTS, GET_USER_POSTS } from 'apllo-gqls/posts';
+import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import PostSmallBox from './components/PostSmallBox';
 import styled from 'styled-components';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
@@ -15,7 +14,7 @@ import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import { SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
@@ -23,6 +22,8 @@ import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMeAll } from '__generated__/QMeAll';
+import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
+import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -64,6 +65,7 @@ function ProfileScreen() {
   console.log(postsData, postsLoading);
   const posts = postsData?.getUserPosts.data;
   const [modalType, setModalType] = useState<string | null>(null);
+  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
 
   // 다음페이지 데이터 요청
   useEffect(() => {
@@ -73,6 +75,15 @@ function ProfileScreen() {
       }
     }
   }, [postsData]);
+
+  const onRequestSubscribe = async (toId: string) => {
+    const res = await requestSubscribe({ variables: { args: { to: toId } } });
+    console.log(res);
+  };
+
+  const isMyProfile = () => {
+    return authUser?.id === user?.id;
+  };
 
   const moveToProfileEdit = () => {
     navigate(routes.profileEdit);
@@ -104,32 +115,40 @@ function ProfileScreen() {
             {user && (
               <>
                 <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
-                  <WrapperColumn
-                    h="140px"
-                    jc="space-around"
-                    onClick={authUser?.id === user.id ? moveToProfileEdit : () => {}}
-                  >
+                  <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
                     <ImageRound size="90px" url={user.photo || ''} />
                     <WrapperRow>
                       <TextBase text={user.username} p="0 6px" />
                       <FontAwesomeIcon icon={faPenToSquare} size="1x" />
                     </WrapperRow>
                   </WrapperColumn>
-                  <WrapperColumn
-                    h="50px"
-                    jc="space-around"
-                    onClick={authUser?.id === user.id ? openSubscribingModal : () => {}}
-                  >
-                    <TextBase text={'구독중'} />
-                    <TextBase text={user.subscribings} />
-                  </WrapperColumn>
-                  <WrapperColumn
-                    h="50px"
-                    jc="space-around"
-                    onClick={authUser?.id === user.id ? openSubscriberModal : () => {}}
-                  >
-                    <TextBase text={'삼촌-이모들'} />
-                    <TextBase text={user.subscribers} />
+                  <WrapperColumn jc="space-around">
+                    <WrapperRow>
+                      <WrapperColumn
+                        h="50px"
+                        jc="space-around"
+                        onClick={isMyProfile() ? openSubscribingModal : () => {}}
+                      >
+                        <TextBase text={'구독중'} />
+                        <TextBase text={user.subscribings} />
+                      </WrapperColumn>
+                      <WrapperColumn
+                        h="50px"
+                        jc="space-around"
+                        onClick={isMyProfile() ? openSubscriberModal : () => {}}
+                      >
+                        <TextBase text={'삼촌-이모들'} />
+                        <TextBase text={user.subscribers} />
+                      </WrapperColumn>
+                    </WrapperRow>
+                    {isMyProfile() && (
+                      <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
+                        <button type="button" onClick={() => onRequestSubscribe(user.id)}>
+                          구독신청
+                        </button>
+                        <button type="button">차단</button>
+                      </WrapperRow>
+                    )}
                   </WrapperColumn>
                 </WrapperRow>
               </>
