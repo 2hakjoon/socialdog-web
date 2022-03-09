@@ -55,7 +55,7 @@ function MainHeader() {
             <IconClipBoard size={24} />
           </Link>
           {getAccessToken() ? (
-            <Link to={user?.username ? `${routes.profileBase}${user?.username}` : routes.home}>
+            <Link to={user?.username ? `/${user?.username}` : routes.home}>
               <IconBook size={30} />
             </Link>
           ) : (

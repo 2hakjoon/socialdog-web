@@ -1,10 +1,9 @@
 export const routes = {
   home: '/',
+  profile: '/:username',
   postEdit: '/post-edit',
-  profile: '/profile/:username',
   profileEdit: '/profile-edit',
   login: '/login',
   join: '/join',
   search: '/search',
-  profileBase: '/profile/',
 };
