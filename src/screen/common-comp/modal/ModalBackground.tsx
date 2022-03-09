@@ -25,12 +25,19 @@ function ModalBackground({ children, closeModal }: IModalBackground) {
     document.body.style.overflow = 'hidden';
   };
 
-  const closeModalAndOverflowScroll = (e?: BaseSyntheticEvent) => {
-    if (e?.target.id !== MODAL_BACKGROUND) {
-      return;
+  const onBackgroundClick = (e?: BaseSyntheticEvent) => {
+    if (checkBackgroundClicked(e?.target.id)) {
+      closeModalAndOverflowScroll();
     }
+  };
+
+  const closeModalAndOverflowScroll = () => {
     document.body.style.overflow = 'scroll';
     closeModal();
+  };
+
+  const checkBackgroundClicked = (id: string) => {
+    return id !== MODAL_BACKGROUND;
   };
 
   useEffect(() => {
@@ -39,7 +46,7 @@ function ModalBackground({ children, closeModal }: IModalBackground) {
   }, []);
 
   return (
-    <Wrapper id={MODAL_BACKGROUND} onClick={(e) => closeModalAndOverflowScroll(e)}>
+    <Wrapper id={MODAL_BACKGROUND} onClick={(e) => onBackgroundClick(e)}>
       {children}
     </Wrapper>
   );
