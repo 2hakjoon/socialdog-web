@@ -1,11 +1,13 @@
 import { gql } from "@apollo/client";
 
 export const MYPROFILE = gql`
-  query QMeAll {
+  query QMe {
     me {
       data {
         id
         username
+        dogname
+        photo
       }
     }
   }

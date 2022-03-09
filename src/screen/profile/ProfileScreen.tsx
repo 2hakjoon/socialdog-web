@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useQuery } from '@apollo/client';
-import { GET_USER_PROFILE } from 'apllo-gqls/users';
+import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import { GET_MYPOSTS, GET_USER_POSTS } from 'apllo-gqls/posts';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -22,6 +22,7 @@ import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
+import { QMeAll } from '__generated__/QMeAll';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -43,6 +44,8 @@ function ProfileScreen() {
     navigate(routes.home);
     return <></>;
   }
+  const { data: authUserData } = useQuery<QMeAll>(MYPROFILE);
+  const authUser = authUserData?.me.data;
 
   const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
     GET_USER_PROFILE,
@@ -66,10 +69,14 @@ function ProfileScreen() {
   useEffect(() => {
     if (posts && postsLimit > 3) {
       if (posts.length + 3 === postsLimit) {
-        // fetchPostsMore({ variables: { args: { username, offset: posts?.length, limit: 3 } } });
+        fetchPostsMore({ variables: { args: { username, offset: posts?.length, limit: 3 } } });
       }
     }
   }, [postsData]);
+
+  const moveToProfileEdit = () => {
+    navigate(routes.profileEdit);
+  };
 
   const toNextPage = async () => {
     setPostsLimit((prev) => prev + 3);
@@ -97,20 +104,30 @@ function ProfileScreen() {
             {user && (
               <>
                 <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
-                  <Link to={routes.profileEdit}>
-                    <WrapperColumn h="140px" jc="space-around">
-                      <ImageRound size="90px" url={user.photo || ''} />
-                      <WrapperRow>
-                        <TextBase text={user.username} p="0 6px" />
-                        <FontAwesomeIcon icon={faPenToSquare} size="1x" />
-                      </WrapperRow>
-                    </WrapperColumn>
-                  </Link>
-                  <WrapperColumn h="50px" jc="space-around" onClick={openSubscribingModal}>
+                  <WrapperColumn
+                    h="140px"
+                    jc="space-around"
+                    onClick={authUser?.id === user.id ? moveToProfileEdit : () => {}}
+                  >
+                    <ImageRound size="90px" url={user.photo || ''} />
+                    <WrapperRow>
+                      <TextBase text={user.username} p="0 6px" />
+                      <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                    </WrapperRow>
+                  </WrapperColumn>
+                  <WrapperColumn
+                    h="50px"
+                    jc="space-around"
+                    onClick={authUser?.id === user.id ? openSubscribingModal : () => {}}
+                  >
                     <TextBase text={'구독중'} />
                     <TextBase text={user.subscribings} />
                   </WrapperColumn>
-                  <WrapperColumn h="50px" jc="space-around" onClick={openSubscriberModal}>
+                  <WrapperColumn
+                    h="50px"
+                    jc="space-around"
+                    onClick={authUser?.id === user.id ? openSubscriberModal : () => {}}
+                  >
                     <TextBase text={'삼촌-이모들'} />
                     <TextBase text={user.subscribers} />
                   </WrapperColumn>

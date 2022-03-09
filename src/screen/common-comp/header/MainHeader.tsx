@@ -1,19 +1,16 @@
 import React from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHouseUser } from '@fortawesome/free-solid-svg-icons';
 import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
 import socialDogLogoBlack from '../../../assets/svg/social-dog-black.svg';
 import IconBook from 'assets/svg/IconBook';
-import IconPlus from 'assets/svg/IconPlus';
 import WrapperRow from '../wrappers/WrapperRow';
 import IconClipBoard from 'assets/svg/IconClipBoard';
 import IconUserSearch from 'assets/svg/IconUserSearch';
 import { useQuery } from '@apollo/client';
 import { MYPROFILE } from 'apllo-gqls/users';
-import { QMeAll } from '__generated__/QMeAll';
+import { QMe } from '__generated__/QMe';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -40,7 +37,7 @@ const LogoWrapper = styled.div`
 `;
 
 function MainHeader() {
-  const { data: userData } = useQuery<QMeAll>(MYPROFILE);
+  const { data: userData } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
   return (
     <Wrapper>
