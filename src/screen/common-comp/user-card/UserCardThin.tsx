@@ -1,5 +1,6 @@
 import { UserInfo } from 'os';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ProfilePhoto from '../image/ProfilePhoto';
 import TextBase from '../texts/TextBase';
@@ -21,8 +22,10 @@ interface IUserCardThin {
 }
 
 function UserCardThin({ username, photo, dogname }: IUserCardThin) {
+  const navigate = useNavigate();
+
   return (
-    <Wrapper>
+    <Wrapper onClick={() => navigate(`/${username}`)}>
       <ProfilePhoto url={photo} size="48px" />
       <WrapperColumn m={'0 16px'} jc="space-around">
         <TextBase text={username} />

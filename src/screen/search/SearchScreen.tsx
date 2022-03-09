@@ -66,7 +66,7 @@ function SearchScreen() {
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
         {findResults?.map((findResult) => (
-          <WrapperRow onClick={() => moveToProfile(findResult?.username || '')}>
+          <WrapperRow>
             <UserCardThin
               key={findResult.id}
               photo={findResult.photo}
