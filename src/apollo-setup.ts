@@ -42,7 +42,7 @@ export const cache = new InMemoryCache({
             return loginState()
           }
         },
-        getMyPosts: {
+        getUserPosts: {
           // @ts-ignore
           read(existing, {args:{args:{offset, limit}}}) {
             if(!existing){

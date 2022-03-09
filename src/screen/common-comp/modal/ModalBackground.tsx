@@ -31,13 +31,13 @@ function ModalBackground({ children, closeModal }: IModalBackground) {
     }
     document.body.style.overflow = 'scroll';
     closeModal();
-    e?.stopPropagation();
   };
 
   useEffect(() => {
     bodyOverflowHidden();
     return () => closeModalAndOverflowScroll();
   }, []);
+
   return (
     <Wrapper id={MODAL_BACKGROUND} onClick={(e) => closeModalAndOverflowScroll(e)}>
       {children}

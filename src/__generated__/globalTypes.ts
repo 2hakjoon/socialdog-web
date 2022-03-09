@@ -14,11 +14,6 @@ export enum FileType {
   IMAGE = "IMAGE",
 }
 
-export enum LoginStrategy {
-  KAKAO = "KAKAO",
-  LOCAL = "LOCAL",
-}
-
 export interface CreatePostInputDto {
   address: string;
   placeId: string;
@@ -51,12 +46,26 @@ export interface GetMyPostsInputDto {
   limit: number;
 }
 
+export interface GetUserInputDto {
+  username?: string | null;
+}
+
+export interface GetUserPostsInputDto {
+  offset: number;
+  limit: number;
+  username: string;
+}
+
 export interface KakaoLoginInputDto {
   accessToken: string;
   accessTokenExpiresAt?: string | null;
   refreshToken?: string | null;
   refreshTokenExpiresAt?: string | null;
   scopes?: string | null;
+}
+
+export interface RequestSubscribeInputDto {
+  to: string;
 }
 
 export interface ToggleLikePostInputDto {

@@ -45,3 +45,12 @@ export const GET_MY_SUBSCRIBERS_REQUESTS = gql`
     }
   }
 `
+
+export const REQUEST_SUBSCRIBE = gql`
+  mutation MRequestSubscribe($args: RequestSubscribeInputDto!) {
+  requestSubscribe(args: $args) {
+    ok
+    error
+  }
+}
+`

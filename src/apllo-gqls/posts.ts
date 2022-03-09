@@ -50,3 +50,30 @@ export const TOGGLE_LIKE_POST = gql`
     }
   }
 `
+
+export const GET_MYPOSTS = gql`
+  query QGetMyPosts($args:GetMyPostsInputDto!) {
+    getMyPosts(args:$args) {
+      ok
+      error
+      data {
+        photos
+        id
+        likes
+      }
+    }
+  }
+`
+
+export const GET_USER_POSTS = gql`
+  query QGetUserPosts($args:GetUserPostsInputDto!) {
+    getUserPosts(args:$args) {
+      ok
+      error
+      data {
+        photos
+        id
+      }
+    }
+  }
+`

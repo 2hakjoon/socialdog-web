@@ -2,7 +2,7 @@ import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
-import { EDIT_PROFILE, USER_MYPROFILE_ALL } from 'apllo-gqls/users';
+import { EDIT_PROFILE, GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import axios from 'axios';
 import React, { ChangeEvent } from 'react';
 import { useEffect } from 'react';
@@ -19,6 +19,7 @@ import styled from 'styled-components';
 import { EditProfileInputDto, FileType } from '__generated__/globalTypes';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '__generated__/MCreatePreSignedUrls';
 import { MEditProfile, MEditProfileVariables } from '__generated__/MEditProfile';
+import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QMeAll } from '__generated__/QMeAll';
 
 const FormWrapper = styled.form`
@@ -33,8 +34,10 @@ const FormWrapper = styled.form`
 
 function ProfileEditScreen() {
   const client = useApolloClient();
-  const { data: userData } = useQuery<QMeAll>(USER_MYPROFILE_ALL);
-  const user = userData?.me.data;
+  const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
+    GET_USER_PROFILE,
+  );
+  const user = userData?.getUserProfile.data;
   const [editProfile, { data }] = useMutation<MEditProfile, MEditProfileVariables>(EDIT_PROFILE);
   const [createPresignedUrl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const { register, handleSubmit, setValue } = useForm<EditProfileInputDto>();

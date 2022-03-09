@@ -18,6 +18,8 @@ export interface QGetMyPosts_getMyPosts_data {
 
 export interface QGetMyPosts_getMyPosts {
   __typename: "GetMyPostsOutputDto";
+  ok: boolean;
+  error: string | null;
   data: QGetMyPosts_getMyPosts_data[];
 }
 

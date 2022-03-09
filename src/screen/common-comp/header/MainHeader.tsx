@@ -11,6 +11,9 @@ import IconPlus from 'assets/svg/IconPlus';
 import WrapperRow from '../wrappers/WrapperRow';
 import IconClipBoard from 'assets/svg/IconClipBoard';
 import IconUserSearch from 'assets/svg/IconUserSearch';
+import { useQuery } from '@apollo/client';
+import { MYPROFILE } from 'apllo-gqls/users';
+import { QMeAll } from '__generated__/QMeAll';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -37,6 +40,8 @@ const LogoWrapper = styled.div`
 `;
 
 function MainHeader() {
+  const { data: userData } = useQuery<QMeAll>(MYPROFILE);
+  const user = userData?.me.data;
   return (
     <Wrapper>
       <InnerWrapper>
@@ -53,7 +58,7 @@ function MainHeader() {
             <IconClipBoard size={24} />
           </Link>
           {getAccessToken() ? (
-            <Link to={routes.profile}>
+            <Link to={user?.username ? `${routes.profileBase}${user?.username}` : routes.home}>
               <IconBook size={30} />
             </Link>
           ) : (
