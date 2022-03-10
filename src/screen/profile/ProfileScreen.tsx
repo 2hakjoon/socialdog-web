@@ -25,6 +25,7 @@ import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
+import { SubscribeRequestState } from '__generated__/globalTypes';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -58,6 +59,8 @@ function ProfileScreen() {
     },
   );
   const user = userData?.getUserProfile.data;
+  const userProfileState = userData?.getUserProfile;
+  console.log('user', user, userProfileState);
 
   const {
     data: postsData,
@@ -116,6 +119,27 @@ function ProfileScreen() {
     setModalType(null);
   };
 
+  const isSubscribeReqested = () => {
+    return userProfileState?.subscribeRequested === SubscribeRequestState.REQUESTED;
+  };
+  const isSubscribeConfrimed = () => {
+    return userProfileState?.subscribeRequested === SubscribeRequestState.CONFIRMED;
+  };
+  const isNotSubscribeReqested = () => {
+    return userProfileState?.subscribeRequested === SubscribeRequestState.NONE;
+  };
+
+  const isBlokingPerson = () => {
+    return userProfileState?.blocking;
+  };
+
+  const isProfileOpened = () => {
+    if (username === user?.username) {
+      return false;
+    }
+    return !userProfileState?.profileOpened;
+  };
+
   return (
     <>
       <>
@@ -144,28 +168,42 @@ function ProfileScreen() {
                   </WrapperRow>
                   {!isMyProfile() && (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
-                      <button type="button" onClick={() => onRequestSubscribe(user.id)}>
-                        구독신청
-                      </button>
-                      <button type="button">차단</button>
+                      {isSubscribeConfrimed() && <TextBase text={'구독중'} />}
+                      {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
+                      {isNotSubscribeReqested() && (
+                        <button type="button" onClick={() => onRequestSubscribe(user.id)}>
+                          구독신청
+                        </button>
+                      )}
+                      {isBlokingPerson() ? (
+                        <button type="button">차단해제</button>
+                      ) : (
+                        <button type="button">차단</button>
+                      )}
                     </WrapperRow>
                   )}
                 </WrapperColumn>
               </WrapperRow>
             </>
           )}
-          <PostsGrid>
-            {posts?.map((post) => (
-              <WrapperSquare key={post.id}>
-                <BaseWrapper>
-                  <PostSmallBox {...post} />
-                </BaseWrapper>
-              </WrapperSquare>
-            ))}
-          </PostsGrid>
-          <button type="button" onClick={toNextPage}>
-            더 불러오기
-          </button>
+          {isProfileOpened() ? (
+            <TextBase text={'비공개 계정입니당'} />
+          ) : (
+            <>
+              <PostsGrid>
+                {posts?.map((post) => (
+                  <WrapperSquare key={post.id}>
+                    <BaseWrapper>
+                      <PostSmallBox {...post} />
+                    </BaseWrapper>
+                  </WrapperSquare>
+                ))}
+              </PostsGrid>
+              <button type="button" onClick={toNextPage}>
+                더 불러오기
+              </button>
+            </>
+          )}
         </BaseWrapper>
       </>
       {modalType && (

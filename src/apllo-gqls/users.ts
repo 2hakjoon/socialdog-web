@@ -26,6 +26,9 @@ export const GET_USER_PROFILE = gql`
         subscribings
         subscribers
       }
+      blocking
+      profileOpened
+      subscribeRequested
     }
   }
 ` 

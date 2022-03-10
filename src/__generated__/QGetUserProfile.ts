@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { GetUserInputDto } from "./globalTypes";
+import { GetUserInputDto, BlockState, SubscribeRequestState } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetUserProfile
@@ -24,6 +24,9 @@ export interface QGetUserProfile_getUserProfile {
   ok: boolean;
   error: string | null;
   data: QGetUserProfile_getUserProfile_data | null;
+  blocking: BlockState | null;
+  profileOpened: boolean | null;
+  subscribeRequested: SubscribeRequestState | null;
 }
 
 export interface QGetUserProfile {

@@ -8,10 +8,29 @@
 //==============================================================
 
 /**
+ * BlockState
+ */
+export enum BlockState {
+  BLOCKED = "BLOCKED",
+  BLOCKING = "BLOCKING",
+  NONE = "NONE",
+}
+
+/**
  * upload file type.
  */
 export enum FileType {
   IMAGE = "IMAGE",
+}
+
+/**
+ * SubscribeRequestState
+ */
+export enum SubscribeRequestState {
+  CONFIRMED = "CONFIRMED",
+  NONE = "NONE",
+  REJECTED = "REJECTED",
+  REQUESTED = "REQUESTED",
 }
 
 export interface CreatePostInputDto {
