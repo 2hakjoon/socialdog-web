@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
-import { GET_USER_POSTS } from 'apllo-gqls/posts';
+import { GET_MYPOSTS, GET_USER_POSTS } from 'apllo-gqls/posts';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -24,6 +24,7 @@ import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPos
 import { QMeAll } from '__generated__/QMeAll';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -37,10 +38,11 @@ type Params = {
   username: string;
 };
 
+const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
-  const pageItemsCount = 6;
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
+  console.log('postsLimit', postsLimit);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -48,6 +50,7 @@ function ProfileScreen() {
   }
   const { data: authUserData } = useQuery<QMeAll>(MYPROFILE);
   const authUser = authUserData?.me.data;
+
   const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
     GET_USER_PROFILE,
     {
@@ -55,26 +58,31 @@ function ProfileScreen() {
     },
   );
   const user = userData?.getUserProfile.data;
+
   const {
     data: postsData,
     loading: postsLoading,
     fetchMore: fetchPostsMore,
   } = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
-    variables: { args: { username, offset: 0, limit: postsLimit } },
+    variables: { username, offset: 0, limit: postsLimit },
   });
-  console.log(postsData, postsLoading);
+
+  console.log('postsData :', postsData, postsLoading);
   const posts = postsData?.getUserPosts.data;
+
   const [modalType, setModalType] = useState<string | null>(null);
   const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
 
   // 다음페이지 데이터 요청
   useEffect(() => {
+    console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
     if (posts && postsLimit > pageItemsCount) {
       if (posts.length + pageItemsCount === postsLimit) {
-        fetchPostsMore({ variables: { args: { username, offset: posts?.length, limit: pageItemsCount } } });
+        fetchPostsMore({ variables: { username, offset: posts?.length, limit: pageItemsCount } });
+        console.log('fetched');
       }
     }
-  }, [postsData]);
+  }, [posts]);
 
   useEffect(() => {
     setPostsLimit(pageItemsCount);
@@ -82,7 +90,7 @@ function ProfileScreen() {
 
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
-    console.log(res);
+    // console.log(res);
   };
 
   const isMyProfile = () => {

@@ -3,8 +3,6 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { GetUserPostsInputDto } from "./globalTypes";
-
 // ====================================================
 // GraphQL query operation: QGetUserPosts
 // ====================================================
@@ -27,5 +25,7 @@ export interface QGetUserPosts {
 }
 
 export interface QGetUserPostsVariables {
-  args: GetUserPostsInputDto;
+  offset: number;
+  limit: number;
+  username: string;
 }

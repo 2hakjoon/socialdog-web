@@ -66,8 +66,8 @@ export const GET_MYPOSTS = gql`
 `
 
 export const GET_USER_POSTS = gql`
-  query QGetUserPosts($args:GetUserPostsInputDto!) {
-    getUserPosts(args:$args) {
+  query QGetUserPosts($offset: Int! $limit: Int! $username: String!) {
+    getUserPosts(args:{offset:$offset limit:$limit username:$username}) @connection(key: $username ) {
       ok
       error
       data {

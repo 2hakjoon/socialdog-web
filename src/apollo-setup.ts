@@ -1,7 +1,7 @@
 import { ApolloClient, ApolloLink, concat, from, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
 import { getAccessToken } from "utils/local-storage";
 import { onError } from "@apollo/client/link/error";
-import { QGetMyPosts_getMyPosts } from "__generated__/QGetMyPosts";
+import { QGetUserPosts_getUserPosts } from "__generated__/QGetUserPosts";
 
 
 
@@ -44,20 +44,20 @@ export const cache = new InMemoryCache({
         },
         getUserPosts: {
           // @ts-ignore
-          read(existing, {args:{args:{offset, limit}}}) {
+          read(existing, {args:{username, offset, limit}}) {
             if(!existing){
               return undefined
             }
-            // console.log("read", existing, existing?.data.slice(offset, limit), offset, limit)
-            return {__typename: existing.__typename, data: existing.data.slice(offset, limit)};
+            console.log("read", existing, existing.data.slice(offset, limit), username, offset, limit)
             
+            return {__typename: existing.__typename, data: existing.data.slice(offset, limit)};
           },
-          keyArgs: false,
-          merge(existing = {data:[]} , incomming:QGetMyPosts_getMyPosts) {
-            // console.log("merge", existing, incomming)
+          keyArgs: ["@connection", ["key"]],
+          merge(existing = {data:[]} , incomming:QGetUserPosts_getUserPosts) {
+             console.log("merge", existing, incomming)
             return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
           },
-        }
+        },
       }
     }
   }

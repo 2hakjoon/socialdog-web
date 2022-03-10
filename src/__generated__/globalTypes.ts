@@ -50,12 +50,6 @@ export interface GetUserInputDto {
   username?: string | null;
 }
 
-export interface GetUserPostsInputDto {
-  offset: number;
-  limit: number;
-  username: string;
-}
-
 export interface KakaoLoginInputDto {
   accessToken: string;
   accessTokenExpiresAt?: string | null;
