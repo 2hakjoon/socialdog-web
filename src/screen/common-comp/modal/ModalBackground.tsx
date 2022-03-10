@@ -37,7 +37,7 @@ function ModalBackground({ children, closeModal }: IModalBackground) {
   };
 
   const checkBackgroundClicked = (id: string) => {
-    return id !== MODAL_BACKGROUND;
+    return id === MODAL_BACKGROUND;
   };
 
   useEffect(() => {
