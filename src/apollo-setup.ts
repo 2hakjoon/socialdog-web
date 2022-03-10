@@ -44,13 +44,13 @@ export const cache = new InMemoryCache({
         },
         getUserPosts: {
           // @ts-ignore
-          read(existing, {args:{username, offset, limit}}) {
+          read(existing, {args:{args:{username, limit, offset}}}) {
             if(!existing){
               return undefined
             }
             console.log("read", existing, existing.data.slice(offset, limit), username, offset, limit)
             
-            return {__typename: existing.__typename, data: existing.data.slice(offset, limit)};
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
           },
           keyArgs: ["@connection", ["key"]],
           merge(existing = {data:[]} , incomming:QGetUserPosts_getUserPosts) {

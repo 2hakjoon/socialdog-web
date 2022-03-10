@@ -21,7 +21,7 @@ import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
-import { QMeAll } from '__generated__/QMeAll';
+import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
@@ -48,7 +48,7 @@ function ProfileScreen() {
     navigate(routes.home);
     return <></>;
   }
-  const { data: authUserData } = useQuery<QMeAll>(MYPROFILE);
+  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
   const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
@@ -78,7 +78,7 @@ function ProfileScreen() {
     console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
     if (posts && postsLimit > pageItemsCount) {
       if (posts.length + pageItemsCount === postsLimit) {
-        fetchPostsMore({ variables: { username, offset: posts?.length, limit: pageItemsCount } });
+        fetchPostsMore({ variables: { username, offset: posts?.length || 0, limit: pageItemsCount } });
         console.log('fetched');
       }
     }
