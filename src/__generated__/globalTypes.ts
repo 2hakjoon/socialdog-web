@@ -33,6 +33,11 @@ export enum SubscribeRequestState {
   REQUESTED = "REQUESTED",
 }
 
+export interface ChangeBlockStateInputDto {
+  to: string;
+  block: boolean;
+}
+
 export interface CreatePostInputDto {
   address: string;
   placeId: string;
@@ -48,6 +53,7 @@ export interface EditProfileInputDto {
   username?: string | null;
   dogname?: string | null;
   photo?: string | null;
+  profileOpen?: boolean | null;
   password?: string | null;
 }
 

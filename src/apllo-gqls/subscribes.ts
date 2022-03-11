@@ -54,3 +54,12 @@ export const REQUEST_SUBSCRIBE = gql`
   }
 }
 `
+
+export const CHANGE_BLOCKSTATE = gql`
+  mutation ChangeBlockState($args: ChangeBlockStateInputDto!) {
+  changeBlockState(args: $args) {
+    ok
+    error
+  }
+}
+`
