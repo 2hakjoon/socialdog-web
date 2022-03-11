@@ -29,6 +29,7 @@ import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
+import { useInView } from 'react-intersection-observer';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -46,7 +47,7 @@ const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
-  console.log('postsLimit', postsLimit);
+  // console.log('postsLimit', postsLimit);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -66,7 +67,7 @@ function ProfileScreen() {
   );
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
-  console.log('user', user, userProfileState);
+  // console.log('user', user, userProfileState);
 
   const {
     data: postsData,
@@ -76,14 +77,22 @@ function ProfileScreen() {
     variables: { username, offset: 0, limit: postsLimit },
   });
 
-  console.log('postsData :', postsData, postsLoading);
+  // console.log('postsData :', postsData, postsLoading);
   const posts = postsData?.getUserPosts.data;
 
   const [modalType, setModalType] = useState<string | null>(null);
 
+  const {
+    ref: inViewRef,
+    inView,
+    entry,
+  } = useInView({
+    threshold: 0,
+  });
+
   // 다음페이지 데이터 요청
   useEffect(() => {
-    console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
+    // console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
     if (posts && postsLimit > pageItemsCount) {
       if (posts.length + pageItemsCount === postsLimit) {
         fetchPostsMore({ variables: { username, offset: posts?.length || 0, limit: pageItemsCount } });
@@ -95,6 +104,10 @@ function ProfileScreen() {
   useEffect(() => {
     setPostsLimit(pageItemsCount);
   }, [username]);
+
+  useEffect(() => {
+    console.log('scroll end');
+  }, [inView]);
 
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
@@ -239,6 +252,7 @@ function ProfileScreen() {
                       </WrapperSquare>
                     ))}
                   </PostsGrid>
+                  <div ref={inViewRef}>마지막임</div>
                   <button type="button" onClick={toNextPage}>
                     더 불러오기
                   </button>
