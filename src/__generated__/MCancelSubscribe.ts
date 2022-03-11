@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { cancelSubscribingInputDto } from "./globalTypes";
+import { CancelSubscribingInputDto } from "./globalTypes";
 
 // ====================================================
 // GraphQL mutation operation: McancelSubscribing
@@ -20,5 +20,5 @@ export interface McancelSubscribing {
 }
 
 export interface McancelSubscribingVariables {
-  args: cancelSubscribingInputDto;
+  args: CancelSubscribingInputDto;
 }
