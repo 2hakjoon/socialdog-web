@@ -43,7 +43,7 @@ type Params = {
   username: string;
 };
 
-const pageItemsCount = 18;
+const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
@@ -103,11 +103,11 @@ function ProfileScreen() {
 
   // 무한스크롤
   useEffect(() => {
-    // console.log('scroll end', viewState);
-    if (viewState) {
+    console.log('scroll end', viewState, 'loading', postsLoading);
+    if (viewState && !postsLoading) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
-  }, [viewState]);
+  }, [viewState, postsLoading]);
 
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
