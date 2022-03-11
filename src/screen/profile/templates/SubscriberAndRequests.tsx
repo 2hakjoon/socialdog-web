@@ -55,12 +55,20 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
           {selectedTab === 0 && (
             <>
               {subscribers?.map((subscriber) => (
-                <UserCardThin
-                  onClick={closeModal}
-                  username={subscriber.username}
-                  dogname={subscriber.dogname}
-                  photo={subscriber.photo}
-                />
+                <WrapperRow>
+                  <UserCardThin
+                    onClick={closeModal}
+                    username={subscriber.username}
+                    dogname={subscriber.dogname}
+                    photo={subscriber.photo}
+                  />
+                  <button
+                    type="button"
+                    onClick={() => onResponseSubscribe(subscriber.id, SubscribeRequestState.REQUESTED)}
+                  >
+                    구독보류
+                  </button>
+                </WrapperRow>
               ))}
             </>
           )}

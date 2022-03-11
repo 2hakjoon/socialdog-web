@@ -142,10 +142,7 @@ function ProfileScreen() {
     return userProfileState?.subscribeRequested === SubscribeRequestState.CONFIRMED;
   };
   const isNotSubscribeReqested = () => {
-    return (
-      userProfileState?.subscribeRequested === SubscribeRequestState.NONE ||
-      userProfileState?.subscribeRequested === null
-    );
+    return userProfileState?.subscribeRequested === SubscribeRequestState.NONE;
   };
 
   const isBlokingPerson = () => {
