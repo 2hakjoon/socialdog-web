@@ -57,7 +57,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             </>
           )}
           {selectedTab === 1 && (
-            <WrapperColumn onClick={closeModal}>
+            <>
               {subscribingRequests?.map((subscribingRequest) => (
                 <UserCardThin
                   onClick={closeModal}
@@ -66,7 +66,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
                   photo={subscribingRequest.photo}
                 />
               ))}
-            </WrapperColumn>
+            </>
           )}
         </>
       </WrapperColumn>
