@@ -20,7 +20,7 @@ import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
-import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
+import { QGetUserPosts, QGetUserPostsVariables, QGetUserPosts_getUserPosts_data } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
@@ -43,7 +43,7 @@ type Params = {
   username: string;
 };
 
-const pageItemsCount = 6;
+const pageItemsCount = 18;
 function ProfileScreen() {
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
@@ -76,10 +76,12 @@ function ProfileScreen() {
     fetchMore: fetchPostsMore,
   } = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
     variables: { username, offset: 0, limit: postsLimit },
+    notifyOnNetworkStatusChange: true,
   });
 
   // console.log('postsData :', postsData, postsLoading);
   const posts = postsData?.getUserPosts.data;
+  // console.log(posts);
 
   const [modalType, setModalType] = useState<string | null>(null);
 
@@ -101,7 +103,7 @@ function ProfileScreen() {
 
   // 무한스크롤
   useEffect(() => {
-    console.log('scroll end', viewState);
+    // console.log('scroll end', viewState);
     if (viewState) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
@@ -130,10 +132,6 @@ function ProfileScreen() {
 
   const moveToProfileEdit = () => {
     navigate(routes.profileEdit);
-  };
-
-  const toNextPage = async () => {
-    setPostsLimit((prev) => prev + pageItemsCount);
   };
 
   const openSubscribingModal = () => {
@@ -249,6 +247,16 @@ function ProfileScreen() {
                         </BaseWrapper>
                       </WrapperSquare>
                     ))}
+                    {postsLoading &&
+                      Array(12)
+                        .fill('')
+                        .map(() => (
+                          <WrapperSquare key={Math.random()}>
+                            <BaseWrapper>
+                              <PostSmallBox photos="" __typename="Posts" id="" />
+                            </BaseWrapper>
+                          </WrapperSquare>
+                        ))}
                   </PostsGrid>
                   <IntersectionObserver viewState={setViewState} />
                 </>
