@@ -62,6 +62,14 @@ export const REQUEST_SUBSCRIBE = gql`
   }
 }
 `
+export const RESPONSE_SUBSCRIBE = gql`
+  mutation MResponseSubscribe($args: ResponseSubscribeInputDto!) {
+  responseSubscribe(args: $args) {
+    error
+    ok
+  }
+}
+`
 
 export const CHANGE_BLOCKSTATE = gql`
   mutation MChangeBlockState($args: ChangeBlockStateInputDto!) {

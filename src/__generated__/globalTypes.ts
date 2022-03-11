@@ -91,6 +91,11 @@ export interface RequestSubscribeInputDto {
   to: string;
 }
 
+export interface ResponseSubscribeInputDto {
+  from: string;
+  subscribeRequest: SubscribeRequestState;
+}
+
 export interface ToggleLikePostInputDto {
   postId: string;
 }

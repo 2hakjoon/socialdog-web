@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import { useState } from 'react';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import { GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/subscribes';
+import { GET_MY_SUBSCRIBINGS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
+import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
+import { SubscribeRequestState } from '__generated__/globalTypes';
 
 interface ITabBox {
   selected: boolean;
@@ -59,12 +61,14 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
           {selectedTab === 1 && (
             <>
               {subscribingRequests?.map((subscribingRequest) => (
-                <UserCardThin
-                  onClick={closeModal}
-                  username={subscribingRequest.username}
-                  dogname={subscribingRequest.dogname}
-                  photo={subscribingRequest.photo}
-                />
+                <>
+                  <UserCardThin
+                    onClick={closeModal}
+                    username={subscribingRequest.username}
+                    dogname={subscribingRequest.dogname}
+                    photo={subscribingRequest.photo}
+                  />
+                </>
               ))}
             </>
           )}
