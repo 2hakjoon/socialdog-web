@@ -23,9 +23,10 @@ import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUse
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import { CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
-import { SubscribeRequestState } from '__generated__/globalTypes';
+import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
+import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -76,6 +77,8 @@ function ProfileScreen() {
   const [modalType, setModalType] = useState<string | null>(null);
   const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
 
+  const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
+
   // 다음페이지 데이터 요청
   useEffect(() => {
     console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
@@ -117,6 +120,14 @@ function ProfileScreen() {
 
   const closeModal = () => {
     setModalType(null);
+  };
+
+  const blockUser = (toUser: string, blockState: boolean) => {
+    changeBlockState({ variables: { args: { to: toUser, block: blockState } } });
+  };
+
+  const unBlockUser = (toUser: string, blockState: boolean) => {
+    changeBlockState({ variables: { args: { to: toUser, block: blockState } } });
   };
 
   const isSubscribeReqested = () => {
@@ -176,9 +187,13 @@ function ProfileScreen() {
                         </button>
                       )}
                       {isBlokingPerson() ? (
-                        <button type="button">차단해제</button>
+                        <button type="button" onClick={() => unBlockUser(user.id, false)}>
+                          차단해제
+                        </button>
                       ) : (
-                        <button type="button">차단</button>
+                        <button type="button" onClick={() => unBlockUser(user.id, true)}>
+                          차단
+                        </button>
                       )}
                     </WrapperRow>
                   )}
