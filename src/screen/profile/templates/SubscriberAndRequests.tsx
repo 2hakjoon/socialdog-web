@@ -55,7 +55,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
           {selectedTab === 0 && (
             <>
               {subscribers?.map((subscriber) => (
-                <WrapperRow>
+                <WrapperRow w="100%">
                   <UserCardThin
                     onClick={closeModal}
                     username={subscriber.username}

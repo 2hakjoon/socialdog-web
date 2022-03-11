@@ -16,7 +16,7 @@ import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
-import { SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
+import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
@@ -28,6 +28,7 @@ import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
+import BlockAndRejected from './templates/BlockAndRejected';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -130,6 +131,9 @@ function ProfileScreen() {
   const openSubscriberModal = () => {
     setModalType(SUBSCRIBER);
   };
+  const openBlockAndRejected = () => {
+    setModalType(BLOCKANDREJECT);
+  };
 
   const closeModal = () => {
     setModalType(null);
@@ -183,7 +187,11 @@ function ProfileScreen() {
                       <TextBase text={user.subscribers} />
                     </WrapperColumn>
                   </WrapperRow>
-                  {!isMyProfile() && (
+                  {isMyProfile() ? (
+                    <button type="button" onClick={() => openBlockAndRejected()}>
+                      차단-거절 관리
+                    </button>
+                  ) : (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                       {isSubscribeConfrimed() && (
                         <button type="button" onClick={() => oncancelSubscribing(user.id)}>
@@ -246,6 +254,7 @@ function ProfileScreen() {
         <ModalBackground closeModal={closeModal}>
           {modalType === SUBSCRIBING && <SubscribingAndRequests closeModal={closeModal} />}
           {modalType === SUBSCRIBER && <SubscriberAndRequests closeModal={closeModal} />}
+          {modalType === BLOCKANDREJECT && <BlockAndRejected closeModal={closeModal} />}
         </ModalBackground>
       )}
     </>

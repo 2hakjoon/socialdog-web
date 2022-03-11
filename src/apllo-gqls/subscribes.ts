@@ -79,3 +79,27 @@ export const CHANGE_BLOCKSTATE = gql`
   }
 }
 `
+
+export const GET_BLOCK_REJECTED = gql`
+query QgetMyBlockAndReject{
+  getMyRejectRequests {
+    ok
+    data {
+      id
+      username
+      photo
+      dogname
+    }
+    error
+  }
+  getMyBlockingUsers {
+    ok
+    error
+    data {
+      id
+      username
+      photo
+      dogname
+    }
+}
+  }`
