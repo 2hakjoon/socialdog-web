@@ -23,10 +23,11 @@ import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUse
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import { CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
+import { MCancelSubscribe, MCancelSubscribeVariables } from '__generated__/MCancelSubscribe';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -50,6 +51,9 @@ function ProfileScreen() {
     navigate(routes.home);
     return <></>;
   }
+  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
+  const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
+  const [cancelSubscribe] = useMutation<MCancelSubscribe, MCancelSubscribeVariables>(CANCEL_SUBSCRIBE);
   const { data: authUserData } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
@@ -75,9 +79,6 @@ function ProfileScreen() {
   const posts = postsData?.getUserPosts.data;
 
   const [modalType, setModalType] = useState<string | null>(null);
-  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
-
-  const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
 
   // 다음페이지 데이터 요청
   useEffect(() => {
@@ -97,6 +98,18 @@ function ProfileScreen() {
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
     // console.log(res);
+  };
+
+  const changeUserBlock = async (toUsername: string, blockState: boolean) => {
+    const res = await changeBlockState({
+      variables: { args: { username: toUsername, block: blockState } },
+    });
+    console.log(res);
+  };
+
+  const onCancelSubscribe = async (to: string) => {
+    const res = await cancelSubscribe({ variables: { args: { to } } });
+    console.log(res);
   };
 
   const isMyProfile = () => {
@@ -122,10 +135,6 @@ function ProfileScreen() {
     setModalType(null);
   };
 
-  const changeUserBlock = (toUser: string, blockState: boolean) => {
-    changeBlockState({ variables: { args: { to: toUser, block: blockState } } });
-  };
-
   const isSubscribeReqested = () => {
     return userProfileState?.subscribeRequested === SubscribeRequestState.REQUESTED;
   };
@@ -137,14 +146,15 @@ function ProfileScreen() {
   };
 
   const isBlokingPerson = () => {
-    return userProfileState?.blocking;
+    return userProfileState?.blocking === BlockState.BLOCKING;
   };
 
   const isProfileOpened = () => {
-    if (username === user?.username) {
-      return false;
+    if (username === authUser?.username) {
+      return true;
     }
-    return !userProfileState?.profileOpened;
+    // 프로필이 open이 false이지만, 구독관계일경우 null값으로 반환됨. 그래서 bool일때는 bool을반환, null은 true
+    return typeof userProfileState?.profileOpened === 'boolean' ? userProfileState?.profileOpened : true;
   };
 
   return (
@@ -175,7 +185,11 @@ function ProfileScreen() {
                   </WrapperRow>
                   {!isMyProfile() && (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
-                      {isSubscribeConfrimed() && <TextBase text={'구독중'} />}
+                      {isSubscribeConfrimed() && (
+                        <button type="button" onClick={() => onCancelSubscribe(user.id)}>
+                          구독취소
+                        </button>
+                      )}
                       {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
                       {isNotSubscribeReqested() && (
                         <button type="button" onClick={() => onRequestSubscribe(user.id)}>
@@ -183,11 +197,11 @@ function ProfileScreen() {
                         </button>
                       )}
                       {isBlokingPerson() ? (
-                        <button type="button" onClick={() => changeUserBlock(user.id, false)}>
+                        <button type="button" onClick={() => changeUserBlock(username, false)}>
                           차단해제
                         </button>
                       ) : (
-                        <button type="button" onClick={() => changeUserBlock(user.id, true)}>
+                        <button type="button" onClick={() => changeUserBlock(username, true)}>
                           차단
                         </button>
                       )}
@@ -197,22 +211,33 @@ function ProfileScreen() {
               </WrapperRow>
             </>
           )}
-          {isProfileOpened() ? (
-            <TextBase text={'비공개 계정입니당'} />
+          {isBlokingPerson() ? (
+            <>
+              <TextBase text={'차단한 계정입니다'} />
+              <button type="button" onClick={() => changeUserBlock(username, false)}>
+                차단해제
+              </button>
+            </>
           ) : (
             <>
-              <PostsGrid>
-                {posts?.map((post) => (
-                  <WrapperSquare key={post.id}>
-                    <BaseWrapper>
-                      <PostSmallBox {...post} />
-                    </BaseWrapper>
-                  </WrapperSquare>
-                ))}
-              </PostsGrid>
-              <button type="button" onClick={toNextPage}>
-                더 불러오기
-              </button>
+              {isProfileOpened() ? (
+                <>
+                  <PostsGrid>
+                    {posts?.map((post) => (
+                      <WrapperSquare key={post.id}>
+                        <BaseWrapper>
+                          <PostSmallBox {...post} />
+                        </BaseWrapper>
+                      </WrapperSquare>
+                    ))}
+                  </PostsGrid>
+                  <button type="button" onClick={toNextPage}>
+                    더 불러오기
+                  </button>
+                </>
+              ) : (
+                <TextBase text={'비공개 계정입니다.'} />
+              )}
             </>
           )}
         </BaseWrapper>

@@ -33,9 +33,13 @@ export enum SubscribeRequestState {
   REQUESTED = "REQUESTED",
 }
 
-export interface ChangeBlockStateInputDto {
+export interface CancelSubscribeInputDto {
   to: string;
+}
+
+export interface ChangeBlockStateInputDto {
   block: boolean;
+  username?: string | null;
 }
 
 export interface CreatePostInputDto {
