@@ -24,12 +24,12 @@ import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPos
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
 import { useInView } from 'react-intersection-observer';
+import IntersectionObserver from 'screen/common-comp/observer/IntersectionObserver';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -48,6 +48,7 @@ function ProfileScreen() {
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
+  const [viewState, setViewState] = useState(false);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -82,14 +83,6 @@ function ProfileScreen() {
 
   const [modalType, setModalType] = useState<string | null>(null);
 
-  const {
-    ref: inViewRef,
-    inView,
-    entry,
-  } = useInView({
-    threshold: 0,
-  });
-
   // 다음페이지 데이터 요청
   useEffect(() => {
     // console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
@@ -101,13 +94,18 @@ function ProfileScreen() {
     }
   }, [posts]);
 
+  // 사용자 프로필 이동시마다 페이지 카운트 초기화
   useEffect(() => {
     setPostsLimit(pageItemsCount);
   }, [username]);
 
+  // 무한스크롤
   useEffect(() => {
-    console.log('scroll end');
-  }, [inView]);
+    console.log('scroll end', viewState);
+    if (viewState) {
+      setPostsLimit((prev) => prev + pageItemsCount);
+    }
+  }, [viewState]);
 
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
@@ -252,10 +250,7 @@ function ProfileScreen() {
                       </WrapperSquare>
                     ))}
                   </PostsGrid>
-                  <div ref={inViewRef}>마지막임</div>
-                  <button type="button" onClick={toNextPage}>
-                    더 불러오기
-                  </button>
+                  <IntersectionObserver viewState={setViewState} />
                 </>
               ) : (
                 <TextBase text={'비공개 계정입니다.'} />
