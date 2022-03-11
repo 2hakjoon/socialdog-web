@@ -33,7 +33,7 @@ export enum SubscribeRequestState {
   REQUESTED = "REQUESTED",
 }
 
-export interface CancelSubscribeInputDto {
+export interface CancelSubscribingInputDto {
   to: string;
 }
 

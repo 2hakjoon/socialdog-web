@@ -27,7 +27,7 @@ import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gq
 import { QGetMyPosts, QGetMyPostsVariables } from '__generated__/QGetMyPosts';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
-import { MCancelSubscribe, MCancelSubscribeVariables } from '__generated__/MCancelSubscribe';
+import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -53,7 +53,7 @@ function ProfileScreen() {
   }
   const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
   const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
-  const [cancelSubscribe] = useMutation<MCancelSubscribe, MCancelSubscribeVariables>(CANCEL_SUBSCRIBE);
+  const [cancelSubscribing] = useMutation<McancelSubscribing, McancelSubscribingVariables>(CANCEL_SUBSCRIBE);
   const { data: authUserData } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
@@ -107,8 +107,8 @@ function ProfileScreen() {
     console.log(res);
   };
 
-  const onCancelSubscribe = async (to: string) => {
-    const res = await cancelSubscribe({ variables: { args: { to } } });
+  const oncancelSubscribing = async (to: string) => {
+    const res = await cancelSubscribing({ variables: { args: { to } } });
     console.log(res);
   };
 
@@ -186,7 +186,7 @@ function ProfileScreen() {
                   {!isMyProfile() && (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                       {isSubscribeConfrimed() && (
-                        <button type="button" onClick={() => onCancelSubscribe(user.id)}>
+                        <button type="button" onClick={() => oncancelSubscribing(user.id)}>
                           구독취소
                         </button>
                       )}
