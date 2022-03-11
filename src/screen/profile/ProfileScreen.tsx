@@ -122,11 +122,7 @@ function ProfileScreen() {
     setModalType(null);
   };
 
-  const blockUser = (toUser: string, blockState: boolean) => {
-    changeBlockState({ variables: { args: { to: toUser, block: blockState } } });
-  };
-
-  const unBlockUser = (toUser: string, blockState: boolean) => {
+  const changeUserBlock = (toUser: string, blockState: boolean) => {
     changeBlockState({ variables: { args: { to: toUser, block: blockState } } });
   };
 
@@ -187,11 +183,11 @@ function ProfileScreen() {
                         </button>
                       )}
                       {isBlokingPerson() ? (
-                        <button type="button" onClick={() => unBlockUser(user.id, false)}>
+                        <button type="button" onClick={() => changeUserBlock(user.id, false)}>
                           차단해제
                         </button>
                       ) : (
-                        <button type="button" onClick={() => unBlockUser(user.id, true)}>
+                        <button type="button" onClick={() => changeUserBlock(user.id, true)}>
                           차단
                         </button>
                       )}
