@@ -68,7 +68,7 @@ function ProfileScreen() {
   );
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
-  // console.log('user', user, userProfileState);
+  console.log('user', user, userProfileState);
 
   const {
     data: postsData,

@@ -5,6 +5,8 @@ import dayjs from 'dayjs';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
 import { KAKAO_LOGIN } from 'apllo-gqls/auth';
+import ImageBase from 'screen/common-comp/image/ImageBase';
+import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
 
 interface IkakaoLoginSuccess {
   access_token: string;
@@ -53,6 +55,7 @@ function LoginScreen() {
   return (
     <>
       <div>Login </div>
+      <ImageBase url={KakaoImg} />
       <button type="button" onClick={loginWithKakao}>
         카카오 로그인
       </button>
