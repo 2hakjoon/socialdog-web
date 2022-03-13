@@ -13,7 +13,7 @@ const Wrapper = styled.div<IWrapperRow>`
 
 interface IWrapperRow {
   children: React.ReactNode;
-  jc?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
+  jc?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around' | 'center';
   p?: string;
   w?: string;
   h?: string;

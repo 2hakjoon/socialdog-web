@@ -7,6 +7,18 @@ import { loginState } from 'apollo-setup';
 import { KAKAO_LOGIN } from 'apllo-gqls/auth';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
+import styled from 'styled-components';
+import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import logoWhite from 'assets/svg/social-dog-white.svg';
+
+const Wrapper = styled.div`
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: ${({ theme }) => theme.color.blue.primaryBlue};
+`;
 
 interface IkakaoLoginSuccess {
   access_token: string;
@@ -53,13 +65,14 @@ function LoginScreen() {
   };
 
   return (
-    <>
-      <div>Login </div>
-      <ImageBase url={KakaoImg} />
-      <button type="button" onClick={loginWithKakao}>
-        카카오 로그인
-      </button>
-    </>
+    <Wrapper>
+      <WrapperRow p={'30px'} jc="center">
+        <ImageBase url={logoWhite} />
+      </WrapperRow>
+      <WrapperRow p="32px" onClick={loginWithKakao}>
+        <ImageBase url={KakaoImg} />
+      </WrapperRow>
+    </Wrapper>
   );
 }
 
