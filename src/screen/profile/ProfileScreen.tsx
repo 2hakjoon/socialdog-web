@@ -14,7 +14,7 @@ import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
@@ -46,6 +46,8 @@ type Params = {
 const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
+  const { state } = useLocation();
+  // console.log(state);
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
   const [viewState, setViewState] = useState(false);
