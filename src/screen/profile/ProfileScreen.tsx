@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
-import { GET_MYPOSTS, GET_USER_POSTS } from 'apllo-gqls/posts';
+import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -19,8 +19,12 @@ import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
-import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
-import { QGetUserPosts, QGetUserPostsVariables, QGetUserPosts_getUserPosts_data } from '__generated__/QGetUserPosts';
+import {
+  QGetUserProfile,
+  QGetUserProfileVariables,
+  QGetUserProfile_getUserProfile_data,
+} from '__generated__/QGetUserProfile';
+import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
@@ -28,7 +32,6 @@ import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
-import { useInView } from 'react-intersection-observer';
 import IntersectionObserver from 'screen/common-comp/observer/IntersectionObserver';
 
 const PostsGrid = styled.div`
@@ -43,10 +46,17 @@ type Params = {
   username: string;
 };
 
+interface LocationState {
+  from: {
+    pathname: string;
+  };
+}
+
 const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const location = useLocation();
+  const navigateProps = location.state as QGetUserProfile_getUserProfile_data;
   // console.log(state);
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
@@ -68,7 +78,7 @@ function ProfileScreen() {
       variables: { args: { username } },
     },
   );
-  const user = userData?.getUserProfile.data;
+  const user = userData?.getUserProfile.data || navigateProps;
   const userProfileState = userData?.getUserProfile;
   console.log('user', user, userProfileState);
 
@@ -191,11 +201,11 @@ function ProfileScreen() {
                   <WrapperRow>
                     <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
                       <TextBase text={'구독중'} />
-                      <TextBase text={user.subscribings} />
+                      <TextBase text={user.subscribings || 0} />
                     </WrapperColumn>
                     <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
                       <TextBase text={'삼촌-이모들'} />
-                      <TextBase text={user.subscribers} />
+                      <TextBase text={user.subscribers || 0} />
                     </WrapperColumn>
                   </WrapperRow>
                   {isMyProfile() ? (
