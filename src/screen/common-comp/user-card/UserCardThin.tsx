@@ -30,7 +30,7 @@ function UserCardThin({ id, username, photo, dogname, onClick = () => {} }: IUse
     <Wrapper
       onClick={() => {
         onClick();
-        navigate(`/${username}`, { state: { id, username, photo, dogname } });
+        navigate(`/${username}`);
       }}
     >
       <ProfilePhoto url={photo} size="48px" />

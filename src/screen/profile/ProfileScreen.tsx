@@ -55,9 +55,6 @@ interface LocationState {
 const pageItemsCount = 6;
 function ProfileScreen() {
   const navigate = useNavigate();
-  const location = useLocation();
-  const navigateProps = location.state as QGetUserProfile_getUserProfile_data;
-  console.log(navigateProps);
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
   const [viewState, setViewState] = useState(false);
@@ -78,7 +75,7 @@ function ProfileScreen() {
       variables: { args: { username } },
     },
   );
-  const user = userData?.getUserProfile.data || navigateProps;
+  const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
   console.log('user', user, userProfileState);
 
