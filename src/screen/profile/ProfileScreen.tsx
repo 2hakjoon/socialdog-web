@@ -14,16 +14,12 @@ import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
-import {
-  QGetUserProfile,
-  QGetUserProfileVariables,
-  QGetUserProfile_getUserProfile_data,
-} from '__generated__/QGetUserProfile';
+import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
@@ -32,7 +28,7 @@ import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
-import IntersectionObserver from 'screen/common-comp/observer/IntersectionObserver';
+import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -52,12 +48,11 @@ interface LocationState {
   };
 }
 
-const pageItemsCount = 6;
+const pageItemsCount = 12;
 function ProfileScreen() {
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
-  const [viewState, setViewState] = useState(false);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -116,19 +111,20 @@ function ProfileScreen() {
     setPostsLimit(pageItemsCount);
   }, [username]);
 
-  // 무한스크롤
-  useEffect(() => {
-    // console.log('scroll end', viewState, 'loading', postsLoading);
-    if (viewState && !postsLoading && !postsError) {
+  //무한스크롤 handling함수
+  const fetchNextPage = () => {
+    if (!postsError) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
-  }, [viewState, postsLoading]);
+  };
 
+  //구독 요청 함수
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
     // console.log(res);
   };
 
+  //유저 차단상태 변경
   const changeUserBlock = async (toUsername: string, blockState: boolean) => {
     const res = await changeBlockState({
       variables: { args: { username: toUsername, block: blockState } },
@@ -253,7 +249,7 @@ function ProfileScreen() {
           ) : (
             <>
               {isProfileOpened() ? (
-                <>
+                <WrapperInfinityScroll fetchHandler={fetchNextPage} enableFetch={!postsLoading}>
                   <PostsGrid>
                     {posts?.map((post) => (
                       <WrapperSquare key={post.id}>
@@ -273,8 +269,7 @@ function ProfileScreen() {
                           </WrapperSquare>
                         ))}
                   </PostsGrid>
-                  <IntersectionObserver viewState={setViewState} />
-                </>
+                </WrapperInfinityScroll>
               ) : (
                 <TextBase text={'비공개 계정입니다.'} />
               )}

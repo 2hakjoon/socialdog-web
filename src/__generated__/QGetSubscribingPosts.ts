@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { CorePagination } from "./globalTypes";
+
 // ====================================================
 // GraphQL query operation: QGetSubscribingPosts
 // ====================================================
@@ -34,4 +36,8 @@ export interface QGetSubscribingPosts_getSubscribingPosts {
 
 export interface QGetSubscribingPosts {
   getSubscribingPosts: QGetSubscribingPosts_getSubscribingPosts;
+}
+
+export interface QGetSubscribingPostsVariables {
+  page: CorePagination;
 }

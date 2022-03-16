@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_SUBSCRIBING_POSTS = gql`
-  query QGetSubscribingPosts {
-    getSubscribingPosts {
+  query QGetSubscribingPosts($page: CorePagination!) {
+    getSubscribingPosts(page: $page) {
       ok
       error
       data {
