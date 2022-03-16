@@ -77,7 +77,7 @@ function ProfileScreen() {
   );
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
-  console.log('user', user, userProfileState);
+  // console.log('user', user, userProfileState);
 
   const {
     data: postsData,
@@ -112,7 +112,7 @@ function ProfileScreen() {
 
   // 무한스크롤
   useEffect(() => {
-    console.log('scroll end', viewState, 'loading', postsLoading);
+    // console.log('scroll end', viewState, 'loading', postsLoading);
     if (viewState && !postsLoading) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
