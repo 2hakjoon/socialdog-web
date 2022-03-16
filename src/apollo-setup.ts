@@ -2,6 +2,7 @@ import { ApolloClient, ApolloLink, concat, from, HttpLink, InMemoryCache, makeVa
 import { getAccessToken } from "utils/local-storage";
 import { onError } from "@apollo/client/link/error";
 import { QGetUserPosts_getUserPosts } from "__generated__/QGetUserPosts";
+import { QGetSubscribingPosts_getSubscribingPosts } from "__generated__/QGetSubscribingPosts";
 
 
 
@@ -58,6 +59,22 @@ export const cache = new InMemoryCache({
             return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
           },
         },
+        getSubscribingPosts:{
+          // @ts-ignore
+          read(existing, {args:{ page:{limit, offset}}}) {
+            if(!existing){
+              return undefined
+            }
+            console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
+            
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
+          },
+          keyArgs: [],
+          merge(existing = {data:[]} , incomming:QGetSubscribingPosts_getSubscribingPosts) {
+            console.log("merge", existing, incomming)
+            return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
+          },
+        }
       }
     }
   }

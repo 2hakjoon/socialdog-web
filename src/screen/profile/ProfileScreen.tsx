@@ -48,8 +48,8 @@ interface LocationState {
   };
 }
 
-const pageItemsCount = 12;
 function ProfileScreen() {
+  const pageItemsCount = 12;
   const navigate = useNavigate();
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
@@ -111,20 +111,20 @@ function ProfileScreen() {
     setPostsLimit(pageItemsCount);
   }, [username]);
 
-  //무한스크롤 handling함수
+  // 무한스크롤 handling함수
   const fetchNextPage = () => {
     if (!postsError) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
   };
 
-  //구독 요청 함수
+  // 구독 요청 함수
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
     // console.log(res);
   };
 
-  //유저 차단상태 변경
+  // 유저 차단상태 변경
   const changeUserBlock = async (toUsername: string, blockState: boolean) => {
     const res = await changeBlockState({
       variables: { args: { username: toUsername, block: blockState } },

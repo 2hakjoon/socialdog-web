@@ -1,5 +1,5 @@
 import { gql, useQuery } from '@apollo/client';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import styled from 'styled-components';
@@ -7,33 +7,52 @@ import PostCard from './components/PostCard';
 import { QGetSubscribingPosts } from '../../__generated__/QGetSubscribingPosts';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
+import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 
-const SectionWrapper = styled.div`
-  @media (max-width: 999px) {
-    > :nth-child(1) {
-      width: 100%;
-    }
-    > :nth-child(2) {
-      display: none;
-    }
-  }
-  @media (min-width: 1000px) {
-    > :nth-child(1) {
-      width: 70%;
-    }
-    > :nth-child(2) {
-      width: 30%;
-    }
-  }
-  display: flex;
-`;
+const SectionWrapper = styled.div``;
 
 function HomeScreen() {
-  const { data: postsData, loading: postsLoading } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
+  const pageItemCount = 2;
+  const [pageLimit, setPageLimit] = useState(pageItemCount);
+  const {
+    data: postsData,
+    loading: postsLoading,
+    error: postsError,
+    fetchMore,
+  } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
+    variables: {
+      page: {
+        offset: 0,
+        limit: pageLimit,
+      },
+    },
     onError: (e) => console.log(e),
-    fetchPolicy: 'cache-first',
   });
-  console.log(postsData, postsLoading);
+  const posts = postsData?.getSubscribingPosts.data;
+  console.log(posts, postsLoading);
+
+  useEffect(() => {
+    console.log(posts?.length, pageLimit);
+    if (posts && pageLimit > pageItemCount) {
+      if (posts.length + pageLimit === pageItemCount + pageLimit) {
+        fetchMore({
+          variables: {
+            page: {
+              offset: posts.length,
+              limit: pageItemCount,
+            },
+          },
+        });
+      }
+    }
+  }, [posts]);
+
+  const nextPageHandler = () => {
+    if (!postsError) {
+      setPageLimit((prev) => prev + pageItemCount);
+    }
+  };
+
   return (
     <>
       {postsLoading ? (
@@ -43,12 +62,14 @@ function HomeScreen() {
           <MainHeader />
           <BaseWrapper>
             <SectionWrapper>
-              <WrapperColumn p="0 8px">
-                {postsData?.getSubscribingPosts.data.map((post, idx) => (
-                  <PostCard key={post.id} {...post} />
-                ))}
-              </WrapperColumn>
-              <div>옆에 올 컨텐츠</div>
+              <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
+                <WrapperColumn p="0 8px">
+                  {posts?.map((post, idx) => (
+                    <PostCard key={post.id} {...post} />
+                  ))}
+                </WrapperColumn>
+              </WrapperInfinityScroll>
+              {/* <div>옆에 올 컨텐츠</div> */}
             </SectionWrapper>
           </BaseWrapper>
         </>
