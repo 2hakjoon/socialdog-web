@@ -4,11 +4,13 @@ import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import { useState } from 'react';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
-import { useQuery } from '@apollo/client';
+import { useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import { GET_BLOCK_REJECTED } from 'apllo-gqls/subscribes';
+import { GET_BLOCK_REJECTED, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import { QgetMyBlockAndReject } from '__generated__/QgetMyBlockAndReject';
+import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
+import { SubscribeRequestState } from '__generated__/globalTypes';
 
 interface ITabBox {
   selected: boolean;
@@ -31,6 +33,14 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
   const { data: blockAndRejectedData } = useQuery<QgetMyBlockAndReject>(GET_BLOCK_REJECTED);
   const blockingUsers = blockAndRejectedData?.getMyBlockingUsers.data;
   const rejectedUsers = blockAndRejectedData?.getMyRejectRequests.data;
+  const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
+
+  const onConfirmRequest = async (fromId: string) => {
+    const res = await responseSubscribe({
+      variables: { args: { from: fromId, subscribeRequest: SubscribeRequestState.CONFIRMED } },
+    });
+    console.log(res);
+  };
 
   return (
     <ModalRound closeModal={closeModal} title="거절 및 차단">
@@ -47,7 +57,12 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
           {selectedTab === 0 && (
             <>
               {rejectedUsers?.map((rejectedUser) => (
-                <UserCardThin onClick={closeModal} {...rejectedUser} />
+                <WrapperRow w="100%">
+                  <UserCardThin onClick={closeModal} {...rejectedUser} />
+                  <button type="button" onClick={() => onConfirmRequest(rejectedUser.id)}>
+                    수락
+                  </button>
+                </WrapperRow>
               ))}
             </>
           )}
