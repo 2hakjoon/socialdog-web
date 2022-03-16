@@ -16,20 +16,21 @@ const Wrapper = styled.div`
 `;
 
 interface IUserCardThin {
+  id: string | null;
   username: string | null;
   photo: string | null;
   dogname: string | null;
   onClick?: () => void;
 }
 
-function UserCardThin({ username, photo, dogname, onClick = () => {} }: IUserCardThin) {
+function UserCardThin({ id, username, photo, dogname, onClick = () => {} }: IUserCardThin) {
   const navigate = useNavigate();
 
   return (
     <Wrapper
       onClick={() => {
         onClick();
-        navigate(`/${username}`, { state: { username, photo, dogname } });
+        navigate(`/${username}`, { state: { id, username, photo, dogname } });
       }}
     >
       <ProfilePhoto url={photo} size="48px" />

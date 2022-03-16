@@ -67,12 +67,7 @@ function SearchScreen() {
         </FormWrapper>
         {findResults?.map((findResult) => (
           <WrapperRow>
-            <UserCardThin
-              key={findResult.id}
-              photo={findResult.photo}
-              username={findResult.username}
-              dogname={findResult.dogname}
-            />
+            <UserCardThin key={findResult.id} {...findResult} />
           </WrapperRow>
         ))}
       </BaseWrapper>

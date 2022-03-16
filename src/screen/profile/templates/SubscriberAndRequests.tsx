@@ -56,12 +56,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribers?.map((subscriber) => (
                 <WrapperRow w="100%">
-                  <UserCardThin
-                    onClick={closeModal}
-                    username={subscriber.username}
-                    dogname={subscriber.dogname}
-                    photo={subscriber.photo}
-                  />
+                  <UserCardThin onClick={closeModal} {...subscriber} />
                   <button
                     type="button"
                     onClick={() => onResponseSubscribe(subscriber.id, SubscribeRequestState.REQUESTED)}
@@ -76,12 +71,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribeRequests?.map((user) => (
                 <WrapperRow>
-                  <UserCardThin
-                    onClick={closeModal}
-                    username={user.username}
-                    dogname={user.dogname}
-                    photo={user.photo}
-                  />
+                  <UserCardThin onClick={closeModal} {...user} />
                   <button type="button" onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}>
                     수락하기
                   </button>

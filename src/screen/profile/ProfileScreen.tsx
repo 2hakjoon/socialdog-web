@@ -57,7 +57,7 @@ function ProfileScreen() {
   const navigate = useNavigate();
   const location = useLocation();
   const navigateProps = location.state as QGetUserProfile_getUserProfile_data;
-  // console.log(state);
+  console.log(navigateProps);
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
   const [viewState, setViewState] = useState(false);

@@ -47,12 +47,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
           {selectedTab === 0 && (
             <>
               {rejectedUsers?.map((rejectedUser) => (
-                <UserCardThin
-                  onClick={closeModal}
-                  username={rejectedUser.username}
-                  dogname={rejectedUser.dogname}
-                  photo={rejectedUser.photo}
-                />
+                <UserCardThin onClick={closeModal} {...rejectedUser} />
               ))}
             </>
           )}
@@ -60,12 +55,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
             <>
               {blockingUsers?.map((blockingUser) => (
                 <>
-                  <UserCardThin
-                    onClick={closeModal}
-                    username={blockingUser.username}
-                    dogname={blockingUser.dogname}
-                    photo={blockingUser.photo}
-                  />
+                  <UserCardThin onClick={closeModal} {...blockingUser} />
                 </>
               ))}
             </>
