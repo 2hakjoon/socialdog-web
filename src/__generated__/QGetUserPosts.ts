@@ -3,6 +3,8 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
+import { CorePagination } from "./globalTypes";
+
 // ====================================================
 // GraphQL query operation: QGetUserPosts
 // ====================================================
@@ -25,7 +27,6 @@ export interface QGetUserPosts {
 }
 
 export interface QGetUserPostsVariables {
-  offset: number;
-  limit: number;
   username: string;
+  page: CorePagination;
 }

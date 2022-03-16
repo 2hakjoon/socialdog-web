@@ -42,6 +42,11 @@ export interface ChangeBlockStateInputDto {
   username?: string | null;
 }
 
+export interface CorePagination {
+  offset: number;
+  limit: number;
+}
+
 export interface CreatePostInputDto {
   address: string;
   placeId: string;

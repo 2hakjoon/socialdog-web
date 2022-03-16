@@ -82,9 +82,10 @@ function ProfileScreen() {
   const {
     data: postsData,
     loading: postsLoading,
+    error: postsError,
     fetchMore: fetchPostsMore,
   } = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
-    variables: { username, offset: 0, limit: postsLimit },
+    variables: { username, page: { offset: 0, limit: postsLimit } },
     notifyOnNetworkStatusChange: true,
   });
 
@@ -99,7 +100,12 @@ function ProfileScreen() {
     // console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
     if (posts && postsLimit > pageItemsCount) {
       if (posts.length + pageItemsCount === postsLimit) {
-        fetchPostsMore({ variables: { username, offset: posts?.length || 0, limit: pageItemsCount } });
+        fetchPostsMore({
+          variables: {
+            username,
+            page: { offset: posts?.length || 0, limit: pageItemsCount },
+          },
+        });
         console.log('fetched');
       }
     }
@@ -113,7 +119,7 @@ function ProfileScreen() {
   // 무한스크롤
   useEffect(() => {
     // console.log('scroll end', viewState, 'loading', postsLoading);
-    if (viewState && !postsLoading) {
+    if (viewState && !postsLoading && !postsError) {
       setPostsLimit((prev) => prev + pageItemsCount);
     }
   }, [viewState, postsLoading]);
