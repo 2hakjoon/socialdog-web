@@ -32,9 +32,9 @@ function HomeScreen() {
   console.log(posts, postsLoading);
 
   useEffect(() => {
-    console.log(posts?.length, pageLimit);
+    // console.log(posts?.length, pageLimit);
     if (posts && pageLimit > pageItemCount) {
-      if (posts.length + pageLimit === pageItemCount + pageLimit) {
+      if (posts.length + pageItemCount === pageLimit) {
         fetchMore({
           variables: {
             page: {
