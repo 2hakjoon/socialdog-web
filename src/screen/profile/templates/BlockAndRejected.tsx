@@ -8,7 +8,7 @@ import { useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
 import { GET_BLOCK_REJECTED, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { QgetMyBlockAndReject } from '__generated__/QgetMyBlockAndReject';
+import { QGetMyBlockAndReject } from '__generated__/QGetMyBlockAndReject';
 import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
 
@@ -30,7 +30,7 @@ interface IBlockAndRejected {
 
 function BlockAndRejected({ closeModal }: IBlockAndRejected) {
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const { data: blockAndRejectedData } = useQuery<QgetMyBlockAndReject>(GET_BLOCK_REJECTED);
+  const { data: blockAndRejectedData } = useQuery<QGetMyBlockAndReject>(GET_BLOCK_REJECTED);
   const blockingUsers = blockAndRejectedData?.getMyBlockingUsers.data;
   const rejectedUsers = blockAndRejectedData?.getMyRejectRequests.data;
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);

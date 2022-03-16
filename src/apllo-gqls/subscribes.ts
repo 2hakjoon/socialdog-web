@@ -81,7 +81,7 @@ export const CHANGE_BLOCKSTATE = gql`
 `
 
 export const GET_BLOCK_REJECTED = gql`
-query QgetMyBlockAndReject{
+query QGetMyBlockAndReject{
   getMyRejectRequests {
     ok
     data {

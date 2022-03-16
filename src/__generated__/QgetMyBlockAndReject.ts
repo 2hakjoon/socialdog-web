@@ -4,10 +4,10 @@
 // This file was automatically generated and should not be edited.
 
 // ====================================================
-// GraphQL query operation: QgetMyBlockAndReject
+// GraphQL query operation: QGetMyBlockAndReject
 // ====================================================
 
-export interface QgetMyBlockAndReject_getMyRejectRequests_data {
+export interface QGetMyBlockAndReject_getMyRejectRequests_data {
   __typename: "UserProfile";
   id: string;
   username: string | null;
@@ -15,14 +15,14 @@ export interface QgetMyBlockAndReject_getMyRejectRequests_data {
   dogname: string | null;
 }
 
-export interface QgetMyBlockAndReject_getMyRejectRequests {
+export interface QGetMyBlockAndReject_getMyRejectRequests {
   __typename: "GetMyRejectRequestsOutputDto";
   ok: boolean;
-  data: QgetMyBlockAndReject_getMyRejectRequests_data[];
+  data: QGetMyBlockAndReject_getMyRejectRequests_data[];
   error: string | null;
 }
 
-export interface QgetMyBlockAndReject_getMyBlockingUsers_data {
+export interface QGetMyBlockAndReject_getMyBlockingUsers_data {
   __typename: "UserProfile";
   id: string;
   username: string | null;
@@ -30,14 +30,14 @@ export interface QgetMyBlockAndReject_getMyBlockingUsers_data {
   dogname: string | null;
 }
 
-export interface QgetMyBlockAndReject_getMyBlockingUsers {
+export interface QGetMyBlockAndReject_getMyBlockingUsers {
   __typename: "GetBlockingUsersOutputDto";
   ok: boolean;
   error: string | null;
-  data: QgetMyBlockAndReject_getMyBlockingUsers_data[];
+  data: QGetMyBlockAndReject_getMyBlockingUsers_data[];
 }
 
-export interface QgetMyBlockAndReject {
-  getMyRejectRequests: QgetMyBlockAndReject_getMyRejectRequests;
-  getMyBlockingUsers: QgetMyBlockAndReject_getMyBlockingUsers;
+export interface QGetMyBlockAndReject {
+  getMyRejectRequests: QGetMyBlockAndReject_getMyRejectRequests;
+  getMyBlockingUsers: QGetMyBlockAndReject_getMyBlockingUsers;
 }
