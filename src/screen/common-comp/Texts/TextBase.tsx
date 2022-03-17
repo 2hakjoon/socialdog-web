@@ -1,3 +1,4 @@
+import { theme } from 'assets/styles/theme';
 import React from 'react';
 import styled from 'styled-components';
 
@@ -13,17 +14,19 @@ const Text = styled.span<IText>`
   padding: ${(p) => p.p};
   font-family: ${(p) => p.fontFamily}, sans-serif;
   font-weight: ${(p) => p.fontWeight};
+  color: ${(p) => p.color};
 `;
 
 interface ITextBase {
   text?: string | null | number;
   m?: string;
   p?: string;
+  color?: string;
   fontFamily?: 'noto' | 'nanum';
   fontWeight?: number;
 }
 
-function TextBase({ text, p, m, fontFamily, fontWeight }: ITextBase) {
+function TextBase({ text, p, m, fontFamily, fontWeight, color }: ITextBase) {
   const setFontName = (font: string | undefined) => {
     switch (font) {
       case 'nanum':
@@ -34,7 +37,7 @@ function TextBase({ text, p, m, fontFamily, fontWeight }: ITextBase) {
   };
 
   return (
-    <Text m={m} p={p} fontFamily={setFontName(fontFamily)} fontWeight={fontWeight}>
+    <Text m={m} p={p} color={color} fontFamily={setFontName(fontFamily)} fontWeight={fontWeight}>
       {text}
     </Text>
   );
@@ -44,6 +47,7 @@ TextBase.defaultProps = {
   text: '',
   p: '0',
   m: '0',
+  color: theme.color.achromatic.black,
   fontFamily: 'noto',
   fontWeight: 400,
 };

@@ -1,9 +1,14 @@
+import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { theme } from 'assets/styles/theme';
 import React, { Dispatch, SetStateAction } from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
+import { useState } from 'react';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -26,20 +31,83 @@ const PlaceSearchContainer = styled.div`
   }
 `;
 
-interface IAddressSelector {
-  address: IPlaceTerms | undefined | null;
-  setAddress: Dispatch<SetStateAction<IPlaceTerms | null | undefined>>;
+const TermWrapper = styled.div`
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  background-color: white;
+`;
+
+const TermBlock = styled.div<ITermBlock>`
+  padding: 8px 10px;
+  margin: 4px;
+  border-radius: 20px;
+  background-color: ${(p) => p.backgroundColor};
+`;
+
+interface ITermBlock {
+  backgroundColor: string;
 }
 
-function AddressSelector({ address, setAddress }: IAddressSelector) {
+interface IAddressSelector {
+  addressTerms: IPlaceTerms | undefined | null;
+  setAddressTerms: Dispatch<SetStateAction<IPlaceTerms | null | undefined>>;
+}
+
+function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
+  const [searchEnable, setSearchEnable] = useState(false);
+
   const handleResultToTerm = (data: IPlaceSerchResult) => {
     console.log(data.value.terms);
-    setAddress(data.value.terms);
+    setAddressTerms(data.value.terms.reverse());
   };
+
+  const removeLastTerm = () => {
+    if (!addressTerms) {
+      return;
+    }
+    setAddressTerms([...addressTerms.slice(0, -1)]);
+  };
+
+  const isLastAddressBlock = (idx: number) => {
+    if (addressTerms) {
+      return idx === addressTerms.length - 1;
+    }
+  };
+
   return (
-    <WrapperRow>
-      {address ? (
-        <>{'asdfsadf'}</>
+    <WrapperRow bc={'white'} w="100%" p="0 8px">
+      {addressTerms && !searchEnable ? (
+        <WrapperRow bc={'white'} w="100%" jc="space-between">
+          <TermWrapper>
+            {addressTerms.map((term, idx) => (
+              <TermBlock
+                key={term.offset}
+                backgroundColor={
+                  isLastAddressBlock(idx) ? theme.color.blue.primaryBlue : theme.color.achromatic.lightGray
+                }
+              >
+                <WrapperRow onClick={isLastAddressBlock(idx) ? removeLastTerm : () => {}}>
+                  <TextBase
+                    text={term.value}
+                    color={isLastAddressBlock(idx) ? theme.color.achromatic.primaryWhite : theme.color.achromatic.black}
+                  />
+                  {isLastAddressBlock(idx) && (
+                    <FontAwesomeIcon
+                      icon={faXmark}
+                      color={theme.color.achromatic.primaryWhite}
+                      style={{ margin: '0px 0px 0px 6px' }}
+                    />
+                  )}
+                </WrapperRow>
+              </TermBlock>
+            ))}
+          </TermWrapper>
+          <WrapperRow p="10px" h="100%">
+            <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" onClick={() => setSearchEnable(true)} />
+          </WrapperRow>
+        </WrapperRow>
       ) : (
         <>
           <PlaceSearchContainer>
@@ -54,11 +122,13 @@ function AddressSelector({ address, setAddress }: IAddressSelector) {
                 },
               }}
               selectProps={{
-                address,
+                addressTerms,
                 onChange: handleResultToTerm,
               }}
             />
-            <button type="button">취소</button>
+            <button type="button" onClick={() => setSearchEnable(false)}>
+              취소
+            </button>
           </PlaceSearchContainer>
         </>
       )}

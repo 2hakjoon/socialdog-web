@@ -22,17 +22,17 @@ const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';
 
 const mockupAddress = [
-  { offset: 23, value: '눈보뛰' },
-  { offset: 19, value: '대산로' },
-  { offset: 15, value: '삼도동' },
-  { offset: 11, value: '광산구' },
-  { offset: 5, value: '광주광역시' },
   { offset: 0, value: '대한민국' },
+  { offset: 5, value: '광주광역시' },
+  { offset: 11, value: '광산구' },
+  { offset: 15, value: '삼도동' },
+  { offset: 19, value: '대산로' },
+  { offset: 23, value: '눈보뛰' },
 ];
 
 function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(SUBSCRIBING);
-  const [searchAddress, setSearchAddress] = useState<IPlaceTerms | null | undefined>(mockupAddress);
+  const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>();
   const pageItemCount = 6;
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {
@@ -70,8 +70,8 @@ function HomeScreen() {
   }, [posts]);
 
   useEffect(() => {
-    console.log(searchAddress);
-  }, [searchAddress]);
+    console.log(searchAddressTerms);
+  }, [searchAddressTerms]);
 
   const nextPageHandler = () => {
     if (!postsError) {
@@ -104,7 +104,9 @@ function HomeScreen() {
             onClick={() => setSelectedTab(SUBSCRIBING)}
           />
         </WrapperRow>
-        {selectedTab === ADDRESS && <AddressSelector address={searchAddress} setAddress={setSearchAddress} />}
+        {selectedTab === ADDRESS && (
+          <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
+        )}
         <SectionWrapper>
           <WrapperColumn p="0 8px">
             <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
