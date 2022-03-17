@@ -15,6 +15,7 @@ import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons
 import { theme } from 'assets/styles/theme';
 import AddressSelector from './components/AddressSelector';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
+import SubscribingsTemplate from './templates/SubscribingsTemplate';
 
 const SectionWrapper = styled.div``;
 
@@ -33,51 +34,10 @@ const mockupAddress = [
 function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(SUBSCRIBING);
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>();
-  const pageItemCount = 6;
-  const [pageLimit, setPageLimit] = useState(pageItemCount);
-  const {
-    data: postsData,
-    loading: postsLoading,
-    error: postsError,
-    fetchMore,
-  } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
-    variables: {
-      page: {
-        offset: 0,
-        limit: pageLimit,
-      },
-    },
-    notifyOnNetworkStatusChange: true,
-    onError: (e) => console.log(e),
-  });
-  const posts = postsData?.getSubscribingPosts.data;
-  console.log(posts, postsLoading);
-
-  useEffect(() => {
-    // console.log(posts?.length, pageLimit);
-    if (posts && pageLimit > pageItemCount) {
-      if (posts.length + pageItemCount === pageLimit) {
-        fetchMore({
-          variables: {
-            page: {
-              offset: posts.length,
-              limit: pageItemCount,
-            },
-          },
-        });
-      }
-    }
-  }, [posts]);
 
   useEffect(() => {
     console.log(searchAddressTerms);
   }, [searchAddressTerms]);
-
-  const nextPageHandler = () => {
-    if (!postsError) {
-      setPageLimit((prev) => prev + pageItemCount);
-    }
-  };
 
   const tabIconColor = (tabName: string) => {
     if (selectedTab === tabName) {
@@ -107,20 +67,7 @@ function HomeScreen() {
         {selectedTab === ADDRESS && (
           <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
         )}
-        <SectionWrapper>
-          <WrapperColumn p="0 8px">
-            <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
-              {posts?.map((post, idx) => (
-                <PostCard key={post.id} {...post} />
-              ))}
-              {postsLoading &&
-                Array(pageItemCount)
-                  .fill('')
-                  .map(() => <PostCardLoading />)}
-            </WrapperInfinityScroll>
-          </WrapperColumn>
-          {/* <div>옆에 올 컨텐츠</div> */}
-        </SectionWrapper>
+        {selectedTab === SUBSCRIBING && <SubscribingsTemplate />}
       </BaseWrapper>
     </>
   );
