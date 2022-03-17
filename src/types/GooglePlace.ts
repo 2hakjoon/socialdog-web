@@ -3,9 +3,9 @@ export interface IPlaceSerchResult {
   value: {
     place_id: string;
     description: string;
-  };
-  terms: {
-    offset: number;
-    value: string;
+    terms: {
+      offset: number;
+      value: string;
+    }[]
   };
 }

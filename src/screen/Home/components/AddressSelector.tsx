@@ -27,15 +27,15 @@ const PlaceSearchContainer = styled.div`
 `;
 
 interface IAddressSelector {
-  address: object | undefined | null;
+  address: IPlaceSerchResult | undefined | null;
   setAddress: Dispatch<SetStateAction<IPlaceSerchResult | null | undefined>>;
 }
 
 function AddressSelector({ address, setAddress }: IAddressSelector) {
   return (
     <WrapperRow>
-      {false ? (
-        <>{address}</>
+      {address?.value.terms ? (
+        <>{address.label}</>
       ) : (
         <>
           <PlaceSearchContainer>
