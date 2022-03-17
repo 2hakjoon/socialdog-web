@@ -14,32 +14,25 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { theme } from 'assets/styles/theme';
 import AddressSelector from './components/AddressSelector';
-import { IPlaceSerchResult } from 'types/GooglePlace';
+import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
 
 const SectionWrapper = styled.div``;
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';
 
-const mockupAddress = {
-  label: '대한민국 광주광역시 광산구 삼도동 대산로 눈보뛰',
-  value: {
-    place_id: 'ChIJ17OEnmwqcjUR4njiwRk2If8',
-    description: '대한민국 광주광역시 광산구 삼도동 대산로 눈보뛰',
-    terms: [
-      { offset: 23, value: '눈보뛰' },
-      { offset: 19, value: '대산로' },
-      { offset: 15, value: '삼도동' },
-      { offset: 11, value: '광산구' },
-      { offset: 5, value: '광주광역시' },
-      { offset: 0, value: '대한민국' },
-    ],
-  },
-};
+const mockupAddress = [
+  { offset: 23, value: '눈보뛰' },
+  { offset: 19, value: '대산로' },
+  { offset: 15, value: '삼도동' },
+  { offset: 11, value: '광산구' },
+  { offset: 5, value: '광주광역시' },
+  { offset: 0, value: '대한민국' },
+];
 
 function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(SUBSCRIBING);
-  const [searchAddress, setSearchAddress] = useState<IPlaceSerchResult | null | undefined>(mockupAddress);
+  const [searchAddress, setSearchAddress] = useState<IPlaceTerms | null | undefined>(mockupAddress);
   const pageItemCount = 6;
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {

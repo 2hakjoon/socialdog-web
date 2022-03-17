@@ -3,7 +3,7 @@ import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
-import { IPlaceSerchResult } from 'types/GooglePlace';
+import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -27,15 +27,19 @@ const PlaceSearchContainer = styled.div`
 `;
 
 interface IAddressSelector {
-  address: IPlaceSerchResult | undefined | null;
-  setAddress: Dispatch<SetStateAction<IPlaceSerchResult | null | undefined>>;
+  address: IPlaceTerms | undefined | null;
+  setAddress: Dispatch<SetStateAction<IPlaceTerms | null | undefined>>;
 }
 
 function AddressSelector({ address, setAddress }: IAddressSelector) {
+  const handleResultToTerm = (data: IPlaceSerchResult) => {
+    console.log(data.value.terms);
+    setAddress(data.value.terms);
+  };
   return (
     <WrapperRow>
-      {address?.value.terms ? (
-        <>{address.label}</>
+      {address ? (
+        <>{'asdfsadf'}</>
       ) : (
         <>
           <PlaceSearchContainer>
@@ -51,7 +55,7 @@ function AddressSelector({ address, setAddress }: IAddressSelector) {
               }}
               selectProps={{
                 address,
-                onChange: setAddress,
+                onChange: handleResultToTerm,
               }}
             />
             <button type="button">취소</button>

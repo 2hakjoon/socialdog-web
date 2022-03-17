@@ -9,3 +9,9 @@ export interface IPlaceSerchResult {
     }[]
   };
 }
+
+export interface IPlaceTerm{
+  offset: number;
+  value: string;
+}
+export interface IPlaceTerms extends Array<IPlaceTerm> {}
