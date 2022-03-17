@@ -8,11 +8,12 @@ import { QGetSubscribingPosts } from '../../__generated__/QGetSubscribingPosts';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import PostCardLoading from './components/PostCardLoading';
 
 const SectionWrapper = styled.div``;
 
 function HomeScreen() {
-  const pageItemCount = 2;
+  const pageItemCount = 6;
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {
     data: postsData,
@@ -26,6 +27,7 @@ function HomeScreen() {
         limit: pageLimit,
       },
     },
+    notifyOnNetworkStatusChange: true,
     onError: (e) => console.log(e),
   });
   const posts = postsData?.getSubscribingPosts.data;
@@ -55,25 +57,23 @@ function HomeScreen() {
 
   return (
     <>
-      {postsLoading ? (
-        <span>Loading</span>
-      ) : (
-        <>
-          <MainHeader />
-          <BaseWrapper>
-            <SectionWrapper>
-              <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
-                <WrapperColumn p="0 8px">
-                  {posts?.map((post, idx) => (
-                    <PostCard key={post.id} {...post} />
-                  ))}
-                </WrapperColumn>
-              </WrapperInfinityScroll>
-              {/* <div>옆에 올 컨텐츠</div> */}
-            </SectionWrapper>
-          </BaseWrapper>
-        </>
-      )}
+      <MainHeader />
+      <BaseWrapper>
+        <SectionWrapper>
+          <WrapperColumn p="0 8px">
+            <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
+              {posts?.map((post, idx) => (
+                <PostCard key={post.id} {...post} />
+              ))}
+              {postsLoading &&
+                Array(pageItemCount)
+                  .fill('')
+                  .map(() => <PostCardLoading />)}
+            </WrapperInfinityScroll>
+          </WrapperColumn>
+          {/* <div>옆에 올 컨텐츠</div> */}
+        </SectionWrapper>
+      </BaseWrapper>
     </>
   );
 }

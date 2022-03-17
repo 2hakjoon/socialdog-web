@@ -30,7 +30,7 @@ const Wrapper = styled.article`
 const TopBar = styled.div`
   width: 100%;
   height: 58px;
-  border: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
+  border-bottom: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
   display: flex;
   justify-content: center;
   align-items: center;
@@ -38,7 +38,7 @@ const TopBar = styled.div`
 
 const Contents = styled.div`
   width: 100%;
-  border: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
+  border-top: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
   padding: 0 16px;
 `;
 

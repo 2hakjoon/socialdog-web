@@ -259,7 +259,7 @@ function ProfileScreen() {
                       </WrapperSquare>
                     ))}
                     {postsLoading &&
-                      Array(12)
+                      Array(pageItemsCount)
                         .fill('')
                         .map(() => (
                           <WrapperSquare key={Math.random()}>
