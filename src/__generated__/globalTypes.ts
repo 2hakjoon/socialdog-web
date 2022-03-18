@@ -80,6 +80,10 @@ export interface GetMyPostsInputDto {
   limit: number;
 }
 
+export interface GetPostsByAddressInputDto {
+  address: string;
+}
+
 export interface GetUserInputDto {
   username?: string | null;
 }

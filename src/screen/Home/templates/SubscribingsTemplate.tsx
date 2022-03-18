@@ -51,7 +51,7 @@ function SubscribingsTemplate() {
   };
 
   return (
-    <WrapperColumn>
+    <WrapperColumn p={'0 8px'}>
       <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
         {posts?.map((post, idx) => (
           <PostCard key={post.id} {...post} />
