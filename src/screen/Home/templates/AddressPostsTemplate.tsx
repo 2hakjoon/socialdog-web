@@ -8,6 +8,7 @@ import { IPlaceTerms } from 'types/GooglePlace';
 import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/QGetPostsByAddress';
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
+import PostCardLoading from '../components/PostCardLoading';
 
 // const mockupAddress = [
 //   { offset: 0, value: '대한민국' },
@@ -21,24 +22,37 @@ import PostCard from '../components/PostCard';
 function AddressPostsTemplate() {
   const pageItemCount = 6;
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>();
+  const address = searchAddressTerms?.map((term) => term.value).join(' ');
   const [getPostsByAddress, { data: postDatas, loading: postsLoading, fetchMore }] = useLazyQuery<
     QGetPostsByAddress,
     QGetPostsByAddressVariables
-  >(GET_POSTS_BY_ADDRESS);
+  >(GET_POSTS_BY_ADDRESS, { notifyOnNetworkStatusChange: true });
   const posts = postDatas?.getPostsByAddress.data;
 
   const getPosts = async () => {
-    if (!searchAddressTerms) {
+    if (!address) {
       return;
     }
-    const address = searchAddressTerms.map((term) => term.value).join(' ');
     console.log(address);
-    const res = await getPostsByAddress({ variables: { args: { address }, page: { offset: 0, limit: 6 } } });
+    const res = await getPostsByAddress({
+      variables: { args: { address }, page: { offset: 0, limit: pageItemCount } },
+    });
     console.log(res);
   };
+
+  const getNextPage = async () => {
+    if (!address || !posts) {
+      return;
+    }
+    await fetchMore({ variables: { args: { address }, page: { offset: 0, limit: pageItemCount } } });
+    await getPostsByAddress({
+      variables: { args: { address }, page: { offset: posts.length, limit: posts.length + pageItemCount } },
+    });
+  };
+
   useEffect(() => {
     console.log(searchAddressTerms);
-    if (searchAddressTerms?.length) {
+    if (address) {
       getPosts();
     }
   }, [searchAddressTerms]);
@@ -46,14 +60,16 @@ function AddressPostsTemplate() {
   return (
     <WrapperColumn>
       <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
-      <WrapperColumn p={'0 8px'}>
-        {posts && (
-          <WrapperInfinityScroll enableFetch={false} fetchHandler={() => {}}>
-            {posts.map((post) => (
-              <PostCard {...post} />
-            ))}
-          </WrapperInfinityScroll>
-        )}
+      <WrapperColumn p={'0 8px'} w={'100%'}>
+        <WrapperInfinityScroll enableFetch={!postsLoading} fetchHandler={getNextPage}>
+          {posts?.map((post) => (
+            <PostCard {...post} />
+          ))}
+          {postsLoading &&
+            Array(pageItemCount)
+              .fill('')
+              .map(() => <PostCardLoading key={Math.random()} />)}
+        </WrapperInfinityScroll>
       </WrapperColumn>
     </WrapperColumn>
   );
