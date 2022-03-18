@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CorePagination, GetPostsByAddressInputDto } from "./globalTypes";
+import { CorePagination } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetPostsByAddress
@@ -28,7 +28,7 @@ export interface QGetPostsByAddress_getPostsByAddress_data {
 }
 
 export interface QGetPostsByAddress_getPostsByAddress {
-  __typename: "GetSubscribingPostsOutputDto";
+  __typename: "getPostsByAddressOutputDto";
   ok: boolean;
   error: string | null;
   data: QGetPostsByAddress_getPostsByAddress_data[];
@@ -39,6 +39,6 @@ export interface QGetPostsByAddress {
 }
 
 export interface QGetPostsByAddressVariables {
+  address: string;
   page: CorePagination;
-  args: GetPostsByAddressInputDto;
 }

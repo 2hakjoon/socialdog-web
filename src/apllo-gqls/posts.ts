@@ -86,8 +86,8 @@ export const GET_USER_POSTS = gql`
 `
 
 export const GET_POSTS_BY_ADDRESS = gql`
-  query QGetPostsByAddress ($args: GetPostsByAddressInputDto!, $page: CorePagination!){
-    getPostsByAddress(page: $page, args: $args) {
+  query QGetPostsByAddress ($address: String!, $page: CorePagination!){
+    getPostsByAddress(page: $page, args:{address:$address}) @connection(key: $address) {
       ok
       error
       data {
