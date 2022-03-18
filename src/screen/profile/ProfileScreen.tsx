@@ -90,22 +90,6 @@ function ProfileScreen() {
 
   const [modalType, setModalType] = useState<string | null>(null);
 
-  // 다음페이지 데이터 요청
-  useEffect(() => {
-    // console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
-    if (posts && postsLimit > pageItemsCount) {
-      if (posts.length + pageItemsCount === postsLimit) {
-        fetchPostsMore({
-          variables: {
-            username,
-            page: { offset: posts?.length || 0, limit: pageItemsCount },
-          },
-        });
-        console.log('fetched');
-      }
-    }
-  }, [posts]);
-
   // 사용자 프로필 이동시마다 페이지 카운트 초기화
   useEffect(() => {
     setPostsLimit(pageItemsCount);
@@ -113,7 +97,17 @@ function ProfileScreen() {
 
   // 무한스크롤 handling함수
   const fetchNextPage = () => {
-    if (!postsError) {
+    if (postsError || !posts) {
+      return;
+    }
+    if (posts.length === postsLimit) {
+      fetchPostsMore({
+        variables: {
+          username,
+          page: { offset: posts?.length || 0, limit: pageItemsCount },
+        },
+      });
+      console.log('fetched');
       setPostsLimit((prev) => prev + pageItemsCount);
     }
   };
@@ -249,7 +243,7 @@ function ProfileScreen() {
           ) : (
             <>
               {isProfileOpened() ? (
-                <WrapperInfinityScroll fetchHandler={fetchNextPage} enableFetch={!postsLoading}>
+                <WrapperInfinityScroll fetchHandler={fetchNextPage}>
                   <PostsGrid>
                     {posts?.map((post) => (
                       <WrapperSquare key={post.id}>

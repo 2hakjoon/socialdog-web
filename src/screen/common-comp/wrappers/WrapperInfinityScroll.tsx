@@ -11,10 +11,9 @@ const Wrapper = styled.div`
 interface IWrapperInfinityScroll {
   children: ReactNode;
   fetchHandler: () => void;
-  enableFetch: boolean;
 }
 
-function WrapperInfinityScroll({ children, fetchHandler, enableFetch }: IWrapperInfinityScroll) {
+function WrapperInfinityScroll({ children, fetchHandler }: IWrapperInfinityScroll) {
   const { ref, inView, entry } = useInView({
     // rootMargin: '-100px',
     threshold: 0,
@@ -22,10 +21,10 @@ function WrapperInfinityScroll({ children, fetchHandler, enableFetch }: IWrapper
 
   useEffect(() => {
     // console.log('infinity', enableFetch);
-    if (enableFetch && inView) {
+    if (inView) {
       fetchHandler();
     }
-  }, [inView, enableFetch]);
+  }, [inView]);
 
   return (
     <>

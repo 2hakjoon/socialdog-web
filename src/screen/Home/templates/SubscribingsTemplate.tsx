@@ -26,33 +26,29 @@ function SubscribingsTemplate() {
     onError: (e) => console.log(e),
   });
   const posts = postsData?.getSubscribingPosts.data;
-  console.log(posts, postsLoading);
+  //  console.log(posts, postsLoading);
 
-  useEffect(() => {
-    // console.log(posts?.length, pageLimit);
-    if (posts && pageLimit > pageItemCount) {
-      if (posts.length + pageItemCount === pageLimit) {
-        fetchMore({
-          variables: {
-            page: {
-              offset: posts.length,
-              limit: pageItemCount,
-            },
-          },
-        });
-      }
+  const nextPageHandler = async () => {
+    if (postsError || !posts) {
+      return null;
     }
-  }, [posts]);
-
-  const nextPageHandler = () => {
-    if (!postsError) {
+    // console.log('fetched', posts.length, pageLimit);
+    if (posts.length === pageLimit) {
+      fetchMore({
+        variables: {
+          page: {
+            offset: posts.length,
+            limit: pageItemCount,
+          },
+        },
+      });
       setPageLimit((prev) => prev + pageItemCount);
     }
   };
 
   return (
     <WrapperColumn p={'0 8px'}>
-      <WrapperInfinityScroll fetchHandler={nextPageHandler} enableFetch={!postsLoading}>
+      <WrapperInfinityScroll fetchHandler={nextPageHandler}>
         {posts?.map((post, idx) => (
           <PostCard key={post.id} {...post} />
         ))}

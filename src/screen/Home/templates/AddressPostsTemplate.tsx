@@ -61,7 +61,7 @@ function AddressPostsTemplate() {
     <WrapperColumn>
       <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
       <WrapperColumn p={'0 8px'} w={'100%'}>
-        <WrapperInfinityScroll enableFetch={!postsLoading} fetchHandler={getNextPage}>
+        <WrapperInfinityScroll fetchHandler={getNextPage}>
           {posts?.map((post) => (
             <PostCard {...post} />
           ))}
