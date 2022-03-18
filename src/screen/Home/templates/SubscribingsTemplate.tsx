@@ -23,25 +23,30 @@ function SubscribingsTemplate() {
       },
     },
     notifyOnNetworkStatusChange: true,
+    fetchPolicy: 'cache-first',
     onError: (e) => console.log(e),
   });
   const posts = postsData?.getSubscribingPosts.data;
   //  console.log(posts, postsLoading);
 
-  const nextPageHandler = async () => {
-    if (postsError || !posts) {
-      return null;
-    }
-    // console.log('fetched', posts.length, pageLimit);
-    if (posts.length === pageLimit) {
-      fetchMore({
-        variables: {
-          page: {
-            offset: posts.length,
-            limit: pageItemCount,
+  useEffect(() => {
+    // console.log(posts?.length, pageLimit);
+    if (posts && pageLimit > pageItemCount) {
+      if (posts.length + pageItemCount === pageLimit) {
+        fetchMore({
+          variables: {
+            page: {
+              offset: posts.length,
+              limit: pageItemCount,
+            },
           },
-        },
-      });
+        });
+      }
+    }
+  }, [posts]);
+
+  const nextPageHandler = () => {
+    if (!postsError) {
       setPageLimit((prev) => prev + pageItemCount);
     }
   };

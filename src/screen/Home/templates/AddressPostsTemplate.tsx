@@ -17,6 +17,7 @@ function AddressPostsTemplate() {
   const {
     data: postDatas,
     loading: postsLoading,
+    error: postsError,
     fetchMore,
   } = useQuery<QGetPostsByAddress, QGetPostsByAddressVariables>(GET_POSTS_BY_ADDRESS, {
     variables: {
@@ -30,22 +31,32 @@ function AddressPostsTemplate() {
   });
   const posts = postDatas?.getPostsByAddress.data;
 
-  const getNextPage = async () => {
-    if (!address || !posts || postsLoading) {
-      return;
-    }
-    if (posts.length === postsLimit) {
-      console.log('fetch', postsLimit);
-      fetchMore({
-        variables: { args: { address }, page: { offset: postsLimit, limit: pageItemCount } },
-      });
-      setPostsLimit((prev) => prev + pageItemCount);
-    }
-  };
-
   useEffect(() => {
     setPostsLimit(pageItemCount);
   }, [searchAddressTerms]);
+
+  useEffect(() => {
+    // console.log(posts?.length, pageLimit);
+    if (posts && postsLimit > pageItemCount) {
+      if (posts.length + pageItemCount === postsLimit) {
+        console.log('fetched');
+        fetchMore({
+          variables: {
+            page: {
+              offset: posts.length,
+              limit: pageItemCount,
+            },
+          },
+        });
+      }
+    }
+  }, [posts]);
+
+  const getNextPage = () => {
+    if (!postsError) {
+      setPostsLimit((prev) => prev + pageItemCount);
+    }
+  };
 
   return (
     <WrapperColumn>
