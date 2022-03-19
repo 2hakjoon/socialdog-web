@@ -18,6 +18,7 @@ import MainHeader from 'screen/common-comp/header/MainHeader';
 import UploadImgViewer from './components/UploadImgViewer';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { CREATE_POST, CREATE_PRESIGNED_URL, GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
+import { useLocation, useParams } from 'react-router-dom';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -50,6 +51,8 @@ interface IPlaceSerchResult {
 }
 
 function PostEditScreen() {
+  const param = useParams();
+  console.log(param);
   const client = useApolloClient();
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);

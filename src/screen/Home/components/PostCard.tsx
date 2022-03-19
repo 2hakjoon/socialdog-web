@@ -7,7 +7,7 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw, faLocationDot, faEllipsisH } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
@@ -15,7 +15,10 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { GET_SUBSCRIBING_POSTS, TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'screen/routes';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -60,36 +63,12 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
     },
   });
   const client = useApolloClient();
+  const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
 
   const toggleLikeHandler = async (postId: string) => {
     const res = await toggleLike({
       variables: { args: { postId } },
-      update(cache) {
-        cache.modify({
-          fields: {
-            PostAll(existingPostData = {}) {
-              const newTodoRef = cache.writeFragment({
-                fragment: gql`
-                  fragment newPostData on PostAll {
-                    id
-                    __typename
-                    likedUsers {
-                      like
-                    }
-                  }
-                `,
-                data: {
-                  __typename: 'PostAll',
-                  id: postId,
-                  like: [{ like: true }],
-                },
-              });
-              return [...existingPostData, newTodoRef];
-            },
-          },
-        });
-      },
     });
     console.log(res);
     if (res.data?.toggleLikePost.ok) {
@@ -105,6 +84,10 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
         },
       });
     }
+  };
+
+  const moveToPostEdit = (postId: string) => {
+    navigate(`${routes.postEdit}/${postId}`);
   };
 
   return (
@@ -150,7 +133,12 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
             />
             <TextBase text={address} />
           </WrapperRow>
-          <FontAwesomeIcon icon={faEllipsisH} size="2x" color={theme.color.achromatic.black} />
+          <FontAwesomeIcon
+            icon={faPenToSquare}
+            size="lg"
+            color={theme.color.achromatic.black}
+            onClick={() => moveToPostEdit(id)}
+          />
         </WrapperRow>
         <WrapperEllipsis line={3}>
           <TextBase text={contents} />
