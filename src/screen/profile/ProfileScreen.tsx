@@ -12,7 +12,7 @@ import styled from 'styled-components';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPenToSquare } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
 import { useNavigate, useParams } from 'react-router-dom';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
@@ -29,6 +29,8 @@ import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MCh
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import { faIdBadge } from '@fortawesome/free-regular-svg-icons';
+import { theme } from 'assets/styles/theme';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -42,15 +44,12 @@ type Params = {
   username: string;
 };
 
-interface LocationState {
-  from: {
-    pathname: string;
-  };
-}
+type PostType = 'MY' | 'LIKED';
 
 function ProfileScreen() {
   const pageItemsCount = 12;
   const navigate = useNavigate();
+  const [postsType, setPostType] = useState<PostType>('MY');
   const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
   const { username } = useParams<Params>();
@@ -181,6 +180,10 @@ function ProfileScreen() {
     return typeof userProfileState?.profileOpened === 'boolean' ? userProfileState?.profileOpened : true;
   };
 
+  const isSelectedPostType = (type: PostType) => {
+    return type === postsType;
+  };
+
   return (
     <>
       <>
@@ -239,6 +242,20 @@ function ProfileScreen() {
               </WrapperRow>
             </>
           )}
+          <WrapperRow h="60px" w="100%" jc="space-around">
+            <FontAwesomeIcon
+              icon={faIdBadge}
+              size="2x"
+              color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              onClick={() => setPostType('MY')}
+            />
+            <FontAwesomeIcon
+              icon={faPaw}
+              size="2x"
+              color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              onClick={() => setPostType('LIKED')}
+            />
+          </WrapperRow>
           {isBlokingPerson() ? (
             <>
               <TextBase text={'차단한 계정입니다'} />
