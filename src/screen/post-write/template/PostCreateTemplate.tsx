@@ -60,7 +60,7 @@ function PostCreateTemplate({
           },
         },
       });
-      if (createOrEditRes.errors) {
+      if (!createOrEditRes.data?.createPost.ok) {
         window.alert('게시물 업로드에 실패했습니다.');
         return;
       }

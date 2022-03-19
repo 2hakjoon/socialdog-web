@@ -8,10 +8,9 @@ import axios, { AxiosResponse } from 'axios';
 import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
 import MainHeader from 'screen/common-comp/header/MainHeader';
-import { CREATE_PRESIGNED_URL, EDIT_POST } from 'apllo-gqls/posts';
+import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
 import { useLocation } from 'react-router-dom';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
-import { MEditPost, MEditPostVariables } from '__generated__/MEditPost';
 import PostCreateTemplate from './template/PostCreateTemplate';
 import PostEditTemplate from './template/PostEditTemplate';
 
@@ -34,25 +33,11 @@ export interface IPostWriteTemplate {
 function PostWriteScreen() {
   const { state } = useLocation();
   const postData = state as QGetSubscribingPosts_getSubscribingPosts_data;
-  const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
 
   const client = useApolloClient();
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const [uploadedFiles, setUploadedFiles] = useState<FileList | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
-
-  useEffect(() => {
-    console.log(postData);
-    if (isEditPost()) {
-      // setUploadedFiles(JSON.parse(postData.photos));
-      setSearchResult({ value: { description: postData.address, place_id: postData.placeId } });
-      // setValue('contents', postData.contents);
-    }
-  }, []);
-
-  const isEditPost = () => {
-    return postData;
-  };
 
   const inputFileHandler = (e: BaseSyntheticEvent) => {
     if (Object.keys(e.target.files).length > 5) {
@@ -83,6 +68,8 @@ function PostWriteScreen() {
       throw new Error('s3 업로드 에러');
     });
   };
+
+  // Todo 게시글 캐싱
 
   // const updateCache = ({}) => {
   //   client.cache.modify({
@@ -115,7 +102,15 @@ function PostWriteScreen() {
       <MainHeader />
       <BaseWrapper p={'0 16px'}>
         {postData ? (
-          <PostEditTemplate />
+          <PostEditTemplate
+            postData={postData}
+            requestSignedUrl={requestSignedUrl}
+            uploadFilesToS3={uploadFilesToS3}
+            searchResult={searchResult}
+            setSearchResult={setSearchResult}
+            uploadedFiles={uploadedFiles}
+            inputFileHandler={inputFileHandler}
+          />
         ) : (
           <PostCreateTemplate
             requestSignedUrl={requestSignedUrl}
