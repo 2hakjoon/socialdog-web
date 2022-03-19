@@ -51,7 +51,7 @@ function MainHeader() {
           <Link to={routes.search}>
             <IconUserSearch size={24} />
           </Link>
-          <Link to={routes.postEdit}>
+          <Link to={routes.postWrite}>
             <IconClipBoard size={24} />
           </Link>
           {getAccessToken() ? (

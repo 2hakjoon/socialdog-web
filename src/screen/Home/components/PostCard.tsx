@@ -99,7 +99,7 @@ function PostCard({
   };
 
   const moveToPostEdit = (postId: string) => {
-    navigate(`${routes.postEdit}`, { state: { id, user, address, photos, contents, placeId } });
+    navigate(`${routes.postWrite}`, { state: { id, user, address, photos, contents, placeId } });
   };
 
   return (

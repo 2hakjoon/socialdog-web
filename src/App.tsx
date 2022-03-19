@@ -5,12 +5,12 @@ import { theme } from 'assets/styles/theme';
 import { routes } from 'screen/routes';
 import ProfileScreen from 'screen/profile/ProfileScreen';
 import HomeScreen from 'screen/home/HomeScreen';
-import PostEditScreen from 'screen/post-edit/PostEditScreen';
 import LoginScreen from 'screen/login/LoginScreen';
 import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
 import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
 import SearchScreen from 'screen/search/SearchScreen';
+import PostWriteScreen from 'screen/post-edit/PostWriteScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -24,7 +24,7 @@ function App() {
           {isLoggedIn ? (
             <>
               <Route path={routes.home} element={<HomeScreen />} />
-              <Route path={routes.postEdit} element={<PostEditScreen />} />
+              <Route path={routes.postWrite} element={<PostWriteScreen />} />
               <Route path={routes.profile} element={<ProfileScreen />} />
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
               <Route path={routes.search} element={<SearchScreen />} />

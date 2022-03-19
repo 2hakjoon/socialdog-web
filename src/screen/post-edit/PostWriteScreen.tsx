@@ -11,8 +11,6 @@ import axios from 'axios';
 import { alretError } from 'utils/alret';
 import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import UploadImgViewer from './components/UploadImgViewer';
@@ -31,7 +29,7 @@ export interface IPlaceSerchResult {
   };
 }
 
-function PostEditScreen() {
+function PostWriteScreen() {
   const { state } = useLocation();
   const postData = state as QGetSubscribingPosts_getSubscribingPosts_data;
   const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
@@ -101,6 +99,32 @@ function PostEditScreen() {
     }
   };
 
+  // const updateCache = ({}) => {
+  //   client.cache.modify({
+  //     id: client.cache.identify(makeReference('ROOT_QUERY')),
+  //     fields: {
+  //       getSubscribingPosts(existingData) {
+  //         console.log(existingData.data);
+  //         return {
+  //           ...existingData,
+  //           data: [
+  //             {
+  //               __typename: 'PostAll',
+  //               id: `${Date.now}`,
+  //               photos: JSON.stringify(uploadedUrl),
+  //               placeId: searchResult.value.place_id,
+  //               address: searchResult.value.description,
+  //               contents: formData.contents,
+  //               liked: false,
+  //             },
+  //             ...existingData.data,
+  //           ],
+  //         };
+  //       },
+  //     },
+  //   });
+  // };
+
   const onSubmitForm = async (formData: CreatePostInputDto) => {
     if (!uploadedFiles) {
       window.alert('파일을 업로드 해주세요.');
@@ -152,29 +176,8 @@ function PostEditScreen() {
         window.alert('게시물 업로드에 실패했습니다.');
         return;
       }
-      client.cache.modify({
-        id: client.cache.identify(makeReference('ROOT_QUERY')),
-        fields: {
-          getSubscribingPosts(existingData) {
-            console.log(existingData.data);
-            return {
-              ...existingData,
-              data: [
-                {
-                  __typename: 'PostAll',
-                  id: `${Date.now}`,
-                  photos: JSON.stringify(uploadedUrl),
-                  placeId: searchResult.value.place_id,
-                  address: searchResult.value.description,
-                  contents: formData.contents,
-                  liked: false,
-                },
-                ...existingData.data,
-              ],
-            };
-          },
-        },
-      });
+      // Todo : 캐싱하는부분.
+      // updateCache({})
       window.alert('게시물 업로드를 성공했습니다.');
     } catch (e) {
       console.log(e);
@@ -190,14 +193,13 @@ function PostEditScreen() {
           <WrapperColumn w="100%">
             <UploadImgViewer uploadedFiles={uploadedFiles} inputFileHandler={inputFileHandler} />
             <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
-            {postData?.address && <TextBase text={`이전 입력 장소 : ${postData.address}`} />}
             {searchResultEmpty && <TextBase text="장소를 입력해주세요." />}
             <WrapperRow w="100%">
               <TextBase text="내용" />
               <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
             </WrapperRow>
             {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
-            {postData ? <button type="submit">수정완료</button> : <button type="submit">작성완료</button>}
+            <button type="submit">작성완료</button>
           </WrapperColumn>
         </form>
       </BaseWrapper>
@@ -205,4 +207,4 @@ function PostEditScreen() {
   );
 }
 
-export default PostEditScreen;
+export default PostWriteScreen;
