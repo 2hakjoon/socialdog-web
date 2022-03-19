@@ -22,17 +22,7 @@ import { useLocation } from 'react-router-dom';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import { MEditPost, MEditPostVariables } from '__generated__/MEditPost';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
-
-interface ITextAreaComponent {
-  height: string;
-}
-
-const TextAreaComponent = styled.textarea<ITextAreaComponent>`
-  width: 100%;
-  height: ${(p) => p.height};
-  min-height: 200px;
-  padding: 6px;
-`;
+import FormTextArea from 'screen/common-comp/input/FormTextArea';
 
 export interface IPlaceSerchResult {
   value: {
@@ -53,7 +43,6 @@ function PostEditScreen() {
   const [uploadedFiles, setUploadedFiles] = useState<FileList | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
   const [searchResultEmpty, setSearchResultEmpty] = useState<boolean>(false);
-  const [textAreaHeight, setTextAreaHeight] = useState<string>('50px');
 
   useEffect(() => {
     if (searchResult) {
@@ -205,14 +194,7 @@ function PostEditScreen() {
             {searchResultEmpty && <TextBase text="장소를 입력해주세요." />}
             <WrapperRow w="100%">
               <TextBase text="내용" />
-              <TextAreaComponent
-                {...register('contents', { required: '내용을 입력해주세요', maxLength: 300 })}
-                placeholder=""
-                onChange={({ target }) => {
-                  setTextAreaHeight(`${target.scrollHeight - 4}px`);
-                }}
-                height={textAreaHeight}
-              />
+              <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
             </WrapperRow>
             {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
             {postData ? <button type="submit">수정완료</button> : <button type="submit">작성완료</button>}
