@@ -97,3 +97,16 @@ export const GET_POSTS_BY_ADDRESS = gql`
   }
   ${POST_FRAGMENT}
 `
+
+export const GET_MY_LIKED_POSTS = gql`
+  query QGetMyLikedPosts($page: CorePagination!) {
+    getMyLikedPosts(page: $page) {
+      data {
+        ...PostData
+      }
+      ok
+      error
+    }
+  }
+  ${POST_FRAGMENT}
+`

@@ -1,7 +1,6 @@
 import React from 'react';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import styled from 'styled-components';
-import { QGetUserPosts_getUserPosts_data } from '__generated__/QGetUserPosts';
 
 const LoadingBox = styled.div`
   width: 100%;
@@ -9,7 +8,13 @@ const LoadingBox = styled.div`
   background-color: ${({ theme }) => theme.color.achromatic.lightGray};
 `;
 
-function PostSmallBox({ photos }: QGetUserPosts_getUserPosts_data) {
+export interface IPostSmallBox {
+  __typename: string;
+  photos: string;
+  id: string;
+}
+function PostSmallBox({ photos, __typename, id }: IPostSmallBox) {
+  // console.log(photos);
   if (!photos) {
     return <LoadingBox />;
   }

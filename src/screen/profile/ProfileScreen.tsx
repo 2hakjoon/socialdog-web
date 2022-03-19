@@ -1,16 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useMutation, useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
-import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import PostSmallBox from './components/PostSmallBox';
-import styled from 'styled-components';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faPenToSquare } from '@fortawesome/free-solid-svg-icons';
 import { routes } from 'screen/routes';
@@ -20,7 +16,6 @@ import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import SubscriberAndRequests from './templates/SubscriberAndRequests';
 import SubscribingAndRequests from './templates/SubscribingAndRequests';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
-import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import { QMe } from '__generated__/QMe';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
 import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
@@ -28,10 +23,10 @@ import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import BlockAndRejected from './templates/BlockAndRejected';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { faIdBadge } from '@fortawesome/free-regular-svg-icons';
 import { theme } from 'assets/styles/theme';
 import MyPosts from './templates/MyPosts';
+import MyLikedPosts from './templates/MyLikedPosts';
 
 type Params = {
   username: string;
@@ -190,20 +185,22 @@ function ProfileScreen() {
               </WrapperRow>
             </>
           )}
-          <WrapperRow h="60px" w="100%" jc="space-around">
-            <FontAwesomeIcon
-              icon={faIdBadge}
-              size="2x"
-              color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-              onClick={() => setPostType('MY')}
-            />
-            <FontAwesomeIcon
-              icon={faPaw}
-              size="2x"
-              color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-              onClick={() => setPostType('LIKED')}
-            />
-          </WrapperRow>
+          {isMyProfile() && (
+            <WrapperRow h="60px" w="100%" jc="space-around">
+              <FontAwesomeIcon
+                icon={faIdBadge}
+                size="2x"
+                color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+                onClick={() => setPostType('MY')}
+              />
+              <FontAwesomeIcon
+                icon={faPaw}
+                size="2x"
+                color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+                onClick={() => setPostType('LIKED')}
+              />
+            </WrapperRow>
+          )}
           {isBlokingPerson() ? (
             <>
               <TextBase text={'차단한 계정입니다'} />
@@ -214,7 +211,10 @@ function ProfileScreen() {
           ) : (
             <>
               {isProfileOpened() ? (
-                <>{isSelectedPostType('MY') && <MyPosts username={username} itemsCount={12} />}</>
+                <>
+                  {isSelectedPostType('MY') && <MyPosts username={username} itemsCount={12} />}
+                  {isSelectedPostType('LIKED') && <MyLikedPosts itemsCount={12} />}
+                </>
               ) : (
                 <TextBase text={'비공개 계정입니다.'} />
               )}

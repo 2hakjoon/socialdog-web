@@ -49,7 +49,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
             page: { offset: posts?.length || 0, limit: itemsCount },
           },
         });
-        console.log('fetched');
+        // console.log('fetched');
       }
     }
   }, [posts]);
