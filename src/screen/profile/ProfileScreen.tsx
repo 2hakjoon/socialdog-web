@@ -31,14 +31,7 @@ import BlockAndRejected from './templates/BlockAndRejected';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { faIdBadge } from '@fortawesome/free-regular-svg-icons';
 import { theme } from 'assets/styles/theme';
-
-const PostsGrid = styled.div`
-  width: 100%;
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 4px;
-  padding: 0px 4px;
-`;
+import MyPosts from './templates/MyPosts';
 
 type Params = {
   username: string;
@@ -47,10 +40,8 @@ type Params = {
 type PostType = 'MY' | 'LIKED';
 
 function ProfileScreen() {
-  const pageItemsCount = 12;
   const navigate = useNavigate();
   const [postsType, setPostType] = useState<PostType>('MY');
-  const [postsLimit, setPostsLimit] = useState<number>(pageItemsCount);
   // console.log('postsLimit', postsLimit);
   const { username } = useParams<Params>();
   if (!username) {
@@ -73,50 +64,7 @@ function ProfileScreen() {
   const userProfileState = userData?.getUserProfile;
   // console.log('user', user, userProfileState);
 
-  const {
-    data: postsData,
-    loading: postsLoading,
-    error: postsError,
-    fetchMore: fetchPostsMore,
-  } = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
-    variables: { username, page: { offset: 0, limit: postsLimit } },
-    notifyOnNetworkStatusChange: true,
-  });
-
-  // console.log('postsData :', postsData, postsLoading);
-  const posts = postsData?.getUserPosts.data;
-  // console.log(posts);
-
   const [modalType, setModalType] = useState<string | null>(null);
-
-  // 다음페이지 데이터 요청
-  useEffect(() => {
-    // console.log('useEffect', posts?.length, pageItemsCount, postsLimit);
-    if (posts && postsLimit > pageItemsCount) {
-      if (posts.length + pageItemsCount === postsLimit) {
-        fetchPostsMore({
-          variables: {
-            username,
-            page: { offset: posts?.length || 0, limit: pageItemsCount },
-          },
-        });
-        console.log('fetched');
-      }
-    }
-  }, [posts]);
-
-  // 사용자 프로필 이동시마다 페이지 카운트 초기화
-  useEffect(() => {
-    setPostsLimit(pageItemsCount);
-  }, [username]);
-
-  // 무한스크롤 handling함수
-  const fetchNextPage = () => {
-    if (!postsError) {
-      setPostsLimit((prev) => prev + pageItemsCount);
-    }
-  };
-
   // 구독 요청 함수
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
@@ -266,27 +214,7 @@ function ProfileScreen() {
           ) : (
             <>
               {isProfileOpened() ? (
-                <WrapperInfinityScroll fetchHandler={fetchNextPage}>
-                  <PostsGrid>
-                    {posts?.map((post) => (
-                      <WrapperSquare key={post.id}>
-                        <BaseWrapper>
-                          <PostSmallBox {...post} />
-                        </BaseWrapper>
-                      </WrapperSquare>
-                    ))}
-                    {postsLoading &&
-                      Array(pageItemsCount)
-                        .fill('')
-                        .map(() => (
-                          <WrapperSquare key={Math.random()}>
-                            <BaseWrapper>
-                              <PostSmallBox photos="" __typename="Posts" id="" />
-                            </BaseWrapper>
-                          </WrapperSquare>
-                        ))}
-                  </PostsGrid>
-                </WrapperInfinityScroll>
+                <>{isSelectedPostType('MY') && <MyPosts username={username} itemsCount={12} />}</>
               ) : (
                 <TextBase text={'비공개 계정입니다.'} />
               )}
