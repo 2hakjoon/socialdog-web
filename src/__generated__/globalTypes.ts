@@ -58,6 +58,13 @@ export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
 }
 
+export interface EditPostInputDto {
+  address?: string | null;
+  placeId?: string | null;
+  contents?: string | null;
+  postId: string;
+}
+
 export interface EditProfileInputDto {
   username?: string | null;
   dogname?: string | null;

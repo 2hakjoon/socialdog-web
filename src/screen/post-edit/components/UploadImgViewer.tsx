@@ -31,7 +31,6 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler }: IUpoladImgViewr) {
     return () => imgUrls.forEach((imgUrl) => URL.revokeObjectURL(imgUrl));
   }, [uploadedFiles]);
 
-  console.log(imgUrls);
   return (
     <>
       <ImgPreviewgrid>

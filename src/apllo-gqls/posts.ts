@@ -110,3 +110,12 @@ export const GET_MY_LIKED_POSTS = gql`
   }
   ${POST_FRAGMENT}
 `
+
+export const EDIT_POST = gql`
+  mutation MEditPost($args: EditPostInputDto!) {
+    editPost(args: $args) {
+      ok
+      error
+    }
+  }
+`

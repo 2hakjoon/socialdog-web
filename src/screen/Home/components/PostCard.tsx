@@ -13,12 +13,14 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
 import { Carousel } from 'react-responsive-carousel';
-import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
 import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
+import { MYPROFILE } from 'apllo-gqls/users';
+import { QMe } from '__generated__/QMe';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -56,7 +58,17 @@ const OnClickWrapper = styled.button`
   background-color: white;
 `;
 
-function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribingPosts_getSubscribingPosts_data) {
+function PostCard({
+  id,
+  user,
+  address,
+  photos,
+  contents,
+  liked,
+  placeId,
+}: QGetSubscribingPosts_getSubscribingPosts_data) {
+  const { data: meData } = useQuery<QMe>(MYPROFILE);
+  const authUserName = meData?.me.data?.username;
   const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST, {
     update(cache) {
       console.log(cache);
@@ -87,7 +99,7 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
   };
 
   const moveToPostEdit = (postId: string) => {
-    navigate(`${routes.postEdit}/${postId}`);
+    navigate(`${routes.postEdit}`, { state: { id, user, address, photos, contents, placeId } });
   };
 
   return (
@@ -133,12 +145,14 @@ function PostCard({ id, user, address, photos, contents, liked }: QGetSubscribin
             />
             <TextBase text={address} />
           </WrapperRow>
-          <FontAwesomeIcon
-            icon={faPenToSquare}
-            size="lg"
-            color={theme.color.achromatic.black}
-            onClick={() => moveToPostEdit(id)}
-          />
+          {authUserName === user.username && (
+            <FontAwesomeIcon
+              icon={faPenToSquare}
+              size="lg"
+              color={theme.color.achromatic.black}
+              onClick={() => moveToPostEdit(id)}
+            />
+          )}
         </WrapperRow>
         <WrapperEllipsis line={3}>
           <TextBase text={contents} />
