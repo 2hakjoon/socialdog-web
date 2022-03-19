@@ -10,7 +10,7 @@ import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
 import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
 import SearchScreen from 'screen/search/SearchScreen';
-import PostWriteScreen from 'screen/post-edit/PostWriteScreen';
+import PostWriteScreen from 'screen/post-write/PostWriteScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();

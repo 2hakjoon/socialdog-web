@@ -1,6 +1,6 @@
 import React from 'react';
 
 function PostEditTemplate() {
-  return;
+  return <></>;
 }
 export default PostEditTemplate;

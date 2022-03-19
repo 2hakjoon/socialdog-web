@@ -1,6 +1,6 @@
 import React, { Dispatch, SetStateAction } from 'react';
 import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
-import { IPlaceSerchResult } from 'screen/post-edit/PostEditScreen';
+import { IPlaceSerchResult } from 'screen/post-write/PostWriteScreen';
 import styled from 'styled-components';
 
 const PlaceSearchContainer = styled.div`
