@@ -9,6 +9,7 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
 import { useState } from 'react';
+import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -112,20 +113,7 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
         <>
           <PlaceSearchContainer>
             <TextBase text="검색" />
-            <GooglePlacesAutocomplete
-              apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-              apiOptions={{ language: 'ko', region: 'ko' }}
-              debounce={500}
-              autocompletionRequest={{
-                componentRestrictions: {
-                  country: ['kr'],
-                },
-              }}
-              selectProps={{
-                addressTerms,
-                onChange: handleResultToTerm,
-              }}
-            />
+            <PlaceSearch searchResult={null} setSearchResult={handleResultToTerm} />
             <button type="button" onClick={() => setSearchEnable(false)}>
               취소
             </button>
