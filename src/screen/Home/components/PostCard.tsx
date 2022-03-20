@@ -13,7 +13,7 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 
 import { Carousel } from 'react-responsive-carousel';
-import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { gql, makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
 import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
@@ -69,11 +69,7 @@ function PostCard({
 }: QGetSubscribingPosts_getSubscribingPosts_data) {
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUserName = meData?.me.data?.username;
-  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST, {
-    update(cache) {
-      console.log(cache);
-    },
-  });
+  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
   const client = useApolloClient();
   const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
@@ -83,19 +79,36 @@ function PostCard({
       variables: { args: { postId } },
     });
     console.log(res);
-    if (res.data?.toggleLikePost.ok) {
-      client.cache.writeFragment({
-        id: `PostAll:${postId}`,
-        fragment: gql`
-          fragment post on PostAll {
-            liked
-          }
-        `,
-        data: {
-          liked: !liked,
-        },
-      });
+    if (!res.data?.toggleLikePost.ok) {
+      window.alert(res.data?.toggleLikePost.error);
+      return;
     }
+    // 좋아요 버튼 토글
+    client.cache.writeFragment({
+      id: `PostAll:${postId}`,
+      fragment: gql`
+        fragment post on PostAll {
+          liked
+        }
+      `,
+      data: {
+        liked: !liked,
+      },
+    });
+    // 좋아요 누르면, getMyLikedPosts에 추가 및 삭제
+    client.cache.modify({
+      id: client.cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getMyLikedPosts(existing) {
+          return {
+            ...existing,
+            data: liked
+              ? existing.data.filter((post: { __ref: string }) => post.__ref !== `PostAll:${id}`)
+              : [{ __ref: `PostAll:${id}` }, ...existing.data],
+          };
+        },
+      },
+    });
   };
 
   const moveToPostEdit = (postId: string) => {

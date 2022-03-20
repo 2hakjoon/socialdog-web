@@ -31,6 +31,7 @@
     "@typescript-eslint/ban-ts-comment":0,
     "default-param-last":0,
     "no-underscore-dangle":0,
-    "@typescript-eslint/no-empty-function":0
+    "@typescript-eslint/no-empty-function":0,
+    "object-shorthand":0,
   }
 }
