@@ -29,10 +29,6 @@ function PostCreateTemplate({
       window.alert('파일을 업로드 해주세요.');
       return;
     }
-    if (!(searchResult?.value.description && searchResult.value.place_id)) {
-      // changeSearchResultError();
-      return;
-    }
     try {
       const res = await requestSignedUrl();
       const preSignedUrls = res.data?.createPreSignedUrls;
@@ -54,8 +50,8 @@ function PostCreateTemplate({
         variables: {
           args: {
             ...formData,
-            address: searchResult.value.description,
-            placeId: searchResult.value.place_id,
+            address: searchResult?.value.description,
+            placeId: searchResult?.value.place_id,
             photoUrls: uploadedUrl,
           },
         },
