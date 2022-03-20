@@ -8,6 +8,7 @@ import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons
 import { theme } from 'assets/styles/theme';
 import SubscribingsTemplate from './templates/SubscribingsTemplate';
 import AddressPostsTemplate from './templates/AddressPostsTemplate';
+import dayjs from 'dayjs';
 
 const SectionWrapper = styled.div``;
 
@@ -16,7 +17,6 @@ const SUBSCRIBING = 'SUBSCRIBING';
 
 function HomeScreen() {
   const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(SUBSCRIBING);
-
   const tabIconColor = (tabName: string) => {
     if (selectedTab === tabName) {
       return theme.color.blue.primaryBlue;

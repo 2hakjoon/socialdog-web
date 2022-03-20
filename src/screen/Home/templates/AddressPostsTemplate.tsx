@@ -36,8 +36,8 @@ function AddressPostsTemplate() {
   }, [searchAddressTerms]);
 
   useEffect(() => {
-    // console.log(posts?.length, pageLimit);
-    if (posts && postsLimit > pageItemCount) {
+    // console.log(posts, posts?.length);
+    if (posts && posts.length && postsLimit > pageItemCount) {
       if (posts.length + pageItemCount === postsLimit) {
         console.log('fetched');
         fetchMore({
@@ -53,7 +53,7 @@ function AddressPostsTemplate() {
   }, [posts]);
 
   const getNextPage = () => {
-    if (!postsError) {
+    if (!postsError && posts?.length) {
       setPostsLimit((prev) => prev + pageItemCount);
     }
   };

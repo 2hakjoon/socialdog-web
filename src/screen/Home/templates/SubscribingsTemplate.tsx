@@ -30,7 +30,7 @@ function SubscribingsTemplate() {
   //  console.log(posts, postsLoading);
 
   useEffect(() => {
-    // console.log(posts?.length, pageLimit);
+    // console.log(posts, posts?.length, pageLimit);
     if (posts && pageLimit > pageItemCount) {
       if (posts.length + pageItemCount === pageLimit) {
         fetchMore({
@@ -46,7 +46,7 @@ function SubscribingsTemplate() {
   }, [posts]);
 
   const nextPageHandler = () => {
-    if (!postsError) {
+    if (!postsError && posts?.length) {
       setPageLimit((prev) => prev + pageItemCount);
     }
   };

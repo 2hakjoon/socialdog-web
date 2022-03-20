@@ -56,7 +56,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
 
   // 무한스크롤 handling함수
   const fetchNextPage = () => {
-    if (!postsError) {
+    if (!postsError && posts?.length) {
       setPostsLimit((prev) => prev + itemsCount);
     }
   };
