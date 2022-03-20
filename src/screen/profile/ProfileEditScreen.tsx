@@ -68,45 +68,47 @@ function ProfileEditScreen() {
         },
       },
     });
-    if (result.data?.editProfile.ok) {
-      client.cache.writeFragment({
-        id: `UserProfileAll:${user?.id}`,
-        fragment: gql`
-          fragment NewProfileAll on UserProfileAll {
-            __typename
-            id
-            username
-            dogname
-            photo
-          }
-        `,
-        data: {
-          __typename: 'UserProfileAll',
-          id: user?.id,
-          username: formData.username || user?.username,
-          dogname: formData.dogname || user?.dogname,
-          photo: newPhoto || user?.photo,
-        },
-      });
-      client.cache.writeFragment({
-        id: `UserProfile:${user?.id}`,
-        fragment: gql`
-          fragment NewProfile on UserProfile {
-            __typename
-            id
-            username
-            photo
-          }
-        `,
-        data: {
-          __typename: 'UserProfile',
-          id: user?.id,
-          username: formData.username || user?.username,
-          photo: newPhoto || user?.photo,
-        },
-      });
-      window.alert('저장되었습니다.');
+    if (!result.data?.editProfile.ok) {
+      window.alert(result.data?.editProfile.error);
+      return;
     }
+    client.cache.writeFragment({
+      id: `UserProfileAll:${user?.id}`,
+      fragment: gql`
+        fragment NewProfileAll on UserProfileAll {
+          __typename
+          id
+          username
+          dogname
+          photo
+        }
+      `,
+      data: {
+        __typename: 'UserProfileAll',
+        id: user?.id,
+        username: formData.username || user?.username,
+        dogname: formData.dogname || user?.dogname,
+        photo: newPhoto || user?.photo,
+      },
+    });
+    client.cache.writeFragment({
+      id: `UserProfile:${user?.id}`,
+      fragment: gql`
+        fragment NewProfile on UserProfile {
+          __typename
+          id
+          username
+          photo
+        }
+      `,
+      data: {
+        __typename: 'UserProfile',
+        id: user?.id,
+        username: formData.username || user?.username,
+        photo: newPhoto || user?.photo,
+      },
+    });
+    window.alert('저장되었습니다.');
   };
 
   useEffect(() => {
