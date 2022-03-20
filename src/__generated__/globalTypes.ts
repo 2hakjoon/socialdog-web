@@ -63,6 +63,7 @@ export interface EditPostInputDto {
   placeId?: string | null;
   contents?: string | null;
   postId: string;
+  photoUrls?: string[] | null;
 }
 
 export interface EditProfileInputDto {

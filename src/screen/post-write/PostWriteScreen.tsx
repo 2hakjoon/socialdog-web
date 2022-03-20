@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
 import { FetchResult, useApolloClient, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';

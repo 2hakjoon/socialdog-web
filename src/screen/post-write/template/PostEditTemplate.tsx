@@ -33,41 +33,38 @@ function PostEditTemplate({
   useEffect(() => {
     console.log(postData);
     setValue('contents', postData.contents);
-    // setSearchResult({ value: { description: postData.address, place_id: postData.placeId } });
+    setSearchResult({ value: { description: postData.address, place_id: postData.placeId } });
   }, []);
 
   const onSubmitForm = async (formData: EditPostInputDto) => {
-    // if (!uploadedFiles) {
-    //   window.alert('파일을 업로드 해주세요.');
-    //   return;
-    // }
-    // if (!(searchResult?.value.description && searchResult.value.place_id)) {
-    //   // changeSearchResultError();
-    //   return;
-    // }
     try {
-      // const res = await requestSignedUrl();
-      // const preSignedUrls = res.data?.createPreSignedUrls;
-      // if (!preSignedUrls?.ok) {
-      //   throw new Error('PreSignedUrl 요청 에러');
-      // }
-      // const uploadResult = await uploadFilesToS3(uploadedFiles!, preSignedUrls.urls!);
-      // const uploadedUrl = uploadResult.map((result) => {
-      //   if (result.status !== 200) {
-      //     throw new Error('s3 업로드 에러');
-      //   }
-      //   if (!result.config.url) {
-      //     throw new Error('s3 업로드 에러');
-      //   }
-      //   return result.config.url.split('?Content')[0];
-      // });
-      // console.log(uploadedUrl);
+      let photoUrls = JSON.parse(postData.photos);
+      if (uploadedFiles) {
+        const res = await requestSignedUrl();
+        const preSignedUrls = res.data?.createPreSignedUrls;
+        if (!preSignedUrls?.ok) {
+          throw new Error('PreSignedUrl 요청 에러');
+        }
+        const uploadResult = await uploadFilesToS3(uploadedFiles!, preSignedUrls.urls!);
+        photoUrls = uploadResult.map((result) => {
+          if (result.status !== 200) {
+            throw new Error('s3 업로드 에러');
+          }
+          if (!result.config.url) {
+            throw new Error('s3 업로드 에러');
+          }
+          return result.config.url.split('?Content')[0];
+        });
+        console.log(photoUrls);
+      }
       const createOrEditRes = await editPost({
         variables: {
           args: {
             ...formData,
             postId: postData.id,
-            // photos: uploadedUrl,
+            address: searchResult?.value.description,
+            placeId: searchResult?.value.place_id,
+            photoUrls,
           },
         },
       });
@@ -87,7 +84,14 @@ function PostEditTemplate({
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <WrapperColumn w="100%">
-        <UploadImgViewer uploadedFiles={uploadedFiles} inputFileHandler={inputFileHandler} />
+        <UploadImgViewer
+          uploadedFiles={uploadedFiles}
+          inputFileHandler={inputFileHandler}
+          uploadedImgUrls={JSON.parse(postData.photos)}
+        />
+        <WrapperRow jc="flex-start" w="100%">
+          {searchResult?.value && <TextBase text={`이전 주소 : ${searchResult.value.description || '없음'}`} />}
+        </WrapperRow>
         <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
         <WrapperRow w="100%">
           <TextBase text="내용" />

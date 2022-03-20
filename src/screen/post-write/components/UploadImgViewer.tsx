@@ -16,14 +16,15 @@ const ImgPreviewgrid = styled.div`
 interface IUpoladImgViewr {
   uploadedFiles: FileList | null | undefined;
   inputFileHandler: (e: BaseSyntheticEvent) => void;
+  uploadedImgUrls?: [string] | [];
 }
 
-function UploadImgViewer({ uploadedFiles, inputFileHandler }: IUpoladImgViewr) {
+function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = [] }: IUpoladImgViewr) {
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
   useEffect(() => {
     if (!uploadedFiles) {
-      setImgUrls([]);
+      setImgUrls(uploadedImgUrls);
       return;
     }
     const objectUrl = Object.keys(uploadedFiles).map((_, idx) => URL.createObjectURL(uploadedFiles[idx]));
@@ -52,5 +53,9 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler }: IUpoladImgViewr) {
     </>
   );
 }
+
+UploadImgViewer.defaultProps = {
+  uploadedImgUrls: [],
+};
 
 export default UploadImgViewer;
