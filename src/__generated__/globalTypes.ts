@@ -48,10 +48,10 @@ export interface CorePagination {
 }
 
 export interface CreatePostInputDto {
-  address: string;
-  placeId: string;
+  address?: string | null;
+  placeId?: string | null;
   contents: string;
-  photos: string[];
+  photoUrls: string[];
 }
 
 export interface CreatePreSignedUrlsInputDto {

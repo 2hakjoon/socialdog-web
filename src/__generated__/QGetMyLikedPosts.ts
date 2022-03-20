@@ -20,8 +20,8 @@ export interface QGetMyLikedPosts_getMyLikedPosts_data {
   __typename: "PostAll";
   id: string;
   photos: string;
-  placeId: string;
-  address: string;
+  placeId: string | null;
+  address: string | null;
   contents: string;
   liked: boolean;
   user: QGetMyLikedPosts_getMyLikedPosts_data_user;

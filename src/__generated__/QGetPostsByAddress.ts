@@ -20,8 +20,8 @@ export interface QGetPostsByAddress_getPostsByAddress_data {
   __typename: "PostAll";
   id: string;
   photos: string;
-  placeId: string;
-  address: string;
+  placeId: string | null;
+  address: string | null;
   contents: string;
   liked: boolean;
   user: QGetPostsByAddress_getPostsByAddress_data_user;

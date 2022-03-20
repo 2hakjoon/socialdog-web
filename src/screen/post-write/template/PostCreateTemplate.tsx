@@ -56,7 +56,7 @@ function PostCreateTemplate({
             ...formData,
             address: searchResult.value.description,
             placeId: searchResult.value.place_id,
-            photos: uploadedUrl,
+            photoUrls: uploadedUrl,
           },
         },
       });
@@ -77,7 +77,10 @@ function PostCreateTemplate({
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <WrapperColumn w="100%">
         <UploadImgViewer uploadedFiles={uploadedFiles} inputFileHandler={inputFileHandler} />
-        <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
+        <WrapperRow w="100%">
+          <TextBase text={'주소검색'} />
+          <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
+        </WrapperRow>
         <WrapperRow w="100%">
           <TextBase text="내용" />
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
