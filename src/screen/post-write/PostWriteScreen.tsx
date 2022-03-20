@@ -1,5 +1,5 @@
 import React, { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
-import { FetchResult, useApolloClient, useMutation } from '@apollo/client';
+import { FetchResult, makeReference, useApolloClient, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
 import { FileInputDto, FileType } from '../../__generated__/globalTypes';
@@ -28,6 +28,7 @@ export interface IPostWriteTemplate {
   inputFileHandler: (e: BaseSyntheticEvent) => void;
   requestSignedUrl: () => Promise<FetchResult<MCreatePreSignedUrls, Record<string, any>, Record<string, any>>>;
   uploadFilesToS3: (files: FileList, urls: string[]) => Promise<AxiosResponse<any, any>[]>;
+  resetCache: () => void;
 }
 
 function PostWriteScreen() {
@@ -69,33 +70,22 @@ function PostWriteScreen() {
     });
   };
 
-  // Todo 게시글 캐싱
-
-  // const updateCache = ({}) => {
-  //   client.cache.modify({
-  //     id: client.cache.identify(makeReference('ROOT_QUERY')),
-  //     fields: {
-  //       getSubscribingPosts(existingData) {
-  //         console.log(existingData.data);
-  //         return {
-  //           ...existingData,
-  //           data: [
-  //             {
-  //               __typename: 'PostAll',
-  //               id: `${Date.now}`,
-  //               photos: JSON.stringify(uploadedUrl),
-  //               placeId: searchResult.value.place_id,
-  //               address: searchResult.value.description,
-  //               contents: formData.contents,
-  //               liked: false,
-  //             },
-  //             ...existingData.data,
-  //           ],
-  //         };
-  //       },
-  //     },
-  //   });
-  // };
+  const resetCache = () => {
+    client.cache.modify({
+      id: client.cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getSubscribingPosts() {
+          return undefined;
+        },
+        getUserPosts() {
+          return undefined;
+        },
+        getPostsByAddress() {
+          return undefined;
+        },
+      },
+    });
+  };
 
   return (
     <>
@@ -110,6 +100,7 @@ function PostWriteScreen() {
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
             inputFileHandler={inputFileHandler}
+            resetCache={resetCache}
           />
         ) : (
           <PostCreateTemplate
@@ -119,6 +110,7 @@ function PostWriteScreen() {
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
             inputFileHandler={inputFileHandler}
+            resetCache={resetCache}
           />
         )}
       </BaseWrapper>

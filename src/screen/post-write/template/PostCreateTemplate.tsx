@@ -20,6 +20,7 @@ function PostCreateTemplate({
   uploadedFiles,
   inputFileHandler,
   uploadFilesToS3,
+  resetCache,
 }: IPostWriteTemplate) {
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
@@ -60,8 +61,7 @@ function PostCreateTemplate({
         window.alert('게시물 업로드에 실패했습니다.');
         return;
       }
-      // Todo : 캐싱하는부분.
-      // updateCache({})
+      resetCache();
       window.alert('게시물 업로드를 성공했습니다.');
     } catch (e) {
       console.log(e);

@@ -47,7 +47,7 @@ export const cache = new InMemoryCache({
         },
         getUserPosts: {
           read(existing, {args:{args:{username, limit, offset}}}:any) {
-            if(!existing){
+            if(!existing?.data?.length){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), username, offset, limit)
@@ -62,31 +62,31 @@ export const cache = new InMemoryCache({
         },
         getSubscribingPosts:{
           read(existing, {args:{ page:{limit, offset}}}:any) {
-            if(!existing){
+            if(!existing?.data?.length){
               return undefined
             }
-            console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
+            // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
             return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
           },
           keyArgs: [],
           merge(existing = {data:[]} , incomming:QGetSubscribingPosts_getSubscribingPosts) {
-            console.log("merge", existing, incomming)
+            // console.log("merge", existing, incomming)
             return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
           },
         },
         getPostsByAddress:{
           read(existing, {args:{ page:{limit, offset}}}:any) {
-            if(!existing){
+            if(!existing?.data?.length){
               return undefined
             }
-            console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
+            // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
             return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
           },
           keyArgs: ['@connection',['key']],
           merge(existing = {data:[]} , incomming:QGetPostsByAddress_getPostsByAddress) {
-            console.log("merge", existing, incomming)
+            // console.log("merge", existing, incomming)
             return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
           },
         },
@@ -95,13 +95,13 @@ export const cache = new InMemoryCache({
             if(!existing){
               return undefined
             }
-            console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
+            // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
             return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
           },
           keyArgs: false,
           merge(existing = {data:[]} , incomming:QGetMyLikedPosts_getMyLikedPosts) {
-            console.log("merge", existing, incomming)
+            // console.log("merge", existing, incomming)
             return {__typename : incomming.__typename, data:[...existing.data, ...incomming.data]};
           },
         }
