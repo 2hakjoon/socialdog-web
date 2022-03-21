@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { GetMyPostsInputDto } from "./globalTypes";
+import { CursorPaginationInputDto } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetMyPosts
@@ -11,6 +11,7 @@ import { GetMyPostsInputDto } from "./globalTypes";
 
 export interface QGetMyPosts_getMyPosts_data {
   __typename: "PostAll";
+  createdAt: string;
   photos: string;
   id: string;
   likes: number;
@@ -28,5 +29,5 @@ export interface QGetMyPosts {
 }
 
 export interface QGetMyPostsVariables {
-  args: GetMyPostsInputDto;
+  args: CursorPaginationInputDto;
 }

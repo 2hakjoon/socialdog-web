@@ -5,6 +5,7 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
+import { CursorInput } from '__generated__/globalTypes';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';
 
@@ -30,7 +31,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
     error: postsError,
     fetchMore: fetchPostsMore,
   } = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
-    variables: { username, page: { offset: 0, limit: postsLimit } },
+    variables: { username, page: { take: postsLimit } },
     notifyOnNetworkStatusChange: true,
   });
 
@@ -43,10 +44,14 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
     // console.log('useEffect', posts?.length, itemsCount, postsLimit);
     if (posts && postsLimit > itemsCount) {
       if (posts.length + itemsCount === postsLimit) {
+        const lastPost = posts[posts.length - 1];
+        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
         fetchPostsMore({
           variables: {
-            username,
-            page: { offset: posts?.length || 0, limit: itemsCount },
+            page: {
+              take: itemsCount,
+              cursor,
+            },
           },
         });
         // console.log('fetched');

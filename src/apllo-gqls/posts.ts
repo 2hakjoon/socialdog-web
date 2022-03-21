@@ -60,11 +60,12 @@ export const TOGGLE_LIKE_POST = gql`
 `
 
 export const GET_MYPOSTS = gql`
-  query QGetMyPosts($args:GetMyPostsInputDto!) {
+  query QGetMyPosts($args:CursorPaginationInputDto!) {
     getMyPosts(args:$args) {
       ok
       error
       data {
+        createdAt
         photos
         id
         likes
@@ -74,11 +75,12 @@ export const GET_MYPOSTS = gql`
 `
 
 export const GET_USER_POSTS = gql`
-  query QGetUserPosts($username: String!, $page: CorePagination!) {
+  query QGetUserPosts($username: String!, $page: CursorPaginationInputDto!) {
     getUserPosts(args:{ username:$username }, page: $page) @connection(key: $username ) {
       ok
       error
       data {
+        createdAt
         photos
         id
       }
@@ -87,7 +89,7 @@ export const GET_USER_POSTS = gql`
 `
 
 export const GET_POSTS_BY_ADDRESS = gql`
-  query QGetPostsByAddress ($address: String!, $page: CorePagination!){
+  query QGetPostsByAddress ($address: String!, $page: CursorPaginationInputDto!){
     getPostsByAddress(page: $page, args:{address:$address}) @connection(key: $address) {
       ok
       error
@@ -100,7 +102,7 @@ export const GET_POSTS_BY_ADDRESS = gql`
 `
 
 export const GET_MY_LIKED_POSTS = gql`
-  query QGetMyLikedPosts($page: CorePagination!) {
+  query QGetMyLikedPosts($page: CursorPaginationInputDto!) {
     getMyLikedPosts(page: $page) {
       data {
         ...PostData

@@ -46,13 +46,13 @@ export const cache = new InMemoryCache({
           }
         },
         getUserPosts: {
-          read(existing, {args:{args:{username, limit, offset}}}:any) {
+          read(existing, {args:{args:{take}}}:any) {
             if(!existing?.data?.length){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), username, offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
           },
           keyArgs: ["@connection", ["key"]],
           merge(existing = {data:[]} , incomming:QGetUserPosts_getUserPosts) {
@@ -76,13 +76,13 @@ export const cache = new InMemoryCache({
           },
         },
         getPostsByAddress:{
-          read(existing, {args:{ page:{limit, offset}}}:any) {
+          read(existing, {args:{ page:{take}}}:any) {
             if(!existing?.data?.length){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
           },
           keyArgs: ['@connection',['key']],
           merge(existing = {data:[]} , incomming:QGetPostsByAddress_getPostsByAddress) {
@@ -91,13 +91,13 @@ export const cache = new InMemoryCache({
           },
         },
         getMyLikedPosts:{
-          read(existing, {args:{ page:{limit, offset}}}:any) {
+          read(existing, {args:{ page:{take}}}:any) {
             if(!existing){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
           },
           keyArgs: false,
           merge(existing = {data:[]} , incomming:QGetMyLikedPosts_getMyLikedPosts) {

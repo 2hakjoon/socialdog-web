@@ -42,11 +42,6 @@ export interface ChangeBlockStateInputDto {
   username?: string | null;
 }
 
-export interface CorePagination {
-  offset: number;
-  limit: number;
-}
-
 export interface CreatePostInputDto {
   address?: string | null;
   placeId?: string | null;
@@ -91,11 +86,6 @@ export interface FileInputDto {
 
 export interface FindUserByUsernameInputDto {
   username: string;
-}
-
-export interface GetMyPostsInputDto {
-  offset: number;
-  limit: number;
 }
 
 export interface GetUserInputDto {

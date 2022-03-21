@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CorePagination } from "./globalTypes";
+import { CursorPaginationInputDto } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetPostsByAddress
@@ -41,5 +41,5 @@ export interface QGetPostsByAddress {
 
 export interface QGetPostsByAddressVariables {
   address: string;
-  page: CorePagination;
+  page: CursorPaginationInputDto;
 }

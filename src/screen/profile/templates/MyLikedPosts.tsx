@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';
 import { QGetMyLikedPosts, QGetMyLikedPostsVariables } from '__generated__/QGetMyLikedPosts';
+import { CursorInput } from '__generated__/globalTypes';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -30,7 +31,7 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
     error: postsError,
     fetchMore: fetchPostsMore,
   } = useQuery<QGetMyLikedPosts, QGetMyLikedPostsVariables>(GET_MY_LIKED_POSTS, {
-    variables: { page: { offset: 0, limit: postsLimit } },
+    variables: { page: { take: postsLimit } },
     notifyOnNetworkStatusChange: true,
   });
 
@@ -43,9 +44,14 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
     // console.log('useEffect', posts?.length, itemsCount, postsLimit);
     if (posts && postsLimit > itemsCount) {
       if (posts.length + itemsCount === postsLimit) {
+        const lastPost = posts[posts.length - 1];
+        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
         fetchPostsMore({
           variables: {
-            page: { offset: posts?.length || 0, limit: itemsCount },
+            page: {
+              take: itemsCount,
+              cursor,
+            },
           },
         });
         // console.log('fetched');

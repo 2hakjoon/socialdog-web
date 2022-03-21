@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CorePagination } from "./globalTypes";
+import { CursorPaginationInputDto } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetMyLikedPosts
@@ -40,5 +40,5 @@ export interface QGetMyLikedPosts {
 }
 
 export interface QGetMyLikedPostsVariables {
-  page: CorePagination;
+  page: CursorPaginationInputDto;
 }

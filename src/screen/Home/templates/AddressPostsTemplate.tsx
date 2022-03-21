@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { IPlaceTerms } from 'types/GooglePlace';
+import { CursorInput } from '__generated__/globalTypes';
 import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/QGetPostsByAddress';
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
@@ -23,8 +24,7 @@ function AddressPostsTemplate() {
     variables: {
       address,
       page: {
-        offset: 0,
-        limit: postsLimit,
+        take: postsLimit,
       },
     },
     notifyOnNetworkStatusChange: true,
@@ -39,12 +39,13 @@ function AddressPostsTemplate() {
     // console.log(posts, posts?.length);
     if (posts && posts.length && postsLimit > pageItemCount) {
       if (posts.length + pageItemCount === postsLimit) {
-        console.log('fetched');
+        const lastPost = posts[posts.length - 1];
+        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
         fetchMore({
           variables: {
             page: {
-              offset: posts.length,
-              limit: pageItemCount,
+              take: pageItemCount,
+              cursor,
             },
           },
         });
