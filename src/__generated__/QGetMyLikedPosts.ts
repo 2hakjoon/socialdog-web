@@ -24,6 +24,7 @@ export interface QGetMyLikedPosts_getMyLikedPosts_data {
   address: string | null;
   contents: string;
   liked: boolean;
+  createdAt: string;
   user: QGetMyLikedPosts_getMyLikedPosts_data_user;
 }
 

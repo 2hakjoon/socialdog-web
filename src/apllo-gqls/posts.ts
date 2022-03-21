@@ -8,6 +8,7 @@ const POST_FRAGMENT = gql`
     address
     contents
     liked
+    createdAt
     user {
       photo
       username
@@ -17,7 +18,7 @@ const POST_FRAGMENT = gql`
 `
 
 export const GET_SUBSCRIBING_POSTS = gql`
-  query QGetSubscribingPosts($page: CorePagination!) {
+  query QGetSubscribingPosts($page: CursorPaginationInputDto!) {
     getSubscribingPosts(page: $page) {
       ok
       error

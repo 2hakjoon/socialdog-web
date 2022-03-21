@@ -6,6 +6,7 @@ import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinitySc
 import { QGetSubscribingPosts } from '__generated__/QGetSubscribingPosts';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
+import { CursorInput } from '__generated__/globalTypes';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
@@ -18,8 +19,7 @@ function SubscribingsTemplate() {
   } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
     variables: {
       page: {
-        offset: 0,
-        limit: pageLimit,
+        take: pageLimit,
       },
     },
     notifyOnNetworkStatusChange: true,
@@ -33,11 +33,13 @@ function SubscribingsTemplate() {
     // console.log(posts, posts?.length, pageLimit);
     if (posts && pageLimit > pageItemCount) {
       if (posts.length + pageItemCount === pageLimit) {
+        const lastPost = posts[posts.length - 1];
+        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
         fetchMore({
           variables: {
             page: {
-              offset: posts.length,
-              limit: pageItemCount,
+              take: pageItemCount,
+              cursor,
             },
           },
         });

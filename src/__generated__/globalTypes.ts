@@ -58,6 +58,16 @@ export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
 }
 
+export interface CursorInput {
+  id: string;
+  createdAt: string;
+}
+
+export interface CursorPaginationInputDto {
+  take: number;
+  cursor?: CursorInput | null;
+}
+
 export interface EditPostInputDto {
   address?: string | null;
   placeId?: string | null;

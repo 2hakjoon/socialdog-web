@@ -22,5 +22,6 @@ export interface PostData {
   address: string | null;
   contents: string;
   liked: boolean;
+  createdAt: string;
   user: PostData_user;
 }

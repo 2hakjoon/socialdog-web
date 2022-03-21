@@ -3,7 +3,7 @@
 // @generated
 // This file was automatically generated and should not be edited.
 
-import { CorePagination } from "./globalTypes";
+import { CursorPaginationInputDto } from "./globalTypes";
 
 // ====================================================
 // GraphQL query operation: QGetSubscribingPosts
@@ -24,6 +24,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data {
   address: string | null;
   contents: string;
   liked: boolean;
+  createdAt: string;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
 }
 
@@ -39,5 +40,5 @@ export interface QGetSubscribingPosts {
 }
 
 export interface QGetSubscribingPostsVariables {
-  page: CorePagination;
+  page: CursorPaginationInputDto;
 }

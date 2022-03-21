@@ -61,13 +61,13 @@ export const cache = new InMemoryCache({
           },
         },
         getSubscribingPosts:{
-          read(existing, {args:{ page:{limit, offset}}}:any) {
+          read(existing, {args:{ page:{take}}}:any) {
             if(!existing?.data?.length){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(offset, limit)};
+            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
           },
           keyArgs: [],
           merge(existing = {data:[]} , incomming:QGetSubscribingPosts_getSubscribingPosts) {
