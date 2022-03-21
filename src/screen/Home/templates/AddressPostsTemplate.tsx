@@ -65,7 +65,7 @@ function AddressPostsTemplate() {
       <WrapperColumn p={'0 8px'} w={'100%'}>
         <WrapperInfinityScroll fetchHandler={getNextPage}>
           {posts?.map((post) => (
-            <PostCard {...post} />
+            <PostCard key={post.id} {...post} />
           ))}
           {postsLoading &&
             Array(pageItemCount)
