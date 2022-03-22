@@ -20,7 +20,7 @@ function PostCreateTemplate({
   uploadedFiles,
   inputFileHandler,
   uploadFilesToS3,
-  resetCache,
+  resetCache = () => {},
 }: IPostWriteTemplate) {
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
