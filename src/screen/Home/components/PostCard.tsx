@@ -7,7 +7,7 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons';
 import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
@@ -15,12 +15,13 @@ import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a lo
 import { Carousel } from 'react-responsive-carousel';
 import { gql, makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { DELETE_POST, TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { QMe } from '__generated__/QMe';
+import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -70,6 +71,7 @@ function PostCard({
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUserName = meData?.me.data?.username;
   const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
+  const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
   const client = useApolloClient();
   const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
@@ -103,8 +105,10 @@ function PostCard({
           return {
             ...existing,
             data: liked
-              ? existing.data.filter((post: { __ref: string }) => post.__ref !== `PostAll:${id}`)
-              : [{ __ref: `PostAll:${id}` }, ...existing.data],
+              ? existing.data.filter(
+                  (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename: 'PostAll' }),
+                )
+              : [{ __ref: client.cache.identify({ id, __typename: 'PostAll' }) }, ...existing.data],
           };
         },
       },
@@ -113,6 +117,17 @@ function PostCard({
 
   const moveToPostEdit = (postId: string) => {
     navigate(`${routes.postWrite}`, { state: { id, user, address, photos, contents, placeId } });
+  };
+
+  const deletePostHandler = async (postId: string) => {
+    const res = await deletePost({ variables: { args: { id: postId } } });
+    if (!res.data?.deletePost.ok) {
+      window.alert(res.data?.deletePost.error);
+      return;
+    }
+    const normalizedId = client.cache.identify({ id, __typename: 'PostAll' });
+    client.cache.evict({ id: normalizedId });
+    client.cache.gc();
   };
 
   return (
@@ -159,12 +174,20 @@ function PostCard({
             <TextBase text={address} />
           </WrapperRow>
           {authUserName === user.username && (
-            <FontAwesomeIcon
-              icon={faPenToSquare}
-              size="lg"
-              color={theme.color.achromatic.black}
-              onClick={() => moveToPostEdit(id)}
-            />
+            <>
+              <FontAwesomeIcon
+                icon={faPenToSquare}
+                size="lg"
+                color={theme.color.achromatic.black}
+                onClick={() => moveToPostEdit(id)}
+              />
+              <FontAwesomeIcon
+                icon={faXmark}
+                size="lg"
+                color={theme.color.achromatic.black}
+                onClick={() => deletePostHandler(id)}
+              />
+            </>
           )}
         </WrapperRow>
         <WrapperEllipsis line={3}>

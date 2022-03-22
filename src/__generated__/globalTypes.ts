@@ -63,6 +63,10 @@ export interface CursorPaginationInputDto {
   cursor?: CursorInput | null;
 }
 
+export interface DeletePostInputDto {
+  id: string;
+}
+
 export interface EditPostInputDto {
   address?: string | null;
   placeId?: string | null;

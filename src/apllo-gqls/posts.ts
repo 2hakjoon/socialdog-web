@@ -122,3 +122,12 @@ export const EDIT_POST = gql`
     }
   }
 `
+
+export const DELETE_POST = gql`
+  mutation MDeletePost($args: DeletePostInputDto!) {
+  deletePost(args: $args) {
+    error
+    ok
+  }
+}
+`

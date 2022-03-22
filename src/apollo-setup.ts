@@ -65,7 +65,7 @@ export const cache = new InMemoryCache({
             if(!existing?.data?.length){
               return undefined
             }
-            // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
+            // console.log("read", existing, existing.data.slice(0, take), take)
             
             return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
           },
