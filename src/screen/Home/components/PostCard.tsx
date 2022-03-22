@@ -67,6 +67,7 @@ function PostCard({
   contents,
   liked,
   placeId,
+  __typename,
 }: QGetSubscribingPosts_getSubscribingPosts_data) {
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUserName = meData?.me.data?.username;
@@ -87,7 +88,7 @@ function PostCard({
     }
     // 좋아요 버튼 토글
     client.cache.writeFragment({
-      id: `PostAll:${postId}`,
+      id: client.cache.identify({ id, __typename }),
       fragment: gql`
         fragment post on PostAll {
           liked
@@ -106,9 +107,9 @@ function PostCard({
             ...existing,
             data: liked
               ? existing.data.filter(
-                  (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename: 'PostAll' }),
+                  (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename }),
                 )
-              : [{ __ref: client.cache.identify({ id, __typename: 'PostAll' }) }, ...existing.data],
+              : [{ __ref: client.cache.identify({ id, __typename }) }, ...existing.data],
           };
         },
       },
@@ -116,7 +117,7 @@ function PostCard({
   };
 
   const moveToPostEdit = (postId: string) => {
-    navigate(`${routes.postWrite}`, { state: { id, user, address, photos, contents, placeId } });
+    navigate(`${routes.postWrite}`, { state: { id, user, address, photos, contents, placeId, __typename } });
   };
 
   const deletePostHandler = async (postId: string) => {
@@ -125,7 +126,7 @@ function PostCard({
       window.alert(res.data?.deletePost.error);
       return;
     }
-    const normalizedId = client.cache.identify({ id, __typename: 'PostAll' });
+    const normalizedId = client.cache.identify({ id, __typename });
     client.cache.evict({ id: normalizedId });
     client.cache.gc();
   };

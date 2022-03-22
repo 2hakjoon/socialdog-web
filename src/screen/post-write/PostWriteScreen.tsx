@@ -28,7 +28,7 @@ export interface IPostWriteTemplate {
   inputFileHandler: (e: BaseSyntheticEvent) => void;
   requestSignedUrl: () => Promise<FetchResult<MCreatePreSignedUrls, Record<string, any>, Record<string, any>>>;
   uploadFilesToS3: (files: FileList, urls: string[]) => Promise<AxiosResponse<any, any>[]>;
-  resetCache: () => void;
+  resetCache?: () => void;
 }
 
 function PostWriteScreen() {
@@ -100,7 +100,6 @@ function PostWriteScreen() {
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
             inputFileHandler={inputFileHandler}
-            resetCache={resetCache}
           />
         ) : (
           <PostCreateTemplate

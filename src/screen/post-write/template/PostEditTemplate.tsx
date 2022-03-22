@@ -1,4 +1,4 @@
-import { useMutation } from '@apollo/client';
+import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { EDIT_POST } from 'apllo-gqls/posts';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
@@ -27,6 +27,7 @@ function PostEditTemplate({
   inputFileHandler,
   uploadFilesToS3,
 }: IPostEditTemplate) {
+  const { cache } = useApolloClient();
   const { register, handleSubmit, formState, getValues, setValue } = useForm<EditPostInputDto>({ mode: 'onChange' });
   const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
 
@@ -72,8 +73,28 @@ function PostEditTemplate({
         window.alert('게시물 수정에 실패했습니다.');
         return;
       }
-      // Todo : 캐싱하는부분.
-      // updateCache({})
+      // 게시글 수정 캐싱
+      cache.writeFragment({
+        id: cache.identify({ id: postData.id, __typename: postData.__typename }),
+        fragment: gql`
+          fragment EditPost on PostAll {
+            id
+            __typename
+            address
+            placeId
+            photos
+            contents
+          }
+        `,
+        data: {
+          __typename: postData.__typename,
+          id: postData.id,
+          address: searchResult?.value.description,
+          placeId: searchResult?.value.place_id,
+          photos: JSON.stringify(photoUrls),
+          contents: formData.contents,
+        },
+      });
       window.alert('게시물 수젱을 성공했습니다.');
     } catch (e) {
       console.log(e);
