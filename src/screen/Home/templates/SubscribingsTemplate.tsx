@@ -10,7 +10,7 @@ import { CursorInput } from '__generated__/globalTypes';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
-  const [isLastPage, setIsLatsPage] = useState(false);
+  const [isLastPage, setIsLastPage] = useState(false);
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {
     data: postsData,
@@ -44,7 +44,7 @@ function SubscribingsTemplate() {
         },
       });
       if (res.data.getSubscribingPosts.data.length !== pageItemCount) {
-        setIsLatsPage(true);
+        setIsLastPage(true);
       }
       setPageLimit((prev) => prev + pageItemCount);
     }

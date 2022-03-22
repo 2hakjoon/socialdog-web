@@ -23,6 +23,7 @@ interface IMyPosts {
 }
 
 function MyPosts({ username, itemsCount }: IMyPosts) {
+  const [isLastPage, setIsLastPage] = useState(false);
   const [postsLimit, setPostsLimit] = useState<number>(itemsCount);
 
   const {
@@ -39,29 +40,23 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
   const posts = postsData?.getUserPosts.data;
   // console.log(posts);
 
-  // 다음페이지 데이터 요청
-  useEffect(() => {
-    // console.log('useEffect', posts?.length, itemsCount, postsLimit);
-    if (posts && postsLimit > itemsCount) {
-      if (posts.length + itemsCount === postsLimit) {
-        const lastPost = posts[posts.length - 1];
-        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-        fetchPostsMore({
-          variables: {
-            page: {
-              take: itemsCount,
-              cursor,
-            },
-          },
-        });
-        // console.log('fetched');
-      }
-    }
-  }, [posts]);
-
   // 무한스크롤 handling함수
-  const fetchNextPage = () => {
-    if (!postsError && posts?.length) {
+  const fetchNextPage = async () => {
+    if (!postsError && posts?.length && !isLastPage && !postsLoading) {
+      const lastPost = posts[posts.length - 1];
+      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+      const res = await fetchPostsMore({
+        variables: {
+          page: {
+            take: itemsCount,
+            cursor,
+          },
+        },
+      });
+      // console.log('fetched');
+      if (res.data.getUserPosts.data.length !== itemsCount) {
+        setIsLastPage(true);
+      }
       setPostsLimit((prev) => prev + itemsCount);
     }
   };
