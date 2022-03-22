@@ -10,6 +10,7 @@ import { CursorInput } from '__generated__/globalTypes';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
+  const [isLastPage, setIsLatsPage] = useState(false);
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {
     data: postsData,
@@ -27,28 +28,24 @@ function SubscribingsTemplate() {
     onError: (e) => console.log(e),
   });
   const posts = postsData?.getSubscribingPosts.data;
-  //  console.log(posts, postsLoading);
+  console.log(posts, postsLoading, 'isLastPage : ', isLastPage);
 
-  useEffect(() => {
-    // console.log(posts, posts?.length, pageLimit);
-    if (posts && pageLimit > pageItemCount) {
-      if (posts.length + pageItemCount === pageLimit) {
-        const lastPost = posts[posts.length - 1];
-        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-        fetchMore({
-          variables: {
-            page: {
-              take: pageItemCount,
-              cursor,
-            },
+  const nextPageHandler = async () => {
+    // 에러없고, 길이가 0도아니고, 로딩중도아니고, 마지막 페이지가 아닐때
+    if (!postsError && posts?.length && !postsLoading && !isLastPage) {
+      const lastPost = posts[posts.length - 1];
+      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+      const res = await fetchMore({
+        variables: {
+          page: {
+            take: pageItemCount,
+            cursor,
           },
-        });
+        },
+      });
+      if (res.data.getSubscribingPosts.data.length !== pageItemCount) {
+        setIsLatsPage(true);
       }
-    }
-  }, [posts]);
-
-  const nextPageHandler = () => {
-    if (!postsError && posts?.length) {
       setPageLimit((prev) => prev + pageItemCount);
     }
   };
