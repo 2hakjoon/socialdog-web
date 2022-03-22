@@ -28,7 +28,7 @@ function SubscribingsTemplate() {
     onError: (e) => console.log(e),
   });
   const posts = postsData?.getSubscribingPosts.data;
-  console.log(posts, postsLoading, 'isLastPage : ', isLastPage);
+  // console.log(posts, postsLoading, 'isLastPage : ', isLastPage);
 
   const nextPageHandler = async () => {
     // 에러없고, 길이가 0도아니고, 로딩중도아니고, 마지막 페이지가 아닐때

@@ -12,6 +12,7 @@ import PostCardLoading from '../components/PostCardLoading';
 
 function AddressPostsTemplate() {
   const pageItemCount = 6;
+  const [isLastPage, setIsLastPage] = useState(false);
   const [postsLimit, setPostsLimit] = useState(pageItemCount);
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>();
   const address = searchAddressTerms?.map((term) => term.value).join(' ') || '대한민국';
@@ -35,26 +36,21 @@ function AddressPostsTemplate() {
     setPostsLimit(pageItemCount);
   }, [searchAddressTerms]);
 
-  useEffect(() => {
-    // console.log(posts, posts?.length);
-    if (posts && posts.length && postsLimit > pageItemCount) {
-      if (posts.length + pageItemCount === postsLimit) {
-        const lastPost = posts[posts.length - 1];
-        const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-        fetchMore({
-          variables: {
-            page: {
-              take: pageItemCount,
-              cursor,
-            },
+  const getNextPage = async () => {
+    if (!postsError && posts?.length && !isLastPage && !postsLoading) {
+      const lastPost = posts[posts.length - 1];
+      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+      const res = await fetchMore({
+        variables: {
+          page: {
+            take: pageItemCount,
+            cursor,
           },
-        });
+        },
+      });
+      if (res.data.getPostsByAddress.data.length !== pageItemCount) {
+        setIsLastPage(true);
       }
-    }
-  }, [posts]);
-
-  const getNextPage = () => {
-    if (!postsError && posts?.length) {
       setPostsLimit((prev) => prev + pageItemCount);
     }
   };
