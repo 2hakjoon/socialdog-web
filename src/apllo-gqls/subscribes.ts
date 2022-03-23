@@ -62,6 +62,16 @@ export const REQUEST_SUBSCRIBE = gql`
   }
 }
 `
+
+export const CANCEL_SUBSCRIBE_REQUEST = gql`
+  mutation MCancelSubscribingRequest($args: CancelSubscribeRequestInputDto!) {
+  cancelSubscribingRequest(args: $args) {
+    error
+    ok
+  }
+}
+`
+
 export const RESPONSE_SUBSCRIBE = gql`
   mutation MResponseSubscribe($args: ResponseSubscribeInputDto!) {
   responseSubscribe(args: $args) {

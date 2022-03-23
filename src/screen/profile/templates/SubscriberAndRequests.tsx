@@ -82,10 +82,10 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
     cache.modify({
       id: cache.identify(makeReference('ROOT_QUERY')),
       fields: {
-        getSubscribeRequests(existing: QGetMySubscribersRequests_getSubscribeRequests) {
+        getSubscribeRequests(existing: { data: [{ __ref: string }] }) {
           return { ...existing, data: existing.data.filter((data: any) => data.__ref !== identifiedId) };
         },
-        getMyRejectRequests(existing: QGetMySubscribersRequests_getMySubscribers) {
+        getMyRejectRequests(existing: { data: [{ __ref: string }] }) {
           if (!existing) {
             return undefined;
           }

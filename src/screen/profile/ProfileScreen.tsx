@@ -58,7 +58,7 @@ function ProfileScreen() {
   );
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
-  // console.log('user', user, userProfileState);
+  console.log('user', user, userProfileState);
 
   const [modalType, setModalType] = useState<string | null>(null);
   // 구독 요청 함수
