@@ -25,6 +25,7 @@ export const GET_SUBSCRIBING_POSTS = gql`
       data {
       ...PostData
       }
+      length
     }
   }
   ${POST_FRAGMENT}

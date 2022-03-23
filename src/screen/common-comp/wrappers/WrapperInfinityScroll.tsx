@@ -20,6 +20,7 @@ function WrapperInfinityScroll({ children, fetchHandler }: IWrapperInfinityScrol
   });
 
   useEffect(() => {
+    // console.log(inView);
     // console.log('infinity', enableFetch);
     if (inView) {
       fetchHandler();

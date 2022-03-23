@@ -33,6 +33,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts {
   ok: boolean;
   error: string | null;
   data: QGetSubscribingPosts_getSubscribingPosts_data[];
+  length: number;
 }
 
 export interface QGetSubscribingPosts {

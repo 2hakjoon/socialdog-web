@@ -10,7 +10,6 @@ import { CursorInput } from '__generated__/globalTypes';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
-  const [isLastPage, setIsLastPage] = useState(false);
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const {
     data: postsData,
@@ -27,32 +26,44 @@ function SubscribingsTemplate() {
     fetchPolicy: 'cache-first',
     onError: (e) => console.log(e),
   });
+
+  const [isLastPage, setIsLastPage] = useState(false);
   const posts = postsData?.getSubscribingPosts.data;
-  // console.log(posts, postsLoading, 'isLastPage : ', isLastPage);
+  // console.log(postsData);
+  // console.log(posts, postsLoading);
 
   const nextPageHandler = async () => {
-    // 에러없고, 길이가 0도아니고, 로딩중도아니고, 마지막 페이지가 아닐때
-    if (!postsError && posts?.length && !postsLoading && !isLastPage) {
-      const lastPost = posts[posts.length - 1];
-      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-      const res = await fetchMore({
-        variables: {
-          page: {
-            take: pageItemCount,
-            cursor,
-          },
+    // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
+    if (postsError || postsLoading || isLastPage || !posts) {
+      return;
+    }
+
+    // 캐시에 데이터가 있을때, pagelimit만 변경.
+    if (postsData.getSubscribingPosts.length > pageLimit) {
+      setPageLimit((prev) => prev + pageItemCount);
+      return;
+    }
+
+    const lastPost = posts[posts.length - 1];
+    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    fetchMore({
+      variables: {
+        page: {
+          take: pageItemCount,
+          cursor,
         },
-      });
-      if (res.data.getSubscribingPosts.data.length !== pageItemCount) {
+      },
+    }).then((data) => {
+      if (data.data.getSubscribingPosts.length !== pageItemCount) {
+        setPageLimit((prev) => prev + pageItemCount);
         setIsLastPage(true);
       }
-      setPageLimit((prev) => prev + pageItemCount);
-    }
+    });
   };
 
   return (
     <WrapperColumn p={'0 8px'}>
-      <WrapperInfinityScroll fetchHandler={nextPageHandler}>
+      <WrapperInfinityScroll fetchHandler={() => nextPageHandler()}>
         {posts?.map((post, idx) => (
           <PostCard key={post.id} {...post} />
         ))}

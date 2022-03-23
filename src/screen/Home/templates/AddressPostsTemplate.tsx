@@ -51,8 +51,8 @@ function AddressPostsTemplate() {
       if (res.data.getPostsByAddress.data.length !== pageItemCount) {
         setIsLastPage(true);
       }
-      setPostsLimit((prev) => prev + pageItemCount);
     }
+    setPostsLimit((prev) => prev + pageItemCount);
   };
 
   return (
