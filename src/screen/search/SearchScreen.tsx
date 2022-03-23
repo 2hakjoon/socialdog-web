@@ -66,7 +66,7 @@ function SearchScreen() {
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
         {findResults?.map((findResult) => (
-          <WrapperRow>
+          <WrapperRow p={'0 8px'}>
             <UserCardThin key={findResult.id} {...findResult} />
           </WrapperRow>
         ))}
