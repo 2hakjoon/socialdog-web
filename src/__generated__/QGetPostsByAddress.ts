@@ -33,6 +33,7 @@ export interface QGetPostsByAddress_getPostsByAddress {
   ok: boolean;
   error: string | null;
   data: QGetPostsByAddress_getPostsByAddress_data[];
+  length: number;
 }
 
 export interface QGetPostsByAddress {

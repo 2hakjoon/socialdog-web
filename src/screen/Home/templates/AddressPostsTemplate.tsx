@@ -37,22 +37,32 @@ function AddressPostsTemplate() {
   }, [searchAddressTerms]);
 
   const getNextPage = async () => {
-    if (!postsError && posts?.length && !isLastPage && !postsLoading) {
-      const lastPost = posts[posts.length - 1];
-      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-      const res = await fetchMore({
-        variables: {
-          page: {
-            take: pageItemCount,
-            cursor,
-          },
+    // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
+    if (postsError || postsLoading || isLastPage || !posts) {
+      return;
+    }
+
+    // 캐시에 데이터가 있을때, pagelimit만 변경.
+    if (postDatas.getPostsByAddress.length > postsLimit) {
+      setPostsLimit((prev) => prev + pageItemCount);
+      return;
+    }
+
+    const lastPost = posts[posts.length - 1];
+    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    fetchMore({
+      variables: {
+        page: {
+          take: pageItemCount,
+          cursor,
         },
-      });
-      if (res.data.getPostsByAddress.data.length !== pageItemCount) {
+      },
+    }).then((data) => {
+      if (data.data.getPostsByAddress.length !== pageItemCount) {
+        setPostsLimit((prev) => prev + pageItemCount);
         setIsLastPage(true);
       }
-    }
-    setPostsLimit((prev) => prev + pageItemCount);
+    });
   };
 
   return (

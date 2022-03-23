@@ -97,6 +97,7 @@ export const GET_POSTS_BY_ADDRESS = gql`
       data {
         ...PostData
       }
+      length
     }
   }
   ${POST_FRAGMENT}

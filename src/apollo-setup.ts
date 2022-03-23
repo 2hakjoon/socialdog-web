@@ -67,7 +67,13 @@ export const cache = new InMemoryCache({
             }
             // console.log("read", existing, existing.data.slice(0, take), take)
             
-            return {__typename: existing.__typename, error:null, ok:true, length:existing.data.length, data: existing.data.slice(0, take)};
+            return {
+              __typename: existing.__typename,
+              error:null, 
+              ok:true,
+              length:existing.data.length,
+              data: existing.data.slice(0, take)
+            };
           },
           keyArgs: [],
           merge(existing = {data:[]} , incomming:QGetSubscribingPosts_getSubscribingPosts) {
@@ -82,7 +88,13 @@ export const cache = new InMemoryCache({
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
+            return {
+              __typename: existing.__typename,
+              error:null,
+              ok:true,
+              length:existing.data.length,
+              data: existing.data.slice(0, take)
+            };
           },
           keyArgs: ['@connection',['key']],
           merge(existing = {data:[]} , incomming:QGetPostsByAddress_getPostsByAddress) {
