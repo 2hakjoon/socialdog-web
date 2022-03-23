@@ -10,13 +10,13 @@ const Button = styled.button`
   border-radius: 100px;
 `;
 
-interface IButtonBasic {
+interface IButtonSubmit {
   title: string;
   onClick: (a: any) => void;
 }
 
-function ButtonBasic({ title, onClick }: IButtonBasic) {
+function ButtonSubmit({ title, onClick }: IButtonSubmit) {
   return <Button onClick={onClick}>{title}</Button>;
 }
 
-export default ButtonBasic;
+export default ButtonSubmit;

@@ -8,7 +8,7 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import ButtonBasic from 'screen/common-comp/button/ButtonBasic';
+import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import FormInput from 'screen/common-comp/input/FormInput';
@@ -158,7 +158,7 @@ function ProfileEditScreen() {
                 <TextBase text={'강아지 이름'} />
                 <FormInput register={register('dogname')} ph={'내용을 입력해주세용'} />
               </WrapperColumn>
-              <ButtonBasic title="저장하기" onClick={handleSubmit(onSubmit)} />
+              <ButtonSubmit title="저장하기" onClick={handleSubmit(onSubmit)} />
             </FormWrapper>
           </>
         )}
