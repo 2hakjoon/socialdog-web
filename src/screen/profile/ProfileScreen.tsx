@@ -27,7 +27,7 @@ import { faIdBadge } from '@fortawesome/free-regular-svg-icons';
 import { theme } from 'assets/styles/theme';
 import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
-import ButtonSmall from 'screen/common-comp/button/ButtonSmall';
+import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 
 type Params = {
   username: string;
@@ -155,7 +155,7 @@ function ProfileScreen() {
                     </WrapperColumn>
                   </WrapperRow>
                   {isMyProfile() ? (
-                    <ButtonSmall title={'차단-거절 관리'} onClick={() => openBlockAndRejected()} />
+                    <ButtonSmallBlue title={'차단-거절 관리'} onClick={() => openBlockAndRejected()} />
                   ) : (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                       {isSubscribeConfrimed() && (

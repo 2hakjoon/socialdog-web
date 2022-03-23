@@ -11,6 +11,8 @@ import { GET_MY_SUBSCRIBERS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subs
 import { QGetMySubscribersRequests } from '__generated__/QGetMySubscribersRequests';
 import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
+import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
+import { theme } from 'assets/styles/theme';
 
 interface ITabBox {
   selected: boolean;
@@ -57,12 +59,10 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
               {subscribers?.map((subscriber) => (
                 <WrapperRow w="100%">
                   <UserCardThin onClick={closeModal} {...subscriber} />
-                  <button
-                    type="button"
+                  <ButtonSmallBlue
+                    title="보류"
                     onClick={() => onResponseSubscribe(subscriber.id, SubscribeRequestState.REQUESTED)}
-                  >
-                    구독보류
-                  </button>
+                  />
                 </WrapperRow>
               ))}
             </>
@@ -72,12 +72,15 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
               {subscribeRequests?.map((user) => (
                 <WrapperRow>
                   <UserCardThin onClick={closeModal} {...user} />
-                  <button type="button" onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}>
-                    수락하기
-                  </button>
-                  <button type="button" onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.REJECTED)}>
-                    거절하기
-                  </button>
+                  <ButtonSmallBlue
+                    title="수락"
+                    onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}
+                  />
+
+                  <ButtonSmallBlue
+                    title="거절"
+                    onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.REJECTED)}
+                  />
                 </WrapperRow>
               ))}
             </>
