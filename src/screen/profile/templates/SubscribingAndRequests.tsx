@@ -49,7 +49,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
       id: toId,
       __typename: 'UserProfile',
     });
-    console.log(identifiedId);
+    // console.log(identifiedId);
     cache.modify({
       fields: {
         getSubscribingRequests(existing: { data: [{ __ref: string }] }) {

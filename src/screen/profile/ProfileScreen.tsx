@@ -60,7 +60,7 @@ function ProfileScreen() {
   });
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
-  console.log('user', user, userProfileState);
+  // console.log('user', user, userProfileState);
 
   const [modalType, setModalType] = useState<string | null>(null);
   // 구독 요청 함수
@@ -96,7 +96,7 @@ function ProfileScreen() {
 
   const oncancelSubscribing = async (to: string) => {
     const res = await cancelSubscribing({ variables: { args: { to } } });
-    console.log(res);
+    // console.log(res);
     if (!res.data?.cancelSubscribing.ok) {
       window.alert(res.data?.cancelSubscribing.error);
       // return
