@@ -13,6 +13,7 @@ import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/M
 import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import { theme } from 'assets/styles/theme';
+import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 
 interface ITabBox {
   selected: boolean;
@@ -77,7 +78,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}
                   />
 
-                  <ButtonSmallBlue
+                  <ButtonSmallWhite
                     title="거절"
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.REJECTED)}
                   />
