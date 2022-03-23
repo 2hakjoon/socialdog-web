@@ -88,7 +88,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
           {selectedTab === 0 && (
             <>
               {rejectedUsers?.map((rejectedUser) => (
-                <WrapperRow w="100%">
+                <WrapperRow key={rejectedUser.id} w="100%" p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...rejectedUser} />
                   <ButtonSmallBlue title="수락" onClick={() => onConfirmRequest(rejectedUser.id)} />
                 </WrapperRow>
@@ -98,9 +98,9 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
           {selectedTab === 1 && (
             <>
               {blockingUsers?.map((blockingUser) => (
-                <>
+                <WrapperRow key={blockingUser.id} w="100%" p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...blockingUser} />
-                </>
+                </WrapperRow>
               ))}
             </>
           )}

@@ -42,7 +42,6 @@ function ProfileScreen() {
   const evictCache = useEvictCache();
   const navigate = useNavigate();
   const [postsType, setPostType] = useState<PostType>('MY');
-  // console.log('postsLimit', postsLimit);
   const { username } = useParams<Params>();
   if (!username) {
     navigate(routes.home);
@@ -75,7 +74,6 @@ function ProfileScreen() {
     }
     if (user) {
       evictCache(user.id, 'UserProfileAll');
-      // refetch();
     }
   };
 
@@ -97,13 +95,16 @@ function ProfileScreen() {
           }
           return blockState
             ? { ...existing, data: [{ __ref: identifiedId }, ...existing.data] }
-            : existing.data.filter((data) => data.__ref !== identifiedId);
+            : { ...existing, data: existing.data.filter((data) => data.__ref !== identifiedId) };
         },
       },
     });
-    refetch();
+    if (user) {
+      evictCache(user.id, 'UserProfileAll');
+    }
   };
 
+  // 구독 취소
   const oncancelSubscribing = async (to: string) => {
     const res = await cancelSubscribing({ variables: { args: { to } } });
     // console.log(res);

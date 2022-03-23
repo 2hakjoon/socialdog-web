@@ -138,7 +138,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
           {selectedTab === 0 && (
             <>
               {subscribers?.map((subscriber) => (
-                <WrapperRow w="100%">
+                <WrapperRow key={subscriber.id} w="100%" p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...subscriber} />
                   <ButtonSmallBlue
                     title="보류"
@@ -151,7 +151,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
           {selectedTab === 1 && (
             <>
               {subscribeRequests?.map((user) => (
-                <WrapperRow>
+                <WrapperRow key={user.id} p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...user} />
                   <ButtonSmallBlue
                     title="수락"

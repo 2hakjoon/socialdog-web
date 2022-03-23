@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import FormInput from 'screen/common-comp/input/FormInput';
+import TextBase from 'screen/common-comp/texts/TextBase';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
@@ -53,14 +54,13 @@ function SearchScreen() {
     setFindresults(findUserResult.data?.findUsersByUsername.data);
   };
 
-  const moveToProfile = (username: string) => {
-    navigage(`/${username}`);
-  };
-
   return (
     <>
       <MainHeader />
       <BaseWrapper>
+        <WrapperRow w="100%" jc="center" h="30px">
+          <TextBase text={'친구 찾기'} />
+        </WrapperRow>
         <FormWrapper>
           <FormInput register={register('username')} ph={'검색어를 입력해주세요'} />
           <SButton onClick={onSearch}>검색</SButton>

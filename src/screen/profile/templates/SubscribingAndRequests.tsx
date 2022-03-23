@@ -78,14 +78,14 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
           {selectedTab === 0 && (
             <>
               {subscribingUsers?.map((subscribingUser) => (
-                <UserCardThin onClick={closeModal} {...subscribingUser} />
+                <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} />
               ))}
             </>
           )}
           {selectedTab === 1 && (
             <>
               {subscribingRequests?.map((subscribingRequest) => (
-                <WrapperRow w="100%">
+                <WrapperRow key={subscribingRequest.id} w="100%" p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...subscribingRequest} />
                   <ButtonSmallWhite
                     title="취소"
