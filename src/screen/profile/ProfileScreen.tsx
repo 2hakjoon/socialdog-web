@@ -28,6 +28,7 @@ import { theme } from 'assets/styles/theme';
 import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
+import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 
 type Params = {
   username: string;
@@ -197,24 +198,16 @@ function ProfileScreen() {
                   ) : (
                     <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                       {isSubscribeConfrimed() && (
-                        <button type="button" onClick={() => oncancelSubscribing(user.id)}>
-                          구독취소
-                        </button>
+                        <ButtonSmallWhite title="구독취소" onClick={() => oncancelSubscribing(user.id)} />
                       )}
                       {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
                       {isNotSubscribeReqested() && (
-                        <button type="button" onClick={() => onRequestSubscribe(user.id)}>
-                          구독신청
-                        </button>
+                        <ButtonSmallBlue title="구독신청" onClick={() => onRequestSubscribe(user.id)} />
                       )}
                       {isBlokingPerson() ? (
-                        <button type="button" onClick={() => changeUserBlock(username, false)}>
-                          차단해제
-                        </button>
+                        <ButtonSmallBlue title="차단해제" onClick={() => changeUserBlock(username, false)} />
                       ) : (
-                        <button type="button" onClick={() => changeUserBlock(username, true)}>
-                          차단
-                        </button>
+                        <ButtonSmallWhite title="차단" onClick={() => changeUserBlock(username, true)} />
                       )}
                     </WrapperRow>
                   )}
@@ -241,9 +234,7 @@ function ProfileScreen() {
           {isBlokingPerson() ? (
             <>
               <TextBase text={'차단한 계정입니다'} />
-              <button type="button" onClick={() => changeUserBlock(username, false)}>
-                차단해제
-              </button>
+              <ButtonSmallBlue title="차단해제" onClick={() => changeUserBlock(username, false)} />
             </>
           ) : (
             <>
