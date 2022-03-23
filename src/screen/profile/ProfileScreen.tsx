@@ -72,6 +72,17 @@ function ProfileScreen() {
     if (!res.data?.requestSubscribe.ok) {
       window.alert(res.data?.requestSubscribe.error);
     }
+    const identifiedId = cache.identify({ id: user?.id, __typename: 'UserProfile' });
+    cache.modify({
+      fields: {
+        getSubscribingRequests(existing: { data: [{ __ref: string }] }) {
+          if (!existing) {
+            return null;
+          }
+          return { ...existing, data: [{ __ref: identifiedId }, ...existing.data] };
+        },
+      },
+    });
     if (user) {
       evictCache(user.id, 'UserProfileAll');
     }
