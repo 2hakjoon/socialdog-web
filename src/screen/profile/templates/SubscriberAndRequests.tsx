@@ -4,15 +4,18 @@ import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import { useState } from 'react';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
-import { useMutation, useQuery } from '@apollo/client';
+import { makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
 import { GET_MY_SUBSCRIBERS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { QGetMySubscribersRequests } from '__generated__/QGetMySubscribersRequests';
+import {
+  QGetMySubscribersRequests,
+  QGetMySubscribersRequests_getMySubscribers,
+  QGetMySubscribersRequests_getSubscribeRequests,
+} from '__generated__/QGetMySubscribersRequests';
 import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
-import { theme } from 'assets/styles/theme';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 
 interface ITabBox {
@@ -32,6 +35,7 @@ interface ISubscriberAndRequests {
 }
 
 function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
+  const { cache } = useApolloClient();
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const { data: mySubscriberRequests } = useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
@@ -41,6 +45,70 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const onResponseSubscribe = async (fromUserId: string, subscribeRequest: SubscribeRequestState) => {
     const res = await responseSubscribe({ variables: { args: { from: fromUserId, subscribeRequest } } });
     console.log(res);
+    if (!res.data?.responseSubscribe.ok) {
+      window.alert(res.data?.responseSubscribe.error);
+      return;
+    }
+    if (subscribeRequest === SubscribeRequestState.CONFIRMED) {
+      cacheSubscribeConfirm(fromUserId);
+    }
+    if (subscribeRequest === SubscribeRequestState.REJECTED) {
+      cacheSubscribeReject(fromUserId);
+    }
+    if (subscribeRequest === SubscribeRequestState.REQUESTED) {
+      cacheSubscribePostPone(fromUserId);
+    }
+  };
+
+  const cacheSubscribeConfirm = (fromUserId: string) => {
+    const identifiedId = cache.identify({ id: fromUserId, __typename: 'UserProfile' });
+    // console.log(identifiedId);
+    cache.modify({
+      id: cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getMySubscribers(existing: QGetMySubscribersRequests_getMySubscribers) {
+          return { ...existing, data: [{ __ref: identifiedId }, ...existing.data] };
+        },
+        getSubscribeRequests(existing: QGetMySubscribersRequests_getSubscribeRequests) {
+          return { ...existing, data: existing.data.filter((data: any) => data.__ref !== identifiedId) };
+        },
+      },
+    });
+  };
+
+  const cacheSubscribeReject = (fromUserId: string) => {
+    const identifiedId = cache.identify({ id: fromUserId, __typename: 'UserProfile' });
+    // console.log(identifiedId);
+    cache.modify({
+      id: cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getSubscribeRequests(existing: QGetMySubscribersRequests_getSubscribeRequests) {
+          return { ...existing, data: existing.data.filter((data: any) => data.__ref !== identifiedId) };
+        },
+        getMyRejectRequests(existing: QGetMySubscribersRequests_getMySubscribers) {
+          if (!existing) {
+            return undefined;
+          }
+          return { ...existing, data: [{ __ref: identifiedId }, ...existing.data] };
+        },
+      },
+    });
+  };
+
+  const cacheSubscribePostPone = (fromUserId: string) => {
+    const identifiedId = cache.identify({ id: fromUserId, __typename: 'UserProfile' });
+    // console.log(identifiedId);
+    cache.modify({
+      id: cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getMySubscribers(existing: QGetMySubscribersRequests_getMySubscribers) {
+          return { ...existing, data: existing.data.filter((data: any) => data.__ref !== identifiedId) };
+        },
+        getSubscribeRequests(existing: QGetMySubscribersRequests_getSubscribeRequests) {
+          return { ...existing, data: [{ __ref: identifiedId }, ...existing.data] };
+        },
+      },
+    });
   };
 
   return (
