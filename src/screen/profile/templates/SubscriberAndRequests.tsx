@@ -17,6 +17,8 @@ import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/M
 import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
+import { QMe } from '__generated__/QMe';
+import { MYPROFILE } from 'apllo-gqls/users';
 
 interface ITabBox {
   selected: boolean;
@@ -41,6 +43,8 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
   const subscribers = mySubscriberRequests?.getMySubscribers.data;
   const subscribeRequests = mySubscriberRequests?.getSubscribeRequests.data;
+  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
+  const authUser = authUserData?.me.data;
 
   const onResponseSubscribe = async (fromUserId: string, subscribeRequest: SubscribeRequestState) => {
     const res = await responseSubscribe({ variables: { args: { from: fromUserId, subscribeRequest } } });
@@ -57,6 +61,15 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
     }
     if (subscribeRequest === SubscribeRequestState.REQUESTED) {
       cacheSubscribePostPone(fromUserId);
+    }
+    const identifiedAuhUser = cache.identify({
+      id: authUser?.id,
+      __typename: 'UserProfileAll',
+    });
+
+    if (identifiedAuhUser) {
+      cache.evict({ id: identifiedAuhUser });
+      cache.gc();
     }
   };
 

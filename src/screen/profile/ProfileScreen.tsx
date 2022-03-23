@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
-import { useMutation, useQuery } from '@apollo/client';
+import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -36,6 +36,7 @@ type Params = {
 type PostType = 'MY' | 'LIKED';
 
 function ProfileScreen() {
+  const { cache } = useApolloClient();
   const navigate = useNavigate();
   const [postsType, setPostType] = useState<PostType>('MY');
   // console.log('postsLimit', postsLimit);
@@ -50,12 +51,13 @@ function ProfileScreen() {
   const { data: authUserData } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
-  const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
-    GET_USER_PROFILE,
-    {
-      variables: { args: { username } },
-    },
-  );
+  const {
+    data: userData,
+    loading: userDataLoading,
+    refetch,
+  } = useQuery<QGetUserProfile, QGetUserProfileVariables>(GET_USER_PROFILE, {
+    variables: { args: { username } },
+  });
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
   console.log('user', user, userProfileState);
@@ -72,12 +74,48 @@ function ProfileScreen() {
     const res = await changeBlockState({
       variables: { args: { username: toUsername, block: blockState } },
     });
-    console.log(res);
+    if (!res.data?.changeBlockState.ok) {
+      window.alert(res.data?.changeBlockState.error);
+      // return;
+    }
+    const identifiedId = cache.identify({ id: user?.id, __typename: 'UserProfile' });
+    cache.modify({
+      fields: {
+        getMyBlockingUsers(existing: { data: [{ __ref: string }] }) {
+          if (!existing) {
+            return null;
+          }
+          return blockState
+            ? { ...existing, data: [{ __ref: identifiedId }, ...existing.data] }
+            : existing.data.filter((data) => data.__ref !== identifiedId);
+        },
+      },
+    });
+    refetch();
   };
 
   const oncancelSubscribing = async (to: string) => {
     const res = await cancelSubscribing({ variables: { args: { to } } });
     console.log(res);
+    if (!res.data?.cancelSubscribing.ok) {
+      window.alert(res.data?.cancelSubscribing.error);
+      // return
+    }
+    const identifiedId = cache.identify({ id: user?.id, __typename: 'UserProfile' });
+    cache.modify({
+      fields: {
+        getMySubscribings(existing: { data: [{ __ref: string }] }) {
+          if (!existing) {
+            return null;
+          }
+          return existing.data.filter((data) => data.__ref !== identifiedId);
+        },
+      },
+    });
+    const identifiedAuthUserId = cache.identify({ id: authUser?.id, __typename: 'UserProfileAll' });
+    cache.evict({ id: identifiedAuthUserId });
+    cache.gc();
+    refetch();
   };
 
   const isMyProfile = () => {

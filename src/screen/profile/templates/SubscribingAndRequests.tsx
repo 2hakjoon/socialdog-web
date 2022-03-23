@@ -7,10 +7,8 @@ import ModalRound from 'screen/common-comp/modal/ModalRound';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import { CANCEL_SUBSCRIBE_REQUEST, GET_MY_SUBSCRIBINGS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import { CANCEL_SUBSCRIBE_REQUEST, GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/subscribes';
 import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
-import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
-import { SubscribeRequestState } from '__generated__/globalTypes';
 import { MCancelSubscribingRequest, MCancelSubscribingRequestVariables } from '__generated__/MCancelSubscribingRequest';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 
@@ -55,7 +53,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
     cache.modify({
       fields: {
         getSubscribingRequests(existing: { data: [{ __ref: string }] }) {
-          console.log(existing);
+          // console.log(existing);
           return { ...existing, data: existing.data.filter((data) => data.__ref !== identifiedId) };
         },
       },
