@@ -30,7 +30,7 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
     data: postsData,
     loading: postsLoading,
     error: postsError,
-    fetchMore: fetchPostsMore,
+    fetchMore,
   } = useQuery<QGetMyLikedPosts, QGetMyLikedPostsVariables>(GET_MY_LIKED_POSTS, {
     variables: { page: { take: postsLimit } },
     notifyOnNetworkStatusChange: true,
@@ -42,22 +42,32 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
 
   // 무한스크롤 handling함수
   const fetchNextPage = async () => {
-    if (posts?.length && !postsError && !postsLoading && !isLastPage) {
-      const lastPost = posts[posts.length - 1];
-      const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
-      const res = await fetchPostsMore({
-        variables: {
-          page: {
-            take: itemsCount,
-            cursor,
-          },
+    // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
+    if (postsError || postsLoading || isLastPage || !posts) {
+      return;
+    }
+
+    // 캐시에 데이터가 있을때, pagelimit만 변경.
+    if (postsData.getMyLikedPosts.length > postsLimit) {
+      setPostsLimit((prev) => prev + itemsCount);
+      return;
+    }
+
+    const lastPost = posts[posts.length - 1];
+    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    fetchMore({
+      variables: {
+        page: {
+          take: itemsCount,
+          cursor,
         },
-      });
-      if (res.data.getMyLikedPosts.data.length !== itemsCount) {
+      },
+    }).then((data) => {
+      if (data.data.getMyLikedPosts.length !== itemsCount) {
+        setPostsLimit((prev) => prev + itemsCount);
         setIsLastPage(true);
       }
-      setPostsLimit((prev) => prev + itemsCount);
-    }
+    });
   };
 
   return (

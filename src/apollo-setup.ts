@@ -52,7 +52,13 @@ export const cache = new InMemoryCache({
             }
             // console.log("read", existing, existing.data.slice(offset, limit), username, offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
+            return {
+              __typename: existing.__typename,
+              error:null,
+              ok:true,
+              length:existing.data.length,
+              data: existing.data.slice(0, take)
+            };
           },
           keyArgs: ["@connection", ["key"]],
           merge(existing = {data:[]} , incomming:QGetUserPosts_getUserPosts) {
@@ -109,7 +115,12 @@ export const cache = new InMemoryCache({
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
             
-            return {__typename: existing.__typename, error:null, ok:true, data: existing.data.slice(0, take)};
+            return {
+              __typename: existing.__typename, 
+              error:null, 
+              ok:true, 
+              length:existing.data.length,
+              data: existing.data.slice(0, take)};
           },
           keyArgs: false,
           merge(existing = {data:[]} , incomming:QGetMyLikedPosts_getMyLikedPosts) {

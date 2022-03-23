@@ -10,7 +10,7 @@ import { CursorPaginationInputDto } from "./globalTypes";
 // ====================================================
 
 export interface QGetUserPosts_getUserPosts_data {
-  __typename: "Posts";
+  __typename: "PostAll";
   createdAt: string;
   photos: string;
   id: string;
@@ -21,6 +21,7 @@ export interface QGetUserPosts_getUserPosts {
   ok: boolean;
   error: string | null;
   data: QGetUserPosts_getUserPosts_data[];
+  length: number;
 }
 
 export interface QGetUserPosts {

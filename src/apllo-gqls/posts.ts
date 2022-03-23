@@ -71,6 +71,7 @@ export const GET_MYPOSTS = gql`
         id
         likes
       }
+      length
     }
   }
 `
@@ -85,6 +86,7 @@ export const GET_USER_POSTS = gql`
         photos
         id
       }
+      length
     }
   }
 `
@@ -109,6 +111,7 @@ export const GET_MY_LIKED_POSTS = gql`
       data {
         ...PostData
       }
+      length
       ok
       error
     }

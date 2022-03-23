@@ -22,6 +22,7 @@ export interface QGetMyPosts_getMyPosts {
   ok: boolean;
   error: string | null;
   data: QGetMyPosts_getMyPosts_data[];
+  length: number;
 }
 
 export interface QGetMyPosts {

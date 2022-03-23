@@ -31,6 +31,7 @@ export interface QGetMyLikedPosts_getMyLikedPosts_data {
 export interface QGetMyLikedPosts_getMyLikedPosts {
   __typename: "GetMyLikedPostsOutputDto";
   data: QGetMyLikedPosts_getMyLikedPosts_data[];
+  length: number;
   ok: boolean;
   error: string | null;
 }
