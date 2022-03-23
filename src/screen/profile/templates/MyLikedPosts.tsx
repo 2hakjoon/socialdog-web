@@ -1,11 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useQuery } from '@apollo/client';
-import { GET_MY_LIKED_POSTS, GET_USER_POSTS } from 'apllo-gqls/posts';
+import { GET_MY_LIKED_POSTS } from 'apllo-gqls/posts';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
-import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';
 import { QGetMyLikedPosts, QGetMyLikedPostsVariables } from '__generated__/QGetMyLikedPosts';
 import { CursorInput } from '__generated__/globalTypes';

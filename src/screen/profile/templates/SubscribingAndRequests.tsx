@@ -11,6 +11,7 @@ import { CANCEL_SUBSCRIBE_REQUEST, GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gq
 import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
 import { MCancelSubscribingRequest, MCancelSubscribingRequestVariables } from '__generated__/MCancelSubscribingRequest';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
+import useEvictCache from 'hooks/useEvictCache';
 
 interface ITabBox {
   selected: boolean;
@@ -30,6 +31,7 @@ interface ISubscribingAndRequests {
 
 function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   const { cache } = useApolloClient();
+  const evictCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const [cancleSubscribingRequest] = useMutation<MCancelSubscribingRequest, MCancelSubscribingRequestVariables>(
     CANCEL_SUBSCRIBE_REQUEST,
@@ -58,6 +60,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
         },
       },
     });
+    evictCache(toId, 'UserProfileAll');
   };
 
   return (

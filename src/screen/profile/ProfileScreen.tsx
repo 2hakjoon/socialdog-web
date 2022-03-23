@@ -29,6 +29,7 @@ import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
+import useEvictCache from 'hooks/useEvictCache';
 
 type Params = {
   username: string;
@@ -38,6 +39,7 @@ type PostType = 'MY' | 'LIKED';
 
 function ProfileScreen() {
   const { cache } = useApolloClient();
+  const evictCache = useEvictCache();
   const navigate = useNavigate();
   const [postsType, setPostType] = useState<PostType>('MY');
   // console.log('postsLimit', postsLimit);
@@ -68,6 +70,13 @@ function ProfileScreen() {
   const onRequestSubscribe = async (toId: string) => {
     const res = await requestSubscribe({ variables: { args: { to: toId } } });
     // console.log(res);
+    if (!res.data?.requestSubscribe.ok) {
+      window.alert(res.data?.requestSubscribe.error);
+    }
+    if (user) {
+      evictCache(user.id, 'UserProfileAll');
+      // refetch();
+    }
   };
 
   // 유저 차단상태 변경
@@ -113,10 +122,11 @@ function ProfileScreen() {
         },
       },
     });
-    const identifiedAuthUserId = cache.identify({ id: authUser?.id, __typename: 'UserProfileAll' });
-    cache.evict({ id: identifiedAuthUserId });
-    cache.gc();
-    refetch();
+
+    if (authUser) {
+      evictCache(authUser.id, 'UserProfileAll');
+      refetch();
+    }
   };
 
   const isMyProfile = () => {

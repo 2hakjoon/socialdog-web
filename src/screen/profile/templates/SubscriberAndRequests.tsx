@@ -19,6 +19,7 @@ import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import { QMe } from '__generated__/QMe';
 import { MYPROFILE } from 'apllo-gqls/users';
+import useEvictCache from 'hooks/useEvictCache';
 
 interface ITabBox {
   selected: boolean;
@@ -38,6 +39,7 @@ interface ISubscriberAndRequests {
 
 function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const { cache } = useApolloClient();
+  const evitCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const { data: mySubscriberRequests } = useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
@@ -62,15 +64,6 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
     if (subscribeRequest === SubscribeRequestState.REQUESTED) {
       cacheSubscribePostPone(fromUserId);
     }
-    const identifiedAuhUser = cache.identify({
-      id: authUser?.id,
-      __typename: 'UserProfileAll',
-    });
-
-    if (identifiedAuhUser) {
-      cache.evict({ id: identifiedAuhUser });
-      cache.gc();
-    }
   };
 
   const cacheSubscribeConfirm = (fromUserId: string) => {
@@ -87,6 +80,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
         },
       },
     });
+    if (authUser) {
+      evitCache(authUser?.id, 'UserProfileAll');
+    }
   };
 
   const cacheSubscribeReject = (fromUserId: string) => {
@@ -106,6 +102,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
         },
       },
     });
+    if (authUser) {
+      evitCache(authUser?.id, 'UserProfileAll');
+    }
   };
 
   const cacheSubscribePostPone = (fromUserId: string) => {

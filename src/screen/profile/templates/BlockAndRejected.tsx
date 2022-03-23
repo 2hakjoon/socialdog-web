@@ -14,6 +14,7 @@ import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import { QMe } from '__generated__/QMe';
 import { MYPROFILE } from 'apllo-gqls/users';
+import useEvictCache from 'hooks/useEvictCache';
 
 interface ITabBox {
   selected: boolean;
@@ -33,6 +34,7 @@ interface IBlockAndRejected {
 
 function BlockAndRejected({ closeModal }: IBlockAndRejected) {
   const { cache } = useApolloClient();
+  const evictCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
   const { data: blockAndRejectedData } = useQuery<QGetMyBlockAndReject>(GET_BLOCK_REJECTED);
   const blockingUsers = blockAndRejectedData?.getMyBlockingUsers.data;
@@ -65,14 +67,9 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
         },
       },
     });
-    const identifiedAuhUser = cache.identify({
-      id: authUser?.id,
-      __typename: 'UserProfileAll',
-    });
 
-    if (identifiedAuhUser) {
-      cache.evict({ id: identifiedAuhUser });
-      cache.gc();
+    if (authUser) {
+      evictCache(authUser?.id, 'UserProfileAll');
     }
   };
 
