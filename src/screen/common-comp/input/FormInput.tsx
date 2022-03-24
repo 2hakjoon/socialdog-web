@@ -9,7 +9,7 @@ const InputBase = styled.input`
   padding: 8px 6px;
 `;
 
-interface IFormInput {
+export interface IFormInput {
   ph: string;
   register: any;
 }

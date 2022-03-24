@@ -1,9 +1,9 @@
 import React from 'react';
-import { gql, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
-import { EDIT_PROFILE, MYPROFILE } from 'apllo-gqls/users';
+import { CHECK_USERNAME_EXIST, EDIT_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import axios from 'axios';
 import { useEffect } from 'react';
 import { useState } from 'react';
@@ -20,6 +20,10 @@ import { EditProfileInputDto, FileType } from '__generated__/globalTypes';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '__generated__/MCreatePreSignedUrls';
 import { MEditProfile, MEditProfileVariables } from '__generated__/MEditProfile';
 import { QMe } from '__generated__/QMe';
+import FormInputButton from 'screen/common-comp/input/FormInputButton';
+import { QCheckUsernameExist, QCheckUsernameExistVariables } from '__generated__/QCheckUsernameExist';
+import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
+import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -37,11 +41,22 @@ function ProfileEditScreen() {
   const user = userData?.me.data;
   const [editProfile, { data }] = useMutation<MEditProfile, MEditProfileVariables>(EDIT_PROFILE);
   const [createPresignedUrl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
-  const { register, handleSubmit, setValue } = useForm<EditProfileInputDto>();
+  const [checkUsernameExist] = useLazyQuery<QCheckUsernameExist, QCheckUsernameExistVariables>(CHECK_USERNAME_EXIST);
+  const { register, handleSubmit, setValue, getValues } = useForm<EditProfileInputDto>();
+  const [profileOpenState, setProfileOpenState] = useState(user?.profileOpen || false);
   const [uploadedFile, setUploadedFile] = useState<FileList | null>();
   const [uploadedFileUrl, setUploadedFileUrl] = useState<null | string>();
 
+  const checkUsernameExsistHandler = async () => {
+    const username = getValues('username');
+    if (username) {
+      const res = await checkUsernameExist({ variables: { args: { username } } });
+      console.log(res);
+    }
+  };
+
   const onSubmit = async (formData: EditProfileInputDto) => {
+    console.log(formData);
     let newPhoto: string | undefined = '';
     if (uploadedFile) {
       const resPresigned = await createPresignedUrl({
@@ -65,6 +80,7 @@ function ProfileEditScreen() {
           photo: newPhoto || user?.photo,
           username: formData.username,
           dogname: formData.dogname,
+          profileOpen: profileOpenState,
         },
       },
     });
@@ -81,6 +97,7 @@ function ProfileEditScreen() {
           username
           dogname
           photo
+          profileOpen
         }
       `,
       data: {
@@ -89,6 +106,7 @@ function ProfileEditScreen() {
         username: formData.username || user?.username,
         dogname: formData.dogname || user?.dogname,
         photo: newPhoto || user?.photo,
+        profileOpen: profileOpenState,
       },
     });
     client.cache.writeFragment({
@@ -152,12 +170,23 @@ function ProfileEditScreen() {
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">
                 <TextBase text={'사용자 이름'} />
-                <FormInput register={register('username')} ph={'내용을 입력해주세용'} />
+                <FormInputButton
+                  input={{ ph: 'a', register: register('username') }}
+                  button={{
+                    title: '중복검사',
+                    onClick: checkUsernameExsistHandler,
+                    enable: user.username !== getValues('username'),
+                  }}
+                />
               </WrapperColumn>
               <WrapperColumn w={'100%'} ai="flex-start">
                 <TextBase text={'강아지 이름'} />
                 <FormInput register={register('dogname')} ph={'내용을 입력해주세용'} />
               </WrapperColumn>
+              <WrapperRow w={'100%'}>
+                <TextBase text={`프로필 공개 설정 : ${profileOpenState ? '공개' : '비공개 '}`} />
+                <ButtonSmallBlue title="변경" onClick={() => setProfileOpenState((prev) => !prev)} />
+              </WrapperRow>
               <ButtonSubmit title="저장하기" onClick={handleSubmit(onSubmit)} />
             </FormWrapper>
           </>

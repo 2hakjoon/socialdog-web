@@ -14,7 +14,7 @@ interface IButtonProps {
   enable?: boolean;
 }
 
-interface IButtonSmallBlue extends IButtonProps {
+export interface IButtonSmallBlue extends IButtonProps {
   title: string;
   onClick: () => void;
 }

@@ -8,6 +8,7 @@ export const MYPROFILE = gql`
         username
         dogname
         photo
+        profileOpen
       }
     }
   }
@@ -54,6 +55,16 @@ export const FIND_USER_BY_USERNAME = gql`
       }
       ok
       error
+    }
+  }
+`
+
+export const CHECK_USERNAME_EXIST = gql`
+  query QCheckUsernameExist($args: CheckUsernameExistInputDto!) {
+    checkUsernameExist(args: $args) {
+      ok
+      error
+      isExist
     }
   }
 `

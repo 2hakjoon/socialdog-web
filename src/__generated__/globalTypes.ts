@@ -46,6 +46,10 @@ export interface ChangeBlockStateInputDto {
   username?: string | null;
 }
 
+export interface CheckUsernameExistInputDto {
+  username: string;
+}
+
 export interface CreatePostInputDto {
   address?: string | null;
   placeId?: string | null;
