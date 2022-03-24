@@ -29,6 +29,7 @@ const FormWrapper = styled.form`
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-around;
   max-width: 500px;
   width: 60%;
   height: 100%;
@@ -39,11 +40,12 @@ function ProfileEditScreen() {
   const client = useApolloClient();
   const { data: userData, loading: userDataLoading } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
+  console.log(user);
   const [editProfile, { data }] = useMutation<MEditProfile, MEditProfileVariables>(EDIT_PROFILE);
   const [createPresignedUrl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const [checkUsernameExist] = useLazyQuery<QCheckUsernameExist, QCheckUsernameExistVariables>(CHECK_USERNAME_EXIST);
-  const { register, handleSubmit, setValue, getValues } = useForm<EditProfileInputDto>();
-  const [profileOpenState, setProfileOpenState] = useState(user?.profileOpen || false);
+  const { register, handleSubmit, setValue, getValues, watch } = useForm<EditProfileInputDto>();
+  const [profileOpenState, setProfileOpenState] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<FileList | null>();
   const [uploadedFileUrl, setUploadedFileUrl] = useState<null | string>();
 
@@ -56,7 +58,6 @@ function ProfileEditScreen() {
   };
 
   const onSubmit = async (formData: EditProfileInputDto) => {
-    console.log(formData);
     let newPhoto: string | undefined = '';
     if (uploadedFile) {
       const resPresigned = await createPresignedUrl({
@@ -143,6 +144,7 @@ function ProfileEditScreen() {
     if (user) {
       setValue('dogname', user.dogname);
       setValue('username', user.username);
+      setProfileOpenState(user.profileOpen || false);
     }
   }, [user]);
 
@@ -151,7 +153,9 @@ function ProfileEditScreen() {
       <MainHeader />
       <BaseWrapper>
         {user && (
-          <>
+          <WrapperColumn jc={'space-around'}>
+            <TextBase text={'프로필 수정'} m={'16px 0'} />
+
             <WrapperColumn>
               {user.photo ? (
                 <ImageRound url={uploadedFileUrl || user.photo} size="80px" />
@@ -169,27 +173,30 @@ function ProfileEditScreen() {
             </WrapperColumn>
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">
-                <TextBase text={'사용자 이름'} />
+                <TextBase text={'사용자 이름'} m={'16px 0'} />
                 <FormInputButton
                   input={{ ph: 'a', register: register('username') }}
                   button={{
                     title: '중복검사',
                     onClick: checkUsernameExsistHandler,
-                    enable: user.username !== getValues('username'),
+                    enable: user.username !== watch('username'),
                   }}
                 />
               </WrapperColumn>
               <WrapperColumn w={'100%'} ai="flex-start">
-                <TextBase text={'강아지 이름'} />
+                <TextBase text={'강아지 이름'} m={'16px 0'} />
                 <FormInput register={register('dogname')} ph={'내용을 입력해주세용'} />
               </WrapperColumn>
               <WrapperRow w={'100%'}>
-                <TextBase text={`프로필 공개 설정 : ${profileOpenState ? '공개' : '비공개 '}`} />
+                <TextBase
+                  text={`프로필 공개 설정 : ${profileOpenState ? '공개' : '비공개 '}`}
+                  m={'20px 10px 20px 0px'}
+                />
                 <ButtonSmallBlue title="변경" onClick={() => setProfileOpenState((prev) => !prev)} />
               </WrapperRow>
               <ButtonSubmit title="저장하기" onClick={handleSubmit(onSubmit)} />
             </FormWrapper>
-          </>
+          </WrapperColumn>
         )}
       </BaseWrapper>
     </>

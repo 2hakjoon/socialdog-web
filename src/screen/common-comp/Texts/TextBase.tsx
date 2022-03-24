@@ -7,6 +7,7 @@ interface IText {
   p?: string;
   fontFamily: string;
   fontWeight?: number;
+  fontSize?: string;
 }
 
 const Text = styled.span<IText>`
@@ -15,6 +16,7 @@ const Text = styled.span<IText>`
   font-family: ${(p) => p.fontFamily}, sans-serif;
   font-weight: ${(p) => p.fontWeight};
   color: ${(p) => p.color};
+  font-size: ${(p) => p.fontSize};
 `;
 
 interface ITextBase {
@@ -24,9 +26,10 @@ interface ITextBase {
   color?: string;
   fontFamily?: 'noto' | 'nanum';
   fontWeight?: number;
+  fontSize?: string;
 }
 
-function TextBase({ text, p, m, fontFamily, fontWeight, color }: ITextBase) {
+function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: ITextBase) {
   const setFontName = (font: string | undefined) => {
     switch (font) {
       case 'nanum':
@@ -37,7 +40,7 @@ function TextBase({ text, p, m, fontFamily, fontWeight, color }: ITextBase) {
   };
 
   return (
-    <Text m={m} p={p} color={color} fontFamily={setFontName(fontFamily)} fontWeight={fontWeight}>
+    <Text m={m} p={p} color={color} fontFamily={setFontName(fontFamily)} fontWeight={fontWeight} fontSize={fontSize}>
       {text}
     </Text>
   );
@@ -50,6 +53,7 @@ TextBase.defaultProps = {
   color: theme.color.achromatic.black,
   fontFamily: 'noto',
   fontWeight: 400,
+  fontSize: '1rem',
 };
 
 export default TextBase;
