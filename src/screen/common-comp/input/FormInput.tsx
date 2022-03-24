@@ -12,10 +12,15 @@ const InputBase = styled.input`
 export interface IFormInput {
   ph: string;
   register: any;
+  maxLen?: number;
 }
 
-function FormInput({ ph, register }: IFormInput) {
-  return <InputBase {...register} placeholder={ph} />;
+function FormInput({ ph, register, maxLen }: IFormInput) {
+  return <InputBase {...register} placeholder={ph} maxLength={maxLen} />;
 }
+
+FormInput.defaultProps = {
+  maxLen: undefined,
+};
 
 export default FormInput;

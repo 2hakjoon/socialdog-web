@@ -53,7 +53,11 @@ function ProfileEditScreen() {
     const username = getValues('username');
     if (username) {
       const res = await checkUsernameExist({ variables: { args: { username } } });
-      console.log(res);
+      if (res.data?.checkUsernameExist.isExist) {
+        window.alert('중복된 이름입니다.');
+      } else {
+        window.alert('사용할 수 있는 이름입니다.');
+      }
     }
   };
 
@@ -135,11 +139,8 @@ function ProfileEditScreen() {
       setUploadedFileUrl(null);
       return;
     }
-    console.log(uploadedFile[0]);
-    console.log('!!!');
 
     const objectUrl = URL.createObjectURL(uploadedFile[0]);
-    console.log(objectUrl);
     setUploadedFileUrl(objectUrl);
     return () => URL.revokeObjectURL(objectUrl);
   }, [uploadedFile]);
@@ -185,7 +186,7 @@ function ProfileEditScreen() {
               <WrapperColumn w={'100%'} ai="flex-start">
                 <TextBase text={'사용자 이름'} m={'16px 0'} />
                 <FormInputButton
-                  input={{ ph: 'a', register: register('username') }}
+                  input={{ ph: '15자 이내로 입력해주세요', register: register('username'), maxLen: 15 }}
                   button={{
                     title: '중복검사',
                     onClick: checkUsernameExsistHandler,
@@ -195,7 +196,7 @@ function ProfileEditScreen() {
               </WrapperColumn>
               <WrapperColumn w={'100%'} ai="flex-start">
                 <TextBase text={'강아지 이름'} m={'16px 0'} />
-                <FormInput register={register('dogname')} ph={'내용을 입력해주세용'} />
+                <FormInput register={register('dogname')} ph={'15자 이내로 입력해주세요'} />
               </WrapperColumn>
               <WrapperRow w={'100%'}>
                 <TextBase

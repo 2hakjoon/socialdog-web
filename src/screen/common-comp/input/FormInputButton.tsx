@@ -17,10 +17,10 @@ interface IFormInputButton {
   button: IButtonSmallBlue;
 }
 
-function FormInputButton({ input: { ph, register }, button: { title, onClick, enable } }: IFormInputButton) {
+function FormInputButton({ input: { ph, register, maxLen }, button: { title, onClick, enable } }: IFormInputButton) {
   return (
     <Wrapper>
-      <FormInput ph={ph} register={register} />
+      <FormInput ph={ph} register={register} maxLen={maxLen} />
       <ButtonSmallBlue title={title} onClick={onClick} enable={enable} />
     </Wrapper>
   );
