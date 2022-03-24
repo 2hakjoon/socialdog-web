@@ -110,7 +110,7 @@ export const cache = new InMemoryCache({
         },
         getMyLikedPosts:{
           read(existing, {args:{ page:{take}}}:any) {
-            if(!existing){
+            if(!existing?.data?.length){
               return undefined
             }
             // console.log("read", existing, existing.data.slice(offset, limit), offset, limit)
