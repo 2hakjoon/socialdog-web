@@ -10,6 +10,8 @@ import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
 import styled from 'styled-components';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import logoWhite from 'assets/svg/social-dog-white.svg';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'screen/routes';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -29,31 +31,46 @@ interface IkakaoLoginSuccess {
 }
 
 function LoginScreen() {
+  const navigate = useNavigate();
   const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
 
-  const loginWithKakao = async () => {
+  const kakaoAuthHandler = async (authObj: IkakaoLoginSuccess) => {
+    const res = await kakaoLogin({
+      variables: {
+        args: {
+          accessToken: authObj.access_token,
+          accessTokenExpiresAt: dayjs().add(authObj.expires_in, 's').toISOString(),
+          refreshToken: authObj.refresh_token,
+          refreshTokenExpiresAt: dayjs().add(authObj.refresh_token_expires_in, 's').toISOString(),
+          scopes: authObj.token_type,
+        },
+      },
+    });
+    const kakaoLoginResult = res.data?.kakaoLogin;
+    if (
+      kakaoLoginResult?.ok &&
+      kakaoLoginResult.accessToken &&
+      kakaoLoginResult.refreshToken &&
+      kakaoLoginResult.isJoin
+    ) {
+      setAccessToken(kakaoLoginResult.accessToken);
+      setRefreshToken(kakaoLoginResult.refreshToken);
+      loginState(true);
+      console.log(kakaoLoginResult.isJoin);
+      if (kakaoLoginResult.isJoin) {
+        window.alert('가입을 환영합니다. 프로필 작성을 진행해주세요.');
+        navigate(routes.profileEdit);
+      }
+    } else {
+      alert(kakaoLoginResult?.error);
+    }
+  };
+
+  const kakaoLoginApi = async () => {
     try {
       window.Kakao.Auth.login({
         success: async (authObj: IkakaoLoginSuccess) => {
-          const res = await kakaoLogin({
-            variables: {
-              args: {
-                accessToken: authObj.access_token,
-                accessTokenExpiresAt: dayjs().add(authObj.expires_in, 's').toISOString(),
-                refreshToken: authObj.refresh_token,
-                refreshTokenExpiresAt: dayjs().add(authObj.refresh_token_expires_in, 's').toISOString(),
-                scopes: authObj.token_type,
-              },
-            },
-          });
-          const kakaoLoginResult = res.data?.kakaoLogin;
-          if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
-            setAccessToken(kakaoLoginResult.accessToken);
-            setRefreshToken(kakaoLoginResult.refreshToken);
-            loginState(true);
-          } else {
-            alert(kakaoLoginResult?.error);
-          }
+          kakaoAuthHandler(authObj);
         },
         fail: () => {
           alert('카카오 로그인에 실패하였습니다.');
@@ -69,7 +86,7 @@ function LoginScreen() {
       <WrapperRow p={'30px'} jc="center">
         <ImageBase url={logoWhite} />
       </WrapperRow>
-      <WrapperRow p="32px" onClick={loginWithKakao}>
+      <WrapperRow p="32px" onClick={kakaoLoginApi}>
         <ImageBase url={KakaoImg} />
       </WrapperRow>
     </Wrapper>

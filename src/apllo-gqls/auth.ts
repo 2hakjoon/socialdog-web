@@ -7,6 +7,7 @@ mutation MKakaoLogin($args: KakaoLoginInputDto!) {
     error
     accessToken
     refreshToken
+    isJoin
   }
 }
 `;

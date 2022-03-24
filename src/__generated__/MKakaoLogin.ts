@@ -15,6 +15,7 @@ export interface MKakaoLogin_kakaoLogin {
   error: string | null;
   accessToken: string | null;
   refreshToken: string | null;
+  isJoin: boolean | null;
 }
 
 export interface MKakaoLogin {
