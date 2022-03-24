@@ -38,7 +38,7 @@ function AddressPostsTemplate() {
 
   const getNextPage = async () => {
     // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
-    if (postsError || postsLoading || isLastPage || !posts) {
+    if (postsError || postsLoading || isLastPage || !posts || !posts?.length) {
       return;
     }
 
