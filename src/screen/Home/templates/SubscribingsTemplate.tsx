@@ -7,6 +7,7 @@ import { QGetSubscribingPosts } from '__generated__/QGetSubscribingPosts';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
 import { CursorInput } from '__generated__/globalTypes';
+import NoContents from 'screen/common-comp/no-contents/NoContents';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
@@ -72,6 +73,7 @@ function SubscribingsTemplate() {
             .fill('')
             .map(() => <PostCardLoading key={Math.random()} />)}
       </WrapperInfinityScroll>
+      {!postsLoading && !posts?.length && <NoContents />}
     </WrapperColumn>
   );
 }

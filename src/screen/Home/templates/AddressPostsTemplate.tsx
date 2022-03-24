@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_POSTS_BY_ADDRESS } from 'apllo-gqls/posts';
 import React, { useEffect, useState } from 'react';
+import NoContents from 'screen/common-comp/no-contents/NoContents';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { IPlaceTerms } from 'types/GooglePlace';
@@ -78,6 +79,7 @@ function AddressPostsTemplate() {
               .fill('')
               .map(() => <PostCardLoading key={Math.random()} />)}
         </WrapperInfinityScroll>
+        {!postsLoading && !posts?.length && <NoContents />}
       </WrapperColumn>
     </WrapperColumn>
   );

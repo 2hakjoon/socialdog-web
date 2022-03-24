@@ -8,6 +8,7 @@ import styled from 'styled-components';
 import PostSmallBox from '../components/PostSmallBox';
 import { QGetMyLikedPosts, QGetMyLikedPostsVariables } from '__generated__/QGetMyLikedPosts';
 import { CursorInput } from '__generated__/globalTypes';
+import NoContents from 'screen/common-comp/no-contents/NoContents';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -70,27 +71,30 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
   };
 
   return (
-    <WrapperInfinityScroll fetchHandler={fetchNextPage}>
-      <PostsGrid>
-        {posts?.map((post) => (
-          <WrapperSquare key={post.id}>
-            <BaseWrapper>
-              <PostSmallBox __typename={post.__typename} id={post.id} photos={post.photos} />
-            </BaseWrapper>
-          </WrapperSquare>
-        ))}
-        {postsLoading &&
-          Array(itemsCount)
-            .fill('')
-            .map(() => (
-              <WrapperSquare key={Math.random()}>
-                <BaseWrapper>
-                  <PostSmallBox photos="" __typename="Posts" id="" />
-                </BaseWrapper>
-              </WrapperSquare>
-            ))}
-      </PostsGrid>
-    </WrapperInfinityScroll>
+    <>
+      <WrapperInfinityScroll fetchHandler={fetchNextPage}>
+        <PostsGrid>
+          {posts?.map((post) => (
+            <WrapperSquare key={post.id}>
+              <BaseWrapper>
+                <PostSmallBox __typename={post.__typename} id={post.id} photos={post.photos} />
+              </BaseWrapper>
+            </WrapperSquare>
+          ))}
+          {postsLoading &&
+            Array(itemsCount)
+              .fill('')
+              .map(() => (
+                <WrapperSquare key={Math.random()}>
+                  <BaseWrapper>
+                    <PostSmallBox photos="" __typename="Posts" id="" />
+                  </BaseWrapper>
+                </WrapperSquare>
+              ))}
+        </PostsGrid>
+      </WrapperInfinityScroll>
+      {!postsLoading && !posts?.length && <NoContents />}
+    </>
   );
 }
 

@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import React, { useEffect, useState } from 'react';
+import NoContents from 'screen/common-comp/no-contents/NoContents';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -71,27 +72,30 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
   };
 
   return (
-    <WrapperInfinityScroll fetchHandler={fetchNextPage}>
-      <PostsGrid>
-        {posts?.map((post) => (
-          <WrapperSquare key={post.id}>
-            <BaseWrapper>
-              <PostSmallBox {...post} />
-            </BaseWrapper>
-          </WrapperSquare>
-        ))}
-        {postsLoading &&
-          Array(itemsCount)
-            .fill('')
-            .map(() => (
-              <WrapperSquare key={Math.random()}>
-                <BaseWrapper>
-                  <PostSmallBox photos="" __typename="Posts" id="" />
-                </BaseWrapper>
-              </WrapperSquare>
-            ))}
-      </PostsGrid>
-    </WrapperInfinityScroll>
+    <>
+      <WrapperInfinityScroll fetchHandler={fetchNextPage}>
+        <PostsGrid>
+          {posts?.map((post) => (
+            <WrapperSquare key={post.id}>
+              <BaseWrapper>
+                <PostSmallBox {...post} />
+              </BaseWrapper>
+            </WrapperSquare>
+          ))}
+          {postsLoading &&
+            Array(itemsCount)
+              .fill('')
+              .map(() => (
+                <WrapperSquare key={Math.random()}>
+                  <BaseWrapper>
+                    <PostSmallBox photos="" __typename="Posts" id="" />
+                  </BaseWrapper>
+                </WrapperSquare>
+              ))}
+        </PostsGrid>
+      </WrapperInfinityScroll>
+      {!postsLoading && !posts?.length && <NoContents />}
+    </>
   );
 }
 
