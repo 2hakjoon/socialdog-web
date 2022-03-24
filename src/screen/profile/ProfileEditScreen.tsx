@@ -40,7 +40,7 @@ function ProfileEditScreen() {
   const client = useApolloClient();
   const { data: userData, loading: userDataLoading } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
-  console.log(user);
+  // console.log(user);
   const [editProfile, { data }] = useMutation<MEditProfile, MEditProfileVariables>(EDIT_PROFILE);
   const [createPresignedUrl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const [checkUsernameExist] = useLazyQuery<QCheckUsernameExist, QCheckUsernameExistVariables>(CHECK_USERNAME_EXIST);
@@ -135,7 +135,11 @@ function ProfileEditScreen() {
       setUploadedFileUrl(null);
       return;
     }
+    console.log(uploadedFile[0]);
+    console.log('!!!');
+
     const objectUrl = URL.createObjectURL(uploadedFile[0]);
+    console.log(objectUrl);
     setUploadedFileUrl(objectUrl);
     return () => URL.revokeObjectURL(objectUrl);
   }, [uploadedFile]);
@@ -157,10 +161,16 @@ function ProfileEditScreen() {
             <TextBase text={'프로필 수정'} m={'16px 0'} />
 
             <WrapperColumn>
-              {user.photo ? (
-                <ImageRound url={uploadedFileUrl || user.photo} size="80px" />
+              {uploadedFileUrl ? (
+                <ImageRound url={uploadedFileUrl} size="80px" />
               ) : (
-                <FontAwesomeIcon icon={faCircleUser} size="5x" />
+                <>
+                  {user.photo ? (
+                    <ImageRound url={user.photo} size="80px" />
+                  ) : (
+                    <FontAwesomeIcon icon={faCircleUser} size="5x" />
+                  )}
+                </>
               )}
               <input
                 type="file"
