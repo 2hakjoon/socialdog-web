@@ -1,10 +1,12 @@
-import { ApolloClient, ApolloLink, concat, from, HttpLink, InMemoryCache, makeVar } from "@apollo/client";
-import { getAccessToken } from "utils/local-storage";
+import { ApolloClient, ApolloLink, from, fromPromise, HttpLink, InMemoryCache, makeVar, Observable } from "@apollo/client";
+import { getAccessToken, getRefreshToken, setAccessToken } from "utils/local-storage";
 import { onError } from "@apollo/client/link/error";
 import { QGetUserPosts_getUserPosts } from "__generated__/QGetUserPosts";
 import { QGetSubscribingPosts_getSubscribingPosts } from "__generated__/QGetSubscribingPosts";
 import { QGetPostsByAddress_getPostsByAddress } from "__generated__/QGetPostsByAddress";
 import { QGetMyLikedPosts_getMyLikedPosts } from "__generated__/QGetMyLikedPosts";
+import { REISSUE_ACCESS_TOKEN } from "apllo-gqls/auth";
+import { MReissueAccessToken, MReissueAccessTokenVariables } from "__generated__/MReissueAccessToken";
 
 
 
@@ -14,23 +16,53 @@ const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
     headers: {
       ...headers,
-      authorization: `Bearer ${ getAccessToken() || null}`,
+      authorization: `Bearer ${getAccessToken() || null}`,
     },
   }));
 
   return forward(operation);
 });
 
-
 // Log any GraphQL errors or network error that occurred
-const errorLink = onError(({ graphQLErrors, networkError }) => {
-  if (graphQLErrors)
-    graphQLErrors.forEach(({ message, locations, path }) =>
-      console.log(
-        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
+    if(client && graphQLErrors?.[0].message === 'Unauthorized'){
+      // console.log("인증에러")
+      const accessToken = getAccessToken();
+      const refreshToken = getRefreshToken();
+      if(!(accessToken && refreshToken)){
+        return ;
+      }
+      const promises =  fromPromise(
+        client.mutate<MReissueAccessToken, MReissueAccessTokenVariables>(
+          {mutation:REISSUE_ACCESS_TOKEN, variables:{args:{accessToken, refreshToken}}})
+          .then(data=> {
+            // console.log(data)
+            if(data.data?.reissueAccessToken.accessToken){
+              setAccessToken(data.data.reissueAccessToken.accessToken);
+            }
+            if(data.data?.reissueAccessToken.isRefreshTokenExpired){
+              if(()=>getAccessToken()){
+                client.resetStore()
+                loginState(false)
+              }
+            }
+          })
       )
-    );
-  if (networkError) console.log(`[Network error]: ${networkError}`);
+      return promises.flatMap(()=>{
+        const oldHeaders = operation.getContext().headers;
+        operation.setContext({
+          headers: {
+            ...oldHeaders,
+            authorization: `Bearer ${getAccessToken()}`,
+          },
+        })
+        return forward(operation)
+      })
+    }
+    console.log(
+      `[GraphQL error]: Message: ${graphQLErrors?.[0].message}, Location: ${graphQLErrors?.[0].locations}, Path: ${graphQLErrors?.[0].path}`
+      )
+      if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 
 

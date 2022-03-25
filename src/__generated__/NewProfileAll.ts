@@ -13,4 +13,5 @@ export interface NewProfileAll {
   username: string | null;
   dogname: string | null;
   photo: string | null;
+  profileOpen: boolean | null;
 }

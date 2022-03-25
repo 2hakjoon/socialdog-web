@@ -1,6 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { gql, useMutation } from '@apollo/client';
-import { setAccessToken, setRefreshToken } from 'utils/local-storage';
+import { getAccessToken, removeAllTokens, setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
@@ -34,6 +34,13 @@ function LoginScreen() {
   const navigate = useNavigate();
   const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
 
+  useEffect(() => {
+    if (getAccessToken()) {
+      removeAllTokens();
+      alert('로그인 후 2주가 지났습니다. 보안을 위해서 다시 로그인 해 주세요');
+    }
+  }, []);
+
   const kakaoAuthHandler = async (authObj: IkakaoLoginSuccess) => {
     const res = await kakaoLogin({
       variables: {
@@ -47,16 +54,10 @@ function LoginScreen() {
       },
     });
     const kakaoLoginResult = res.data?.kakaoLogin;
-    if (
-      kakaoLoginResult?.ok &&
-      kakaoLoginResult.accessToken &&
-      kakaoLoginResult.refreshToken &&
-      kakaoLoginResult.isJoin
-    ) {
+    if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
       setAccessToken(kakaoLoginResult.accessToken);
       setRefreshToken(kakaoLoginResult.refreshToken);
       loginState(true);
-      console.log(kakaoLoginResult.isJoin);
       if (kakaoLoginResult.isJoin) {
         window.alert('가입을 환영합니다. 프로필 작성을 진행해주세요.');
         navigate(routes.profileEdit);

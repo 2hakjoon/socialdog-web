@@ -18,6 +18,6 @@ export const getRefreshToken = () => {
 }
 
 export const removeAllTokens = () => {
-  localStorage.setItem(USER_ACCESS_TOKEN, '')
-  localStorage.setItem(USER_REFRESH_TOKEN, '')
+  localStorage.removeItem(USER_ACCESS_TOKEN)
+  localStorage.removeItem(USER_REFRESH_TOKEN)
 }

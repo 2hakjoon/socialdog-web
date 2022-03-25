@@ -47,7 +47,7 @@ export interface ChangeBlockStateInputDto {
 }
 
 export interface CheckUsernameExistInputDto {
-  username: string;
+  username?: string | null;
 }
 
 export interface CreatePostInputDto {
@@ -110,6 +110,11 @@ export interface KakaoLoginInputDto {
   refreshToken?: string | null;
   refreshTokenExpiresAt?: string | null;
   scopes?: string | null;
+}
+
+export interface ReissueAccessTokenInputDto {
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface RequestSubscribeInputDto {

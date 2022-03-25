@@ -30,7 +30,9 @@ function App() {
               <Route path={routes.search} element={<SearchScreen />} />
             </>
           ) : (
-            <Route path={routes.home} element={<LoginScreen />} />
+            <>
+              <Route path="*" element={<LoginScreen />} />
+            </>
           )}
         </Routes>
       </Router>

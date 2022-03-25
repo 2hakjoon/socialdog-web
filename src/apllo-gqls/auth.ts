@@ -11,3 +11,14 @@ mutation MKakaoLogin($args: KakaoLoginInputDto!) {
   }
 }
 `;
+
+export const REISSUE_ACCESS_TOKEN =gql`
+mutation MReissueAccessToken($args: ReissueAccessTokenInputDto!) {
+  reissueAccessToken(args: $args) {
+    ok
+    error
+    accessToken
+    isRefreshTokenExpired
+  }
+}
+`
