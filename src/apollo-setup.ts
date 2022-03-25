@@ -25,7 +25,7 @@ const authMiddleware = new ApolloLink((operation, forward) => {
 
 // Log any GraphQL errors or network error that occurred
 const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) => {
-    if(client && graphQLErrors?.[0].message === 'Unauthorized'){
+    if(client && graphQLErrors?.filter(error=>error.message === 'Unauthorized')){
       // console.log("인증에러")
       const accessToken = getAccessToken();
       const refreshToken = getRefreshToken();
