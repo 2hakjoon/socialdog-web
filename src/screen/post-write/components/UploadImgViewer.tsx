@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent, useEffect } from 'react';
 import { useState } from 'react';
+import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -41,7 +42,8 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = []
           </WrapperSquare>
         ))}
       </ImgPreviewgrid>
-      <input
+      <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
+      {/* <input
         type="file"
         name={'이미지 업로드'}
         onChange={(e) => {
@@ -49,7 +51,7 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = []
         }}
         multiple
         accept="image/*"
-      />
+      /> */}
     </>
   );
 }
