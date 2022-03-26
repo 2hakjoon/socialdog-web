@@ -1,9 +1,7 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import React from 'react';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { FIND_USER_BY_USERNAME, GET_PROFILE_OPEN_USER } from 'apllo-gqls/users';
-import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import FormInput from 'screen/common-comp/input/FormInput';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -13,13 +11,9 @@ import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { FindUserByUsernameInputDto } from '__generated__/globalTypes';
-import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import {
-  QFindUserByUsername,
-  QFindUserByUsernameVariables,
-  QFindUserByUsername_findUsersByUsername_data,
-} from '__generated__/QFindUserByUsername';
+import { QFindUserByUsername, QFindUserByUsernameVariables } from '__generated__/QFindUserByUsername';
 import { QGetProfileOpenUser } from '__generated__/QGetProfileOpenUser';
+import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -53,7 +47,6 @@ function SearchScreen() {
   const { data: profileOpenUsers, loading: profileOpenUserLoading } =
     useQuery<QGetProfileOpenUser>(GET_PROFILE_OPEN_USER);
   const { register, getValues } = useForm<FindUserByUsernameInputDto>();
-  const navigage = useNavigate();
 
   const onSearch = async () => {
     await findUserByUsername({ variables: { args: getValues() } });
@@ -70,18 +63,26 @@ function SearchScreen() {
           <FormInput register={register('username')} ph={'검색어를 입력해주세요'} />
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
-        {findUserData?.findUsersByUsername.data?.map((findResult) => (
-          <WrapperRow p={'0 8px'}>
-            <UserCardThin key={findResult.id} {...findResult} />
-          </WrapperRow>
-        ))}
-        {!findUserData?.findUsersByUsername.data && (
-          <WrapperColumn>
-            <TextBase text={'추천친구 목록'} />
-            {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
-              <UserCardThin key={user.id} {...user} />
+        {findUserLoading || profileOpenUserLoading ? (
+          Array(5)
+            .fill('')
+            .map(() => <UserCardThinLoading />)
+        ) : (
+          <>
+            {findUserData?.findUsersByUsername.data?.map((findResult) => (
+              <WrapperRow p={'0 8px'}>
+                <UserCardThin key={findResult.id} {...findResult} />
+              </WrapperRow>
             ))}
-          </WrapperColumn>
+            {!findUserData?.findUsersByUsername.data && (
+              <WrapperColumn>
+                <TextBase text={'추천친구 목록'} />
+                {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
+                  <UserCardThin key={user.id} {...user} />
+                ))}
+              </WrapperColumn>
+            )}
+          </>
         )}
       </BaseWrapper>
     </>

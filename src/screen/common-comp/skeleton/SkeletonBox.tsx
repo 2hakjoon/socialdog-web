@@ -5,7 +5,7 @@ const GrayBox = styled.div<ISkeletonBox>`
   width: ${(p) => p.width};
   height: ${(p) => p.height};
   margin: ${(p) => p.margin};
-  background-color: #f5f5f5;
+  background-color: ${({ theme }) => theme.color.achromatic.lightGray};
   border-radius: 10px;
 `;
 

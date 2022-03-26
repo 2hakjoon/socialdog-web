@@ -31,7 +31,7 @@ function UserCardThin({ id, username, photo, dogname, onClick = () => {} }: IUse
       }}
     >
       <ProfilePhoto url={photo} size="48px" />
-      <WrapperColumn m={'0 16px'} jc="space-around">
+      <WrapperColumn m={'0 16px'} jc="space-around" ai="flex-start">
         <TextBase text={username} />
         <TextBase text={dogname || ''} />
       </WrapperColumn>
