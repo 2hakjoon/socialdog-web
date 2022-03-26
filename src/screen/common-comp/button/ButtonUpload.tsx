@@ -12,7 +12,7 @@ const SLabel = styled.label`
 
 interface IButtonUpload {
   onChange: (e: BaseSyntheticEvent) => void;
-  multiple: boolean;
+  multiple?: boolean | undefined;
   accept: string | undefined;
 }
 
@@ -34,5 +34,9 @@ function ButtonUpload({ onChange, multiple, accept }: IButtonUpload) {
     </>
   );
 }
+
+ButtonUpload.defaultProps = {
+  multiple: undefined,
+};
 
 export default ButtonUpload;

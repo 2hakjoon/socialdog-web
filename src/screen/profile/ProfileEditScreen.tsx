@@ -24,6 +24,7 @@ import FormInputButton from 'screen/common-comp/input/FormInputButton';
 import { QCheckUsernameExist, QCheckUsernameExistVariables } from '__generated__/QCheckUsernameExist';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -173,9 +174,7 @@ function ProfileEditScreen() {
                   )}
                 </>
               )}
-              <input
-                type="file"
-                name={'이미지 업로드'}
+              <ButtonUpload
                 onChange={(e) => {
                   setUploadedFile(e.target.files);
                 }}
