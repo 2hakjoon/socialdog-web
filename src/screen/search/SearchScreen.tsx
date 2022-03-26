@@ -1,6 +1,6 @@
-import { useLazyQuery, useMutation } from '@apollo/client';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { FIND_USER_BY_USERNAME } from 'apllo-gqls/users';
+import { FIND_USER_BY_USERNAME, GET_PROFILE_OPEN_USER } from 'apllo-gqls/users';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
@@ -9,6 +9,7 @@ import FormInput from 'screen/common-comp/input/FormInput';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { FindUserByUsernameInputDto } from '__generated__/globalTypes';
@@ -18,6 +19,7 @@ import {
   QFindUserByUsernameVariables,
   QFindUserByUsername_findUsersByUsername_data,
 } from '__generated__/QFindUserByUsername';
+import { QGetProfileOpenUser } from '__generated__/QGetProfileOpenUser';
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -44,14 +46,17 @@ const SButton = styled.button`
 `;
 
 function SearchScreen() {
-  const [findUserByUsername] = useLazyQuery<QFindUserByUsername, QFindUserByUsernameVariables>(FIND_USER_BY_USERNAME);
+  const [findUserByUsername, { data: findUserData, loading: findUserLoading }] = useLazyQuery<
+    QFindUserByUsername,
+    QFindUserByUsernameVariables
+  >(FIND_USER_BY_USERNAME);
+  const { data: profileOpenUsers, loading: profileOpenUserLoading } =
+    useQuery<QGetProfileOpenUser>(GET_PROFILE_OPEN_USER);
   const { register, getValues } = useForm<FindUserByUsernameInputDto>();
-  const [findResults, setFindresults] = useState<QFindUserByUsername_findUsersByUsername_data[] | null | undefined>();
   const navigage = useNavigate();
 
   const onSearch = async () => {
-    const findUserResult = await findUserByUsername({ variables: { args: getValues() } });
-    setFindresults(findUserResult.data?.findUsersByUsername.data);
+    await findUserByUsername({ variables: { args: getValues() } });
   };
 
   return (
@@ -65,11 +70,19 @@ function SearchScreen() {
           <FormInput register={register('username')} ph={'검색어를 입력해주세요'} />
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
-        {findResults?.map((findResult) => (
+        {findUserData?.findUsersByUsername.data?.map((findResult) => (
           <WrapperRow p={'0 8px'}>
             <UserCardThin key={findResult.id} {...findResult} />
           </WrapperRow>
         ))}
+        {!findUserData?.findUsersByUsername.data && (
+          <WrapperColumn>
+            <TextBase text={'추천친구 목록'} />
+            {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
+              <UserCardThin key={user.id} {...user} />
+            ))}
+          </WrapperColumn>
+        )}
       </BaseWrapper>
     </>
   );

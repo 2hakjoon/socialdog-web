@@ -68,3 +68,18 @@ export const CHECK_USERNAME_EXIST = gql`
     }
   }
 `
+
+export const GET_PROFILE_OPEN_USER = gql`
+  query QGetProfileOpenUser {
+  getProfileOpenUser {
+    ok
+    error
+    data {
+      id
+      username
+      dogname
+      photo
+    }
+  }
+}
+`
