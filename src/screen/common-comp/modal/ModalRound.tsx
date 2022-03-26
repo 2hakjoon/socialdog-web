@@ -13,6 +13,7 @@ const Wrapper = styled.div`
   border-radius: 20px;
   -webkit-box-shadow: 0px 0px 22px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 22px 5px rgba(0, 0, 0, 0.5);
+  z-index: 3;
 `;
 
 interface IModalRound {
