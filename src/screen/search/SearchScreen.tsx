@@ -63,27 +63,27 @@ function SearchScreen() {
           <FormInput register={register('username')} ph={'검색어를 입력해주세요'} />
           <SButton onClick={onSearch}>검색</SButton>
         </FormWrapper>
-        {findUserLoading || profileOpenUserLoading ? (
-          Array(5)
-            .fill('')
-            .map(() => <UserCardThinLoading />)
-        ) : (
-          <>
-            {findUserData?.findUsersByUsername.data?.map((findResult) => (
-              <WrapperRow p={'0 8px'}>
+        <WrapperColumn p={'0 8px'} w="100%">
+          {findUserLoading || profileOpenUserLoading ? (
+            Array(5)
+              .fill('')
+              .map(() => <UserCardThinLoading />)
+          ) : (
+            <>
+              {findUserData?.findUsersByUsername.data?.map((findResult) => (
                 <UserCardThin key={findResult.id} {...findResult} />
-              </WrapperRow>
-            ))}
-            {!findUserData?.findUsersByUsername.data && (
-              <WrapperColumn>
-                <TextBase text={'추천친구 목록'} />
-                {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
-                  <UserCardThin key={user.id} {...user} />
-                ))}
-              </WrapperColumn>
-            )}
-          </>
-        )}
+              ))}
+              {!findUserData?.findUsersByUsername.data && (
+                <WrapperColumn w="100%">
+                  <TextBase text={'추천친구 목록'} />
+                  {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
+                    <UserCardThin key={user.id} {...user} />
+                  ))}
+                </WrapperColumn>
+              )}
+            </>
+          )}
+        </WrapperColumn>
       </BaseWrapper>
     </>
   );
