@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { GET_COMMENTS } from 'apllo-gqls/comments';
-import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { QGetComments, QGetCommentsVariables } from '__generated__/QGetComments';
+import CommentCard from '../components/CommentCard';
 
 interface PostDetailComment {
   postId: string;
@@ -18,8 +18,19 @@ function PostDetailComment({ postId }: PostDetailComment) {
       page: { take: pageItemCount, cursor: { createdAt: `0` } },
     },
   });
+  const comments = commentsData?.getComments.data;
   console.log(commentsData);
-  return <WrapperColumn>댓글</WrapperColumn>;
+  return (
+    <WrapperColumn>
+      {comments && (
+        <>
+          {comments.map((comment) => (
+            <CommentCard key={comment.id} {...comment} />
+          ))}
+        </>
+      )}
+    </WrapperColumn>
+  );
 }
 
 export default PostDetailComment;

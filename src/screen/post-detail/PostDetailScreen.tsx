@@ -11,6 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
+import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
@@ -87,67 +88,69 @@ function PostDetailScreen() {
   return (
     <>
       <MainHeader />
-      {post && (
-        <WrapperColumn>
-          <WrapperSquare w="100%">
-            <Carousel showThumbs={false}>
-              {JSON.parse(post.photos).map((photo: string) => (
-                <ImageBase url={photo} />
-              ))}
-            </Carousel>
-          </WrapperSquare>
-          <WrapperColumn ai="flex-start">
-            <WrapperRow jc="space-between" w="100%" p="8px 0">
-              <WrapperRow>
-                <WrapperRow onClick={(e) => toggleLikeState()}>
-                  {post.liked ? (
-                    <FontAwesomeIcon
-                      icon={faPaw}
-                      size="2x"
-                      color={theme.color.blue.primaryBlue}
-                      style={{ marginRight: 10 }}
-                    />
-                  ) : (
-                    <FontAwesomeIcon
-                      icon={faPaw}
-                      size="2x"
-                      color={theme.color.achromatic.darkGray}
-                      style={{ marginRight: 10 }}
-                    />
-                  )}
+      <BaseWrapper p="0px 16px">
+        {post && (
+          <WrapperColumn>
+            <WrapperSquare w="100%">
+              <Carousel showThumbs={false}>
+                {JSON.parse(post.photos).map((photo: string) => (
+                  <ImageBase url={photo} />
+                ))}
+              </Carousel>
+            </WrapperSquare>
+            <WrapperColumn ai="flex-start" w="100%">
+              <WrapperRow jc="space-between" w="100%" p="8px 0">
+                <WrapperRow>
+                  <WrapperRow onClick={(e) => toggleLikeState()}>
+                    {post.liked ? (
+                      <FontAwesomeIcon
+                        icon={faPaw}
+                        size="2x"
+                        color={theme.color.blue.primaryBlue}
+                        style={{ marginRight: 10 }}
+                      />
+                    ) : (
+                      <FontAwesomeIcon
+                        icon={faPaw}
+                        size="2x"
+                        color={theme.color.achromatic.darkGray}
+                        style={{ marginRight: 10 }}
+                      />
+                    )}
+                  </WrapperRow>
+                  <FontAwesomeIcon
+                    icon={faLocationDot}
+                    size="2x"
+                    color={theme.color.blue.primaryBlue}
+                    style={{ marginRight: 10 }}
+                  />
+                  <TextBase text={post.address} />
                 </WrapperRow>
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  size="2x"
-                  color={theme.color.blue.primaryBlue}
-                  style={{ marginRight: 10 }}
-                />
-                <TextBase text={post.address} />
+                {authUser?.id === post.user.id && (
+                  <>
+                    <FontAwesomeIcon
+                      icon={faPenToSquare}
+                      size="lg"
+                      color={theme.color.achromatic.black}
+                      onClick={() => moveToPostEdit(post.id)}
+                    />
+                    <FontAwesomeIcon
+                      icon={faXmark}
+                      size="lg"
+                      color={theme.color.achromatic.black}
+                      onClick={() => deletePostHandler(post.id)}
+                    />
+                  </>
+                )}
               </WrapperRow>
-              {authUser?.username === post.user.username && (
-                <>
-                  <FontAwesomeIcon
-                    icon={faPenToSquare}
-                    size="lg"
-                    color={theme.color.achromatic.black}
-                    onClick={() => moveToPostEdit(post.id)}
-                  />
-                  <FontAwesomeIcon
-                    icon={faXmark}
-                    size="lg"
-                    color={theme.color.achromatic.black}
-                    onClick={() => deletePostHandler(post.id)}
-                  />
-                </>
-              )}
-            </WrapperRow>
-            <WrapperEllipsis line={3}>
-              <TextBase text={post.contents} />
-            </WrapperEllipsis>
+              <WrapperEllipsis line={3}>
+                <TextBase text={post.contents} />
+              </WrapperEllipsis>
+            </WrapperColumn>
           </WrapperColumn>
-        </WrapperColumn>
-      )}
-      {postId && <PostDetailComment postId={postId} />}
+        )}
+        {postId && <PostDetailComment postId={postId} />}
+      </BaseWrapper>
     </>
   );
 }
