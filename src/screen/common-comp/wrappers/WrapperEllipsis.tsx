@@ -19,7 +19,7 @@ interface IWrapperEllipsis {
   line: number;
   lineHeight?: number;
   children: ReactNode;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 function WrapperEllipsis({ line, children, lineHeight, onClick }: IWrapperEllipsis) {
@@ -32,6 +32,7 @@ function WrapperEllipsis({ line, children, lineHeight, onClick }: IWrapperEllips
 
 WrapperEllipsis.defaultProps = {
   lineHeight: 1.2,
+  onClick: () => {},
 };
 
 export default WrapperEllipsis;

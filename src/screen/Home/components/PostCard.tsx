@@ -11,17 +11,13 @@ import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons
 import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
-
 import { Carousel } from 'react-responsive-carousel';
-import { gql, makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { gql, makeReference, useApolloClient, useMutation } from '@apollo/client';
 import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { DELETE_POST, TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
-import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import { MYPROFILE } from 'apllo-gqls/users';
-import { QMe } from '__generated__/QMe';
-import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
+import useToggleLike from 'hooks/useToggleLike';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -69,67 +65,50 @@ function PostCard({
   placeId,
   __typename,
 }: QGetSubscribingPosts_getSubscribingPosts_data) {
-  const { data: meData } = useQuery<QMe>(MYPROFILE);
-  const authUserName = meData?.me.data?.username;
-  const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
-  const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
+  // const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
+  const toggleLikeHandler = useToggleLike();
   const client = useApolloClient();
   const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
 
-  const toggleLikeHandler = async (postId: string) => {
-    const res = await toggleLike({
-      variables: { args: { postId } },
-    });
-    console.log(res);
-    if (!res.data?.toggleLikePost.ok) {
-      window.alert(res.data?.toggleLikePost.error);
-      return;
-    }
-    // 좋아요 버튼 토글
-    client.cache.writeFragment({
-      id: client.cache.identify({ id, __typename }),
-      fragment: gql`
-        fragment post on PostAll {
-          liked
-        }
-      `,
-      data: {
-        liked: !liked,
-      },
-    });
-    // 좋아요 누르면, getMyLikedPosts에 추가 및 삭제
-    client.cache.modify({
-      id: client.cache.identify(makeReference('ROOT_QUERY')),
-      fields: {
-        getMyLikedPosts(existing) {
-          return {
-            ...existing,
-            data: liked
-              ? existing.data.filter(
-                  (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename }),
-                )
-              : [{ __ref: client.cache.identify({ id, __typename }) }, ...existing.data],
-          };
-        },
-      },
-    });
-  };
-
-  const moveToPostEdit = (postId: string) => {
-    navigate(`${routes.postWrite}`, { state: { id, user, address, photos, contents, placeId, __typename } });
-  };
-
-  const deletePostHandler = async (postId: string) => {
-    const res = await deletePost({ variables: { args: { id: postId } } });
-    if (!res.data?.deletePost.ok) {
-      window.alert(res.data?.deletePost.error);
-      return;
-    }
-    const normalizedId = client.cache.identify({ id, __typename });
-    client.cache.evict({ id: normalizedId });
-    client.cache.gc();
-  };
+  // const toggleLikeHandler = async (postId: string) => {
+  //   const res = await toggleLike({
+  //     variables: { args: { postId } },
+  //   });
+  //   console.log(res);
+  //   if (!res.data?.toggleLikePost.ok) {
+  //     window.alert(res.data?.toggleLikePost.error);
+  //     return;
+  //   }
+  //   // 좋아요 버튼 토글
+  //   client.cache.writeFragment({
+  //     id: client.cache.identify({ id, __typename }),
+  //     fragment: gql`
+  //       fragment post on PostAll {
+  //         liked
+  //       }
+  //     `,
+  //     data: {
+  //       liked: !liked,
+  //     },
+  //   });
+  //   // 좋아요 누르면, getMyLikedPosts에 추가 및 삭제
+  //   client.cache.modify({
+  //     id: client.cache.identify(makeReference('ROOT_QUERY')),
+  //     fields: {
+  //       getMyLikedPosts(existing) {
+  //         return {
+  //           ...existing,
+  //           data: liked
+  //             ? existing.data.filter(
+  //                 (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename }),
+  //               )
+  //             : [{ __ref: client.cache.identify({ id, __typename }) }, ...existing.data],
+  //         };
+  //       },
+  //     },
+  //   });
+  // };
 
   const moveToPostDetail = () => {
     navigate(`${routes.postDetailBase}${id}`, {
@@ -164,7 +143,7 @@ function PostCard({
       <Contents>
         <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
-            <OnClickWrapper onClick={(e) => toggleLikeHandler(id)}>
+            <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
               {liked ? (
                 <FontAwesomeIcon
                   icon={faPaw}
@@ -189,22 +168,6 @@ function PostCard({
             />
             <TextBase text={address} />
           </WrapperRow>
-          {authUserName === user.username && (
-            <>
-              <FontAwesomeIcon
-                icon={faPenToSquare}
-                size="lg"
-                color={theme.color.achromatic.black}
-                onClick={() => moveToPostEdit(id)}
-              />
-              <FontAwesomeIcon
-                icon={faXmark}
-                size="lg"
-                color={theme.color.achromatic.black}
-                onClick={() => deletePostHandler(id)}
-              />
-            </>
-          )}
         </WrapperRow>
         <WrapperEllipsis line={3} onClick={moveToPostDetail}>
           <TextBase text={contents} />

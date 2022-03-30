@@ -19,7 +19,7 @@ interface IWrapperRow {
   h?: string;
   bc?: string;
   m?: string;
-  onClick?: () => void;
+  onClick?: (arg?: any) => void;
 }
 
 function WrapperRow({ children, jc, p, w, h, bc, m, onClick }: IWrapperRow) {
