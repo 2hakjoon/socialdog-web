@@ -29,8 +29,6 @@ function PostDetailScreen() {
   const { cache } = useApolloClient();
   const navigate = useNavigate();
   const toggleLikeHandler = useToggleLike();
-  const { state } = useLocation();
-  const statePostData = state as QGetSubscribingPosts_getSubscribingPosts_data;
   const { postId } = useParams<Params>();
   // console.log(statePostData, postId);
 
@@ -59,10 +57,6 @@ function PostDetailScreen() {
   // console.log(post);
 
   useEffect(() => {
-    if (statePostData) {
-      setPost(statePostData);
-      return;
-    }
     // console.log(postId);
     if (!postId) {
       navigate(routes.home);

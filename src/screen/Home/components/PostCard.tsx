@@ -111,18 +111,7 @@ function PostCard({
   // };
 
   const moveToPostDetail = () => {
-    navigate(`${routes.postDetailBase}${id}`, {
-      state: {
-        id,
-        user,
-        address,
-        photos,
-        contents,
-        liked,
-        placeId,
-        __typename,
-      },
-    });
+    navigate(`${routes.postDetailBase}${id}`);
   };
 
   return (
