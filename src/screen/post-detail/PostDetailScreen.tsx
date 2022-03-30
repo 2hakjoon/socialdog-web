@@ -1,13 +1,13 @@
-import { useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { faLocationDot, faPaw, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DELETE_POST, GET_POST_DETAIL } from 'apllo-gqls/posts';
+import { DELETE_POST, GET_POST_DETAIL, POST_FRAGMENT } from 'apllo-gqls/posts';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useToggleLike from 'hooks/useToggleLike';
 import React, { useEffect, useState } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import { useLocation, useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -26,15 +26,21 @@ type Params = {
 };
 
 function PostDetailScreen() {
-  const { cache } = useApolloClient();
+  const client = useApolloClient();
   const navigate = useNavigate();
   const toggleLikeHandler = useToggleLike();
   const { postId } = useParams<Params>();
-  // console.log(statePostData, postId);
+  // console.log(postId);
+  const identifiedId = client.cache.identify({ id: postId, __typename: 'PostAll' });
+  const cachedPost = client.readFragment({
+    id: identifiedId, // The value of the to-do item's cache ID
+    fragment: POST_FRAGMENT,
+  });
+  // console.log(cachedPost);
 
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUser = meData?.me.data;
-  console.log(authUser);
+  // console.log(authUser);
 
   const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
   const [getPostDetail] = useLazyQuery<QGetPostDetail, QGetPostDetailVariables>(GET_POST_DETAIL);
@@ -50,14 +56,26 @@ function PostDetailScreen() {
       window.alert(res.data?.deletePost.error);
       return;
     }
-    const normalizedId = cache.identify({ id: post?.id, __typename: post?.__typename });
-    cache.evict({ id: normalizedId });
-    cache.gc();
+    const normalizedId = client.cache.identify({ id: post?.id, __typename: post?.__typename });
+    client.cache.evict({ id: normalizedId });
+    client.cache.gc();
   };
   // console.log(post);
 
+  const toggleLikeState = () => {
+    if (!post) {
+      return;
+    }
+    setPost({ ...post, liked: !post.liked });
+    toggleLikeHandler({ id: post.id, __typename: post.__typename, liked: post.liked });
+  };
+
   useEffect(() => {
     // console.log(postId);
+    if (cachedPost) {
+      setPost(cachedPost);
+      return;
+    }
     if (!postId) {
       navigate(routes.home);
       return;
@@ -80,9 +98,7 @@ function PostDetailScreen() {
           <WrapperColumn>
             <WrapperRow jc="space-between" w="100%" p="8px 0">
               <WrapperRow>
-                <WrapperRow
-                  onClick={(e) => toggleLikeHandler({ id: post.id, __typename: post.__typename, liked: post.liked })}
-                >
+                <WrapperRow onClick={(e) => toggleLikeState()}>
                   {post.liked ? (
                     <FontAwesomeIcon
                       icon={faPaw}
