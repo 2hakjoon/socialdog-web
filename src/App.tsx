@@ -25,7 +25,7 @@ function App() {
           {isLoggedIn ? (
             <>
               <Route path={routes.home} element={<HomeScreen />} />
-              <Route path={routes.post} element={<PostDetailScreen />} />
+              <Route path={routes.postDetail} element={<PostDetailScreen />} />
               <Route path={routes.postWrite} element={<PostWriteScreen />} />
               <Route path={routes.profile} element={<ProfileScreen />} />
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />

@@ -131,6 +131,21 @@ function PostCard({
     client.cache.gc();
   };
 
+  const moveToPostDetail = () => {
+    navigate(`${routes.postDetailBase}${id}`, {
+      state: {
+        id,
+        user,
+        address,
+        photos,
+        contents,
+        liked,
+        placeId,
+        __typename,
+      },
+    });
+  };
+
   return (
     <Wrapper key={id}>
       <TopBar>
@@ -147,9 +162,14 @@ function PostCard({
         ))}
       </Carousel>
       <Contents>
-        <WrapperRow jc="space-between" w="100%" p="8px 0">
+        <WrapperRow jc="space-between" w="100%" p="8px 0" onClick={moveToPostDetail}>
           <WrapperRow>
-            <OnClickWrapper onClick={() => toggleLikeHandler(id)}>
+            <OnClickWrapper
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleLikeHandler(id);
+              }}
+            >
               {liked ? (
                 <FontAwesomeIcon
                   icon={faPaw}
@@ -180,13 +200,19 @@ function PostCard({
                 icon={faPenToSquare}
                 size="lg"
                 color={theme.color.achromatic.black}
-                onClick={() => moveToPostEdit(id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  moveToPostEdit(id);
+                }}
               />
               <FontAwesomeIcon
                 icon={faXmark}
                 size="lg"
                 color={theme.color.achromatic.black}
-                onClick={() => deletePostHandler(id)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  deletePostHandler(id);
+                }}
               />
             </>
           )}

@@ -1,7 +1,8 @@
 export const routes = {
   home: '/',
   profile: '/:username',
-  post: '/post/:postId',
+  postDetail: '/post/:postId',
+  postDetailBase: '/post/',
   postWrite: '/post-write',
   profileEdit: '/profile-edit',
   login: '/login',
