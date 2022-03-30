@@ -1,5 +1,8 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import ImageBase from 'screen/common-comp/image/ImageBase';
+import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import { routes } from 'screen/routes';
 import styled from 'styled-components';
 
 const LoadingBox = styled.div`
@@ -18,9 +21,18 @@ function PostSmallBox({ photos, __typename, id }: IPostSmallBox) {
   if (!photos) {
     return <LoadingBox />;
   }
+  const navigate = useNavigate();
+  const moveToPostDetail = () => {
+    navigate(`${routes.postDetailBase}${id}`);
+  };
+
   const thumbnail = JSON.parse(photos)[0];
   // console.log(thumbnail);
-  return <ImageBase url={thumbnail} />;
+  return (
+    <WrapperRow onClick={moveToPostDetail}>
+      <ImageBase url={thumbnail} />
+    </WrapperRow>
+  );
 }
 
 export default PostSmallBox;
