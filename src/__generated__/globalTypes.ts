@@ -100,6 +100,10 @@ export interface FindUserByUsernameInputDto {
   username: string;
 }
 
+export interface GetCommentsInputDto {
+  postId: string;
+}
+
 export interface GetPostDetailInputDto {
   id: string;
 }

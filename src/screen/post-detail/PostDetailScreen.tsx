@@ -20,6 +20,7 @@ import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
 import { QGetPostDetail, QGetPostDetailVariables } from '__generated__/QGetPostDetail';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import { QMe } from '__generated__/QMe';
+import PostDetailComment from './template/PostDetailComment';
 
 type Params = {
   postId: string;
@@ -95,7 +96,7 @@ function PostDetailScreen() {
               ))}
             </Carousel>
           </WrapperSquare>
-          <WrapperColumn>
+          <WrapperColumn ai="flex-start">
             <WrapperRow jc="space-between" w="100%" p="8px 0">
               <WrapperRow>
                 <WrapperRow onClick={(e) => toggleLikeState()}>
@@ -146,6 +147,7 @@ function PostDetailScreen() {
           </WrapperColumn>
         </WrapperColumn>
       )}
+      {postId && <PostDetailComment postId={postId} />}
     </>
   );
 }
