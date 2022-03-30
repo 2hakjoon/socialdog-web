@@ -149,7 +149,7 @@ function PostDetailScreen() {
             </WrapperColumn>
           </WrapperColumn>
         )}
-        {postId && <PostDetailComment postId={postId} />}
+        {post && postId && <PostDetailComment postId={postId} authorId={post.user.id} />}
       </BaseWrapper>
     </>
   );

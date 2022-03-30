@@ -50,6 +50,11 @@ export interface CheckUsernameExistInputDto {
   username: string;
 }
 
+export interface CreateCommentInputDto {
+  content: string;
+  postId: string;
+}
+
 export interface CreatePostInputDto {
   address?: string | null;
   placeId?: string | null;
@@ -59,6 +64,12 @@ export interface CreatePostInputDto {
 
 export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
+}
+
+export interface CreateReCommentInputDto {
+  content: string;
+  parentCommentId: string;
+  postId: string;
 }
 
 export interface CursorArgs {
@@ -71,8 +82,17 @@ export interface CursorPaginationInputDto {
   cursor?: CursorArgs | null;
 }
 
+export interface DeleteCommentInputDto {
+  id: string;
+}
+
 export interface DeletePostInputDto {
   id: string;
+}
+
+export interface EditCommentInputDto {
+  id: string;
+  content: string;
 }
 
 export interface EditPostInputDto {
@@ -106,6 +126,10 @@ export interface GetCommentsInputDto {
 
 export interface GetPostDetailInputDto {
   id: string;
+}
+
+export interface GetReCommentsInputDto {
+  parentCommentId: string;
 }
 
 export interface GetUserInputDto {

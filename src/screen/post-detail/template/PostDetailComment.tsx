@@ -7,9 +7,10 @@ import CommentCard from '../components/CommentCard';
 
 interface PostDetailComment {
   postId: string;
+  authorId: string;
 }
 
-function PostDetailComment({ postId }: PostDetailComment) {
+function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const pageItemCount = 6;
   const [pageLimit, setPageLimit] = useState(pageItemCount);
   const { data: commentsData } = useQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS, {
@@ -25,7 +26,7 @@ function PostDetailComment({ postId }: PostDetailComment) {
       {comments && (
         <>
           {comments.map((comment) => (
-            <CommentCard key={comment.id} {...comment} />
+            <CommentCard key={comment.id} {...comment} authorId={authorId} />
           ))}
         </>
       )}
