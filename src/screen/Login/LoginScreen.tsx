@@ -37,7 +37,7 @@ function LoginScreen() {
   useEffect(() => {
     if (getAccessToken()) {
       removeAllTokens();
-      alert('로그인 후 2주가 지났습니다. 보안을 위해서 다시 로그인 해 주세요');
+      alert('보안을 위해서 다시 로그인 해 주세요');
     }
   }, []);
 

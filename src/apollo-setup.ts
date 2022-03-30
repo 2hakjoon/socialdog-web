@@ -40,7 +40,8 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
             if(data.data?.reissueAccessToken.accessToken){
               setAccessToken(data.data.reissueAccessToken.accessToken);
             }
-            if(data.data?.reissueAccessToken.isRefreshTokenExpired){
+            // 엑세스토큰 발급 실패시
+            if(!data.data?.reissueAccessToken.ok){
               if(()=>getAccessToken()){
                 client.resetStore()
                 loginState(false)
