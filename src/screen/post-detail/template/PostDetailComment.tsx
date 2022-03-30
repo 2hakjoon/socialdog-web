@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { QGetComments, QGetCommentsVariables } from '__generated__/QGetComments';
 import CommentCard from '../components/CommentCard';
+import CommentInput from '../components/CommentInput';
 
 interface PostDetailComment {
   postId: string;
@@ -22,15 +23,18 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const comments = commentsData?.getComments.data;
   console.log(commentsData);
   return (
-    <WrapperColumn>
-      {comments && (
-        <>
-          {comments.map((comment) => (
-            <CommentCard key={comment.id} {...comment} authorId={authorId} />
-          ))}
-        </>
-      )}
-    </WrapperColumn>
+    <>
+      <WrapperColumn>
+        {comments && (
+          <>
+            {comments.map((comment) => (
+              <CommentCard key={comment.id} {...comment} authorId={authorId} />
+            ))}
+          </>
+        )}
+      </WrapperColumn>
+      <CommentInput postId={postId} />
+    </>
   );
 }
 

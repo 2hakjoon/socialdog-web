@@ -1,5 +1,5 @@
 import { useMutation, useQuery } from '@apollo/client';
-import { faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { DELETE_COMMENT } from 'apllo-gqls/comments';
 import { MYPROFILE } from 'apllo-gqls/users';

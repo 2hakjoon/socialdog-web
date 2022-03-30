@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { CSSProperties } from 'react';
 import styled from 'styled-components';
 
 const Button = styled.button<IButtonProps>`
@@ -11,6 +11,7 @@ const Button = styled.button<IButtonProps>`
 `;
 
 interface IButtonProps {
+  style?: CSSProperties;
   enable?: boolean;
 }
 
@@ -19,9 +20,9 @@ export interface IButtonSmallBlue extends IButtonProps {
   onClick: () => void;
 }
 
-function ButtonSmallBlue({ title, enable, onClick }: IButtonSmallBlue) {
+function ButtonSmallBlue({ title, enable, onClick, style }: IButtonSmallBlue) {
   return (
-    <Button type="button" onClick={onClick} disabled={!enable} enable={enable}>
+    <Button type="button" onClick={onClick} disabled={!enable} enable={enable} style={style}>
       {title}
     </Button>
   );
@@ -29,6 +30,7 @@ function ButtonSmallBlue({ title, enable, onClick }: IButtonSmallBlue) {
 
 ButtonSmallBlue.defaultProps = {
   enable: true,
+  style: undefined,
 };
 
 export default ButtonSmallBlue;

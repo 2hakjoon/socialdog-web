@@ -2,29 +2,31 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 
 interface ITextAreaComponent {
-  height: string;
+  height?: string;
+  minHeight?: string;
 }
 
 const TextAreaComponent = styled.textarea<ITextAreaComponent>`
   width: 100%;
   height: ${(p) => p.height};
-  min-height: 200px;
+  min-height: ${(p) => p.minHeight};
   padding: 6px;
 `;
 
-interface IFormTextArea {
+interface IFormTextArea extends ITextAreaComponent {
   register: any;
 }
 
 // Todo: auto sizing
-function FormTextArea({ register }: IFormTextArea) {
+function FormTextArea({ register, height, minHeight }: IFormTextArea) {
   // const [textAreaHeight, setTextAreaHeight] = useState<string>('50px');
 
   return (
     <TextAreaComponent
       {...register}
       placeholder=""
-      height="300px"
+      height={height}
+      minHeight={minHeight}
       // onChange={({ target }) => {
       //   setTextAreaHeight(`${target.scrollHeight - 4}px`);
       // }}
@@ -32,5 +34,10 @@ function FormTextArea({ register }: IFormTextArea) {
     />
   );
 }
+
+FormTextArea.defaultProps = {
+  height: '300px',
+  minHeight: '200px',
+};
 
 export default FormTextArea;

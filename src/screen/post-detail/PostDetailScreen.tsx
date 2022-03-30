@@ -21,6 +21,7 @@ import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
 import { QGetPostDetail, QGetPostDetailVariables } from '__generated__/QGetPostDetail';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import { QMe } from '__generated__/QMe';
+import CommentInput from './components/CommentInput';
 import PostDetailComment from './template/PostDetailComment';
 
 type Params = {
