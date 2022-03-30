@@ -11,6 +11,7 @@ import { loginState } from './apollo-setup';
 import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
 import SearchScreen from 'screen/search/SearchScreen';
 import PostWriteScreen from 'screen/post-write/PostWriteScreen';
+import PostDetailScreen from 'screen/post-detail/PostDetailScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -24,6 +25,7 @@ function App() {
           {isLoggedIn ? (
             <>
               <Route path={routes.home} element={<HomeScreen />} />
+              <Route path={routes.post} element={<PostDetailScreen />} />
               <Route path={routes.postWrite} element={<PostWriteScreen />} />
               <Route path={routes.profile} element={<ProfileScreen />} />
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
