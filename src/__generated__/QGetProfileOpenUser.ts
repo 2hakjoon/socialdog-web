@@ -10,7 +10,7 @@
 export interface QGetProfileOpenUser_getProfileOpenUser_data {
   __typename: "UserProfile";
   id: string;
-  username: string | null;
+  username: string;
   dogname: string | null;
   photo: string | null;
 }

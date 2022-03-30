@@ -6,8 +6,8 @@ import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinitySc
 import { QGetSubscribingPosts } from '__generated__/QGetSubscribingPosts';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
-import { CursorInput } from '__generated__/globalTypes';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
+import { CursorArgs } from '__generated__/globalTypes';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
@@ -46,7 +46,7 @@ function SubscribingsTemplate() {
     }
 
     const lastPost = posts[posts.length - 1];
-    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    const cursor: CursorArgs = { id: lastPost.id, createdAt: lastPost.createdAt };
     fetchMore({
       variables: {
         page: {

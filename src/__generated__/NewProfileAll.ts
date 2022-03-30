@@ -10,7 +10,7 @@
 export interface NewProfileAll {
   __typename: "UserProfileAll";
   id: string;
-  username: string | null;
+  username: string;
   dogname: string | null;
   photo: string | null;
   profileOpen: boolean | null;

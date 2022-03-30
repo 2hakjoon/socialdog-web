@@ -12,7 +12,7 @@ import { FindUserByUsernameInputDto } from "./globalTypes";
 export interface QFindUserByUsername_findUsersByUsername_data {
   __typename: "UserProfileAll";
   photo: string | null;
-  username: string | null;
+  username: string;
   dogname: string | null;
   id: string;
 }

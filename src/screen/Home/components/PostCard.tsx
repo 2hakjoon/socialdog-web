@@ -162,14 +162,9 @@ function PostCard({
         ))}
       </Carousel>
       <Contents>
-        <WrapperRow jc="space-between" w="100%" p="8px 0" onClick={moveToPostDetail}>
+        <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
-            <OnClickWrapper
-              onClick={(e) => {
-                e.stopPropagation();
-                toggleLikeHandler(id);
-              }}
-            >
+            <OnClickWrapper onClick={(e) => toggleLikeHandler(id)}>
               {liked ? (
                 <FontAwesomeIcon
                   icon={faPaw}
@@ -200,24 +195,18 @@ function PostCard({
                 icon={faPenToSquare}
                 size="lg"
                 color={theme.color.achromatic.black}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  moveToPostEdit(id);
-                }}
+                onClick={() => moveToPostEdit(id)}
               />
               <FontAwesomeIcon
                 icon={faXmark}
                 size="lg"
                 color={theme.color.achromatic.black}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  deletePostHandler(id);
-                }}
+                onClick={() => deletePostHandler(id)}
               />
             </>
           )}
         </WrapperRow>
-        <WrapperEllipsis line={3}>
+        <WrapperEllipsis line={3} onClick={moveToPostDetail}>
           <TextBase text={contents} />
         </WrapperEllipsis>
       </Contents>

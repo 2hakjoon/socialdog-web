@@ -12,7 +12,7 @@ import { CursorPaginationInputDto } from "./globalTypes";
 export interface QGetPostsByAddress_getPostsByAddress_data_user {
   __typename: "UserProfile";
   photo: string | null;
-  username: string | null;
+  username: string;
   id: string;
 }
 

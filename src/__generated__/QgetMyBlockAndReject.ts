@@ -10,7 +10,7 @@
 export interface QGetMyBlockAndReject_getMyRejectRequests_data {
   __typename: "UserProfile";
   id: string;
-  username: string | null;
+  username: string;
   photo: string | null;
   dogname: string | null;
 }
@@ -25,7 +25,7 @@ export interface QGetMyBlockAndReject_getMyRejectRequests {
 export interface QGetMyBlockAndReject_getMyBlockingUsers_data {
   __typename: "UserProfile";
   id: string;
-  username: string | null;
+  username: string;
   photo: string | null;
   dogname: string | null;
 }

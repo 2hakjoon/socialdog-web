@@ -5,7 +5,7 @@ import NoContents from 'screen/common-comp/no-contents/NoContents';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { IPlaceTerms } from 'types/GooglePlace';
-import { CursorInput } from '__generated__/globalTypes';
+import { CursorArgs } from '__generated__/globalTypes';
 import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/QGetPostsByAddress';
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
@@ -50,7 +50,7 @@ function AddressPostsTemplate() {
     }
 
     const lastPost = posts[posts.length - 1];
-    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    const cursor: CursorArgs = { id: lastPost.id, createdAt: lastPost.createdAt };
     fetchMore({
       variables: {
         page: {

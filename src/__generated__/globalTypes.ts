@@ -47,7 +47,7 @@ export interface ChangeBlockStateInputDto {
 }
 
 export interface CheckUsernameExistInputDto {
-  username?: string | null;
+  username: string;
 }
 
 export interface CreatePostInputDto {
@@ -61,14 +61,14 @@ export interface CreatePreSignedUrlsInputDto {
   files: FileInputDto[];
 }
 
-export interface CursorInput {
-  id: string;
-  createdAt: string;
+export interface CursorArgs {
+  id?: string | null;
+  createdAt?: string | null;
 }
 
 export interface CursorPaginationInputDto {
   take: number;
-  cursor?: CursorInput | null;
+  cursor?: CursorArgs | null;
 }
 
 export interface DeletePostInputDto {
@@ -100,8 +100,12 @@ export interface FindUserByUsernameInputDto {
   username: string;
 }
 
+export interface GetPostDetailInputDto {
+  id: string;
+}
+
 export interface GetUserInputDto {
-  username?: string | null;
+  username: string;
 }
 
 export interface KakaoLoginInputDto {

@@ -10,6 +10,6 @@
 export interface NewProfile {
   __typename: "UserProfile";
   id: string;
-  username: string | null;
+  username: string;
   photo: string | null;
 }

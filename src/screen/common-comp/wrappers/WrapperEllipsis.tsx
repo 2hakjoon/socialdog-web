@@ -19,11 +19,12 @@ interface IWrapperEllipsis {
   line: number;
   lineHeight?: number;
   children: ReactNode;
+  onClick: () => void;
 }
 
-function WrapperEllipsis({ line, children, lineHeight }: IWrapperEllipsis) {
+function WrapperEllipsis({ line, children, lineHeight, onClick }: IWrapperEllipsis) {
   return (
-    <Wrapper line={line} lineHeight={lineHeight}>
+    <Wrapper line={line} lineHeight={lineHeight} onClick={onClick}>
       {children}
     </Wrapper>
   );

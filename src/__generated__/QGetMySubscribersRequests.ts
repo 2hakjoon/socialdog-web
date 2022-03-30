@@ -10,7 +10,7 @@
 export interface QGetMySubscribersRequests_getMySubscribers_data {
   __typename: "UserProfile";
   photo: string | null;
-  username: string | null;
+  username: string;
   id: string;
   dogname: string | null;
 }
@@ -25,7 +25,7 @@ export interface QGetMySubscribersRequests_getSubscribeRequests_data {
   __typename: "UserProfile";
   updatedAt: string;
   id: string;
-  username: string | null;
+  username: string;
   dogname: string | null;
   photo: string | null;
 }

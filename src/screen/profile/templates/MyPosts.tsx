@@ -6,7 +6,7 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
-import { CursorInput } from '__generated__/globalTypes';
+import { CursorArgs } from '__generated__/globalTypes';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';
 
@@ -55,7 +55,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
     }
 
     const lastPost = posts[posts.length - 1];
-    const cursor: CursorInput = { id: lastPost.id, createdAt: lastPost.createdAt };
+    const cursor: CursorArgs = { id: lastPost.id, createdAt: lastPost.createdAt };
     fetchMore({
       variables: {
         page: {

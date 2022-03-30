@@ -136,3 +136,16 @@ export const DELETE_POST = gql`
   }
 }
 `
+
+export const GET_POST_DETAIL = gql`
+  query QGetPostDetail($args: GetPostDetailInputDto!) {
+    getPostDetail(args: $args) {
+      ok
+      error
+      data {
+        ...PostData
+      }
+    }
+  }
+  ${POST_FRAGMENT}
+`

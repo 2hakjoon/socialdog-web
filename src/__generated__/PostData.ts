@@ -10,7 +10,7 @@
 export interface PostData_user {
   __typename: "UserProfile";
   photo: string | null;
-  username: string | null;
+  username: string;
   id: string;
 }
 
