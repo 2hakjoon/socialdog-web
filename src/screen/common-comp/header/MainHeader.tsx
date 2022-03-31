@@ -18,6 +18,15 @@ const Wrapper = styled.header`
   background-color: white;
   border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
   padding: 0 8px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 10;
+`;
+
+const Block = styled.div`
+  width: 100%;
+  height: 60px;
 `;
 
 const InnerWrapper = styled.div`
@@ -40,32 +49,35 @@ function MainHeader() {
   const { data: userData } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
   return (
-    <Wrapper>
-      <InnerWrapper>
-        <Link to={routes.home}>
-          <LogoWrapper>
-            <img alt="asdf" src={socialDogLogoBlack} />
-          </LogoWrapper>
-        </Link>
-        <WrapperRow w="100px" jc={'space-between'}>
-          <Link to={routes.search}>
-            <IconUserSearch size={24} />
+    <>
+      <Block />
+      <Wrapper>
+        <InnerWrapper>
+          <Link to={routes.home}>
+            <LogoWrapper>
+              <img alt="asdf" src={socialDogLogoBlack} />
+            </LogoWrapper>
           </Link>
-          <Link to={routes.postWrite}>
-            <IconClipBoard size={24} />
-          </Link>
-          {getAccessToken() ? (
-            <Link to={user?.username ? `/${user?.username}` : routes.home}>
-              <IconBook size={30} />
+          <WrapperRow w="100px" jc={'space-between'}>
+            <Link to={routes.search}>
+              <IconUserSearch size={24} />
             </Link>
-          ) : (
-            <Link to={routes.login}>
-              <div>로그인</div>
+            <Link to={routes.postWrite}>
+              <IconClipBoard size={24} />
             </Link>
-          )}
-        </WrapperRow>
-      </InnerWrapper>
-    </Wrapper>
+            {getAccessToken() ? (
+              <Link to={user?.username ? `/${user?.username}` : routes.home}>
+                <IconBook size={30} />
+              </Link>
+            ) : (
+              <Link to={routes.login}>
+                <div>로그인</div>
+              </Link>
+            )}
+          </WrapperRow>
+        </InnerWrapper>
+      </Wrapper>
+    </>
   );
 }
 
