@@ -29,7 +29,7 @@ function PostSmallBox({ photos, __typename, id }: IPostSmallBox) {
   const thumbnail = JSON.parse(photos)[0];
   // console.log(thumbnail);
   return (
-    <WrapperRow onClick={moveToPostDetail}>
+    <WrapperRow onClick={moveToPostDetail} w="100%" h="100%">
       <ImageBase url={thumbnail} />
     </WrapperRow>
   );

@@ -17,13 +17,26 @@ import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { routes } from 'screen/routes';
+import styled from 'styled-components';
 import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
 import { QGetPostDetail, QGetPostDetailVariables } from '__generated__/QGetPostDetail';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import { QMe } from '__generated__/QMe';
-import CommentInput from './components/CommentInput';
 import PostDetailComment from './template/PostDetailComment';
 
+const ImgWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const Wrapper = styled.div`
+  max-width: 612px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  margin: auto;
+`;
 type Params = {
   postId: string;
 };
@@ -91,14 +104,16 @@ function PostDetailScreen() {
       <MainHeader />
       <BaseWrapper p="0px 16px">
         {post && (
-          <WrapperColumn>
-            <WrapperSquare w="100%">
-              <Carousel showThumbs={false}>
-                {JSON.parse(post.photos).map((photo: string) => (
-                  <ImageBase url={photo} />
-                ))}
-              </Carousel>
-            </WrapperSquare>
+          <Wrapper>
+            <Carousel showThumbs={false} dynamicHeight>
+              {JSON.parse(post.photos).map((photo: string) => (
+                <WrapperSquare key={`${photo}`}>
+                  <ImgWrapper>
+                    <ImageBase url={photo} />
+                  </ImgWrapper>
+                </WrapperSquare>
+              ))}
+            </Carousel>
             <WrapperColumn ai="flex-start" w="100%">
               <WrapperRow jc="space-between" w="100%" p="8px 0">
                 <WrapperRow>
@@ -148,7 +163,7 @@ function PostDetailScreen() {
                 <TextBase text={post.contents} />
               </WrapperEllipsis>
             </WrapperColumn>
-          </WrapperColumn>
+          </Wrapper>
         )}
         {post && postId && <PostDetailComment postId={postId} authorId={post.user.id} />}
       </BaseWrapper>
