@@ -12,6 +12,8 @@ import { CreatePostInputDto } from '__generated__/globalTypes';
 import { MCreatePost, MCreatePostVariables } from '__generated__/MCreatePost';
 import UploadImgViewer from '../components/UploadImgViewer';
 import { IPostWriteTemplate } from '../PostWriteScreen';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'screen/routes';
 
 function PostCreateTemplate({
   requestSignedUrl,
@@ -22,6 +24,7 @@ function PostCreateTemplate({
   uploadFilesToS3,
   resetCache = () => {},
 }: IPostWriteTemplate) {
+  const navigate = useNavigate();
   const { register, handleSubmit, formState, getValues, setValue } = useForm<CreatePostInputDto>({ mode: 'onChange' });
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
 
@@ -62,6 +65,7 @@ function PostCreateTemplate({
         return;
       }
       resetCache();
+      navigate(routes.home, { replace: true });
       window.alert('게시물 업로드를 성공했습니다.');
     } catch (e) {
       console.log(e);

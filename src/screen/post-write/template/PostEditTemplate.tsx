@@ -2,11 +2,13 @@ import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { EDIT_POST } from 'apllo-gqls/posts';
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import FormTextArea from 'screen/common-comp/input/FormTextArea';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { EditPostInputDto } from '__generated__/globalTypes';
 import { MEditPost, MEditPostVariables } from '__generated__/MEditPost';
@@ -27,6 +29,7 @@ function PostEditTemplate({
   inputFileHandler,
   uploadFilesToS3,
 }: IPostEditTemplate) {
+  const navigate = useNavigate();
   const { cache } = useApolloClient();
   const { register, handleSubmit, formState, getValues, setValue } = useForm<EditPostInputDto>({ mode: 'onChange' });
   const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
@@ -96,6 +99,7 @@ function PostEditTemplate({
         },
       });
       window.alert('게시물 수젱을 성공했습니다.');
+      navigate(routes.home, { replace: true });
     } catch (e) {
       console.log(e);
       alretError();

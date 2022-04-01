@@ -25,6 +25,8 @@ import { QCheckUsernameExist, QCheckUsernameExistVariables } from '__generated__
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
+import { useNavigate } from 'react-router-dom';
+import { routes } from 'screen/routes';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -38,6 +40,7 @@ const FormWrapper = styled.form`
 `;
 
 function ProfileEditScreen() {
+  const navigate = useNavigate();
   const client = useApolloClient();
   const { data: userData, loading: userDataLoading } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
@@ -133,6 +136,7 @@ function ProfileEditScreen() {
       },
     });
     window.alert('저장되었습니다.');
+    navigate(routes.profile, { replace: true });
   };
 
   useEffect(() => {
