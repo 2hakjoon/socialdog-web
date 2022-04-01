@@ -17,7 +17,7 @@ export interface QGetPostsByAddress_getPostsByAddress_data_user {
 }
 
 export interface QGetPostsByAddress_getPostsByAddress_data {
-  __typename: "PostAll";
+  __typename: "Posts";
   id: string;
   photos: string;
   placeId: string | null;

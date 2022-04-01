@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const POST_FRAGMENT = gql`
-  fragment PostData on PostAll{
+  fragment PostData on Posts{
     id
     photos
     placeId

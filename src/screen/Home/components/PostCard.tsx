@@ -74,45 +74,6 @@ function PostCard({
   const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
 
-  // const toggleLikeHandler = async (postId: string) => {
-  //   const res = await toggleLike({
-  //     variables: { args: { postId } },
-  //   });
-  //   console.log(res);
-  //   if (!res.data?.toggleLikePost.ok) {
-  //     window.alert(res.data?.toggleLikePost.error);
-  //     return;
-  //   }
-  //   // 좋아요 버튼 토글
-  //   client.cache.writeFragment({
-  //     id: client.cache.identify({ id, __typename }),
-  //     fragment: gql`
-  //       fragment post on PostAll {
-  //         liked
-  //       }
-  //     `,
-  //     data: {
-  //       liked: !liked,
-  //     },
-  //   });
-  //   // 좋아요 누르면, getMyLikedPosts에 추가 및 삭제
-  //   client.cache.modify({
-  //     id: client.cache.identify(makeReference('ROOT_QUERY')),
-  //     fields: {
-  //       getMyLikedPosts(existing) {
-  //         return {
-  //           ...existing,
-  //           data: liked
-  //             ? existing.data.filter(
-  //                 (post: { __ref: string }) => post.__ref !== client.cache.identify({ id, __typename }),
-  //               )
-  //             : [{ __ref: client.cache.identify({ id, __typename }) }, ...existing.data],
-  //         };
-  //       },
-  //     },
-  //   });
-  // };
-
   const moveToPostDetail = () => {
     navigate(`${routes.postDetailBase}${id}`);
   };

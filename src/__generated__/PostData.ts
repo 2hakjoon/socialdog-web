@@ -15,7 +15,7 @@ export interface PostData_user {
 }
 
 export interface PostData {
-  __typename: "PostAll";
+  __typename: "Posts";
   id: string;
   photos: string;
   placeId: string | null;

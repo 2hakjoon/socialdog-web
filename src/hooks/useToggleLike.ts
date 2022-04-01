@@ -25,7 +25,7 @@ function useToggleLike (){
     cache.writeFragment({
       id: cache.identify({ id, __typename }),
       fragment: gql`
-        fragment post on PostAll {
+        fragment post on Posts{
           liked
         }
       `,

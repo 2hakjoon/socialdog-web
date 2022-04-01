@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface EditPost {
-  __typename: "PostAll";
+  __typename: "Posts";
   id: string;
   address: string | null;
   placeId: string | null;

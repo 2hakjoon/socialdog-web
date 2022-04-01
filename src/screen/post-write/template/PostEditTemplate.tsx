@@ -80,7 +80,7 @@ function PostEditTemplate({
       cache.writeFragment({
         id: cache.identify({ id: postData.id, __typename: postData.__typename }),
         fragment: gql`
-          fragment EditPost on PostAll {
+          fragment EditPost on Posts {
             id
             __typename
             address

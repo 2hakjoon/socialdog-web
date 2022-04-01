@@ -8,6 +8,6 @@
 // ====================================================
 
 export interface post {
-  __typename: "PostAll";
+  __typename: "Posts";
   liked: boolean;
 }
