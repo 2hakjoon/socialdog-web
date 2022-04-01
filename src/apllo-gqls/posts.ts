@@ -9,6 +9,7 @@ export const POST_FRAGMENT = gql`
     contents
     liked
     createdAt
+    updatedAt
     user {
       photo
       username

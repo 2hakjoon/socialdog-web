@@ -25,6 +25,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data {
   contents: string;
   liked: boolean;
   createdAt: string;
+  updatedAt: string;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
 }
 

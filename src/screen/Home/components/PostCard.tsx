@@ -63,6 +63,8 @@ function PostCard({
   contents,
   liked,
   placeId,
+  createdAt,
+  updatedAt,
   __typename,
 }: QGetSubscribingPosts_getSubscribingPosts_data) {
   // const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
@@ -119,6 +121,9 @@ function PostCard({
       <TopBar>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="nanum" fontWeight={700} />
+        {createdAt !== updatedAt && (
+          <TextBase text={'수정됨.'} fontSize={'10px'} color={theme.color.achromatic.darkGray} />
+        )}
       </TopBar>
       <Carousel showThumbs={false} dynamicHeight>
         {parsedPhotos.map((photo, idx) => (

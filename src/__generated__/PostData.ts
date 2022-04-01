@@ -23,5 +23,6 @@ export interface PostData {
   contents: string;
   liked: boolean;
   createdAt: string;
+  updatedAt: string;
   user: PostData_user;
 }

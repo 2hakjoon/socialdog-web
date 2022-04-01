@@ -25,6 +25,7 @@ export interface QGetPostsByAddress_getPostsByAddress_data {
   contents: string;
   liked: boolean;
   createdAt: string;
+  updatedAt: string;
   user: QGetPostsByAddress_getPostsByAddress_data_user;
 }
 

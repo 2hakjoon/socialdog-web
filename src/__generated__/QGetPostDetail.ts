@@ -25,6 +25,7 @@ export interface QGetPostDetail_getPostDetail_data {
   contents: string;
   liked: boolean;
   createdAt: string;
+  updatedAt: string;
   user: QGetPostDetail_getPostDetail_data_user;
 }
 
