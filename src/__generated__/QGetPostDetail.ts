@@ -24,6 +24,7 @@ export interface QGetPostDetail_getPostDetail_data {
   address: string | null;
   contents: string;
   liked: boolean;
+  commentCounts: number | null;
   createdAt: string;
   updatedAt: string;
   user: QGetPostDetail_getPostDetail_data_user;

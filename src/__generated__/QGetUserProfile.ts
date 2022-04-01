@@ -10,7 +10,7 @@ import { GetUserInputDto, BlockState, SubscribeRequestState } from "./globalType
 // ====================================================
 
 export interface QGetUserProfile_getUserProfile_data {
-  __typename: "UserProfileAll";
+  __typename: "UserProfile";
   id: string;
   username: string;
   dogname: string | null;

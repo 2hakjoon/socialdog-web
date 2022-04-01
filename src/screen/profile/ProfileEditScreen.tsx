@@ -98,9 +98,9 @@ function ProfileEditScreen() {
       return;
     }
     client.cache.writeFragment({
-      id: `UserProfileAll:${user?.id}`,
+      id: `UserProfile:${user?.id}`,
       fragment: gql`
-        fragment NewProfileAll on UserProfileAll {
+        fragment NewProfileAll on UserProfile {
           __typename
           id
           username
@@ -110,7 +110,7 @@ function ProfileEditScreen() {
         }
       `,
       data: {
-        __typename: 'UserProfileAll',
+        __typename: 'UserProfile',
         id: user?.id,
         username: formData.username || user?.username,
         dogname: formData.dogname || user?.dogname,
@@ -118,25 +118,8 @@ function ProfileEditScreen() {
         profileOpen: profileOpenState,
       },
     });
-    client.cache.writeFragment({
-      id: `UserProfile:${user?.id}`,
-      fragment: gql`
-        fragment NewProfile on UserProfile {
-          __typename
-          id
-          username
-          photo
-        }
-      `,
-      data: {
-        __typename: 'UserProfile',
-        id: user?.id,
-        username: formData.username || user?.username,
-        photo: newPhoto || user?.photo,
-      },
-    });
     window.alert('저장되었습니다.');
-    navigate(routes.profile, { replace: true });
+    navigate(`${routes.home}${formData.username}`, { replace: true });
   };
 
   useEffect(() => {

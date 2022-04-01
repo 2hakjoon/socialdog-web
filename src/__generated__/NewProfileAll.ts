@@ -8,7 +8,7 @@
 // ====================================================
 
 export interface NewProfileAll {
-  __typename: "UserProfileAll";
+  __typename: "UserProfile";
   id: string;
   username: string;
   dogname: string | null;

@@ -24,6 +24,7 @@ export interface QGetPostsByAddress_getPostsByAddress_data {
   address: string | null;
   contents: string;
   liked: boolean;
+  commentCounts: number | null;
   createdAt: string;
   updatedAt: string;
   user: QGetPostsByAddress_getPostsByAddress_data_user;

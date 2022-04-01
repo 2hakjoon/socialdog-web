@@ -24,6 +24,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data {
   address: string | null;
   contents: string;
   liked: boolean;
+  commentCounts: number | null;
   createdAt: string;
   updatedAt: string;
   user: QGetSubscribingPosts_getSubscribingPosts_data_user;
