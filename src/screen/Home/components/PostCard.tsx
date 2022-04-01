@@ -18,6 +18,7 @@ import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
+import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -121,6 +122,7 @@ function PostCard({
       <TopBar>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="nanum" fontWeight={700} />
+        <TextBase text={aFewTimeAgo(createdAt)} />
         {createdAt !== updatedAt && (
           <TextBase text={'수정됨.'} fontSize={'10px'} color={theme.color.achromatic.darkGray} />
         )}

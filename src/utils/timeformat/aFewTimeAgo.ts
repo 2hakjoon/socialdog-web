@@ -1,6 +1,12 @@
-
+import dayjs from "dayjs"
+import relativeTime from 'dayjs/plugin/relativeTime';
+import 'dayjs/locale/ko';
 
 export const aFewTimeAgo = (targetTime :string) => {
-  console.log(targetTime)
-  return "분 전"
+
+  dayjs.extend(relativeTime);
+  dayjs.locale('ko');
+  
+  return dayjs(Number(targetTime)).fromNow()
+
 }
