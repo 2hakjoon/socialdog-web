@@ -8,6 +8,7 @@ export const POST_FRAGMENT = gql`
     address
     contents
     liked
+    commentCounts
     createdAt
     updatedAt
     user {
