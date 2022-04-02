@@ -19,6 +19,7 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -63,6 +64,7 @@ function PostCard({
   photos,
   contents,
   liked,
+  commentCounts,
   placeId,
   createdAt,
   updatedAt,
@@ -83,12 +85,12 @@ function PostCard({
       <TopBar>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="nanum" fontWeight={700} />
-        <TextBase text={aFewTimeAgo(createdAt)} />
+        <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
         {createdAt !== updatedAt && (
-          <TextBase text={'수정됨.'} fontSize={'10px'} color={theme.color.achromatic.darkGray} />
+          <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
         )}
       </TopBar>
-      <Carousel showThumbs={false} dynamicHeight>
+      <Carousel showThumbs={false} dynamicHeight showStatus={false}>
         {parsedPhotos.map((photo, idx) => (
           <WrapperSquare key={photo}>
             <ImgWrapper>
@@ -106,29 +108,32 @@ function PostCard({
                   icon={faPaw}
                   size="2x"
                   color={theme.color.blue.primaryBlue}
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 6 }}
                 />
               ) : (
                 <FontAwesomeIcon
                   icon={faPaw}
                   size="2x"
                   color={theme.color.achromatic.darkGray}
-                  style={{ marginRight: 10 }}
+                  style={{ marginRight: 6 }}
                 />
               )}
             </OnClickWrapper>
             <FontAwesomeIcon
               icon={faLocationDot}
-              size="2x"
+              size="lg"
               color={theme.color.blue.primaryBlue}
               style={{ marginRight: 10 }}
             />
-            <TextBase text={address} />
+            <TextBase text={address} fontSize="14px" />
           </WrapperRow>
         </WrapperRow>
-        <WrapperEllipsis line={3} onClick={moveToPostDetail}>
-          <TextBase text={contents} />
-        </WrapperEllipsis>
+        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
+          <WrapperEllipsis line={3}>
+            <TextBase text={contents} />
+          </WrapperEllipsis>
+          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
+        </WrapperColumn>
       </Contents>
     </Wrapper>
   );

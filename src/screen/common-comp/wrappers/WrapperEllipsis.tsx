@@ -12,7 +12,7 @@ const Wrapper = styled.p<IWrapperEllipsis>`
   /* webkit 엔진을 사용하지 않는 브라우저를 위한 속성. */
   /* height = line-height * line = 1.2em * 3 = 3.6em  */
   line-height: ${(p) => p.lineHeight}em;
-  height: ${(p) => p.lineHeight! * p.line}em;
+  height: ${(p) => p.lineHeight! * p.line + 0.2}em;
 `;
 
 interface IWrapperEllipsis {
