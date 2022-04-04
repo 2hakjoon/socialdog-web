@@ -58,8 +58,17 @@ function PostDetailScreen() {
   const authUser = meData?.me.data;
   // console.log(authUser);
 
+  const onPostDetailComplete = (result: QGetPostDetail) => {
+    if (!result.getPostDetail.ok) {
+      window.alert(result.getPostDetail.error);
+    }
+    navigate(-1);
+  };
+
   const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
-  const [getPostDetail] = useLazyQuery<QGetPostDetail, QGetPostDetailVariables>(GET_POST_DETAIL);
+  const [getPostDetail] = useLazyQuery<QGetPostDetail, QGetPostDetailVariables>(GET_POST_DETAIL, {
+    onCompleted: onPostDetailComplete,
+  });
   const [post, setPost] = useState<QGetSubscribingPosts_getSubscribingPosts_data>();
 
   const moveToPostEdit = (postId: string) => {
