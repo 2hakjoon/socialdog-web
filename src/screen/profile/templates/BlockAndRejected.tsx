@@ -69,7 +69,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
     });
 
     if (authUser) {
-      evictCache(authUser?.id, 'UserProfileAll');
+      evictCache(authUser?.id, 'UserProfile');
     }
   };
 

@@ -81,7 +81,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
       },
     });
     if (authUser) {
-      evitCache(authUser?.id, 'UserProfileAll');
+      evitCache(authUser?.id, 'UserProfile');
     }
   };
 
@@ -103,7 +103,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
       },
     });
     if (authUser) {
-      evitCache(authUser?.id, 'UserProfileAll');
+      evitCache(authUser?.id, 'UserProfile');
     }
   };
 

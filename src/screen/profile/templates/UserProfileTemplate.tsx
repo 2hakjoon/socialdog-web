@@ -63,7 +63,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
       },
     });
     if (user) {
-      evictCache(user.id, 'UserProfileAll');
+      evictCache(user.id, 'UserProfile');
     }
   };
 
@@ -90,7 +90,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
       },
     });
     if (user) {
-      evictCache(user.id, 'UserProfileAll');
+      evictCache(user.id, 'UserProfile');
     }
   };
 
@@ -115,7 +115,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
     });
 
     if (authUser) {
-      evictCache(authUser.id, 'UserProfileAll');
+      evictCache(authUser.id, 'UserProfile');
     }
   };
 

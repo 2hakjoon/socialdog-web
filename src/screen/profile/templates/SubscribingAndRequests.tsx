@@ -60,7 +60,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
         },
       },
     });
-    evictCache(toId, 'UserProfileAll');
+    evictCache(toId, 'UserProfile');
   };
 
   return (
