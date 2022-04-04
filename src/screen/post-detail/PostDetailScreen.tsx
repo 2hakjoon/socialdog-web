@@ -61,8 +61,8 @@ function PostDetailScreen() {
   const onPostDetailComplete = (result: QGetPostDetail) => {
     if (!result.getPostDetail.ok) {
       window.alert(result.getPostDetail.error);
+      navigate(-1);
     }
-    navigate(-1);
   };
 
   const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
