@@ -53,12 +53,12 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
     if (!me) {
       return;
     }
-    console.log(content);
+    // console.log(content);
     setCommentResult([
       {
         id: dayjs().toString(),
         content,
-        __typename: commentResult[0].__typename,
+        __typename: 'Comments',
         createdAt: dayjs().millisecond().toString(),
         updatedAt: dayjs().millisecond().toString(),
         user: { ...me },
