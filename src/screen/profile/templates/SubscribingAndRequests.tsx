@@ -78,7 +78,9 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
           {selectedTab === 0 && (
             <>
               {subscribingUsers?.map((subscribingUser) => (
-                <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} />
+                <WrapperRow key={subscribingUser.id} w="100%" p={'0px 12px'}>
+                  <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} />
+                </WrapperRow>
               ))}
             </>
           )}
