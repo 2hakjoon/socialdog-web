@@ -19,13 +19,9 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const [isLastPage, setIsLastPage] = useState(false);
   const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
   const comments = commentsQuery.data?.getComments.data;
-
   const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
 
-  const fetchHandler = async () => {
-    if (isLastPage) {
-      return;
-    }
+  const getCommentHandler = async () => {
     const lastPost = comments?.[comments.length - 1];
     const cursor: CursorArgs = { id: lastPost?.id || null, createdAt: lastPost?.createdAt || '0' };
     const res = await fetchCommentsQuery({
@@ -44,18 +40,27 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
     setCommentResult([...commentResult, ...res.data.getComments.data]);
   };
 
-  const addNewComment = (content: string) => {};
+  const getNextPage = async () => {
+    if (isLastPage) {
+      return;
+    }
+    getCommentHandler();
+  };
+
+  const addNewComment = async () => {
+    getCommentHandler();
+  };
 
   return (
     <>
       <WrapperColumn>
-        <WrapperInfinityScroll fetchHandler={fetchHandler}>
+        <WrapperInfinityScroll fetchHandler={getNextPage}>
           {commentResult?.map((comment) => (
             <CommentCard key={comment.id} {...comment} authorId={authorId} />
           ))}
         </WrapperInfinityScroll>
       </WrapperColumn>
-      <CommentInput postId={postId} />
+      <CommentInput postId={postId} refrechComment={addNewComment} />
     </>
   );
 }

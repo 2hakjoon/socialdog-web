@@ -27,15 +27,22 @@ const Block = styled.div`
 
 interface ICommnetInput {
   postId: string;
+  refrechComment: () => void;
 }
 
-function CommentInput({ postId }: ICommnetInput) {
+function CommentInput({ postId, refrechComment }: ICommnetInput) {
   const { register, getValues, setValue } = useForm();
   const [createComment] = useMutation<QCreateComment, QCreateCommentVariables>(CREAT_COMMENT);
 
   const createCommentHandler = async () => {
     const res = await createComment({ variables: { args: { postId, content: getValues('content') } } });
-    console.log(res);
+    // console.log(res);
+    if (!res.data?.createComment.ok) {
+      alert(res.data?.createComment.error);
+      return;
+    }
+    setValue('content', '');
+    refrechComment();
   };
 
   return (
