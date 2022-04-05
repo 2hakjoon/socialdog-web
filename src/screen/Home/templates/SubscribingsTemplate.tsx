@@ -8,19 +8,15 @@ import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
 import { CursorArgs } from '__generated__/globalTypes';
+import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
-  const [pageLimit, setPageLimit] = useState(pageItemCount);
-  const {
-    data: postsData,
-    loading: postsLoading,
-    error: postsError,
-    fetchMore,
-  } = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
+  const [itemLimit, setItemLimit] = useState(pageItemCount);
+  const getSubscribingPosts = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
     variables: {
       page: {
-        take: pageLimit,
+        take: itemLimit,
       },
     },
     notifyOnNetworkStatusChange: true,
@@ -28,52 +24,25 @@ function SubscribingsTemplate() {
     onError: (e) => console.log(e),
   });
 
-  const [isLastPage, setIsLastPage] = useState(false);
-  const posts = postsData?.getSubscribingPosts.data;
-  // console.log(postsData);
-  // console.log(posts, postsLoading);
-
-  const nextPageHandler = async () => {
-    // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
-    if (postsError || postsLoading || isLastPage || !posts?.length || !posts) {
-      return;
-    }
-
-    // 캐시에 데이터가 있을때, pagelimit만 변경.
-    if (postsData.getSubscribingPosts.length > pageLimit) {
-      setPageLimit((prev) => prev + pageItemCount);
-      return;
-    }
-
-    const lastPost = posts[posts.length - 1];
-    const cursor: CursorArgs = { id: lastPost.id, createdAt: lastPost.createdAt };
-    fetchMore({
-      variables: {
-        page: {
-          take: pageItemCount,
-          cursor,
-        },
-      },
-    }).then((data) => {
-      if (data.data.getSubscribingPosts.length !== pageItemCount) {
-        setPageLimit((prev) => prev + pageItemCount);
-        setIsLastPage(true);
-      }
-    });
-  };
+  const posts = getSubscribingPosts.data?.getSubscribingPosts.data;
 
   return (
     <WrapperColumn p={'0 8px'}>
-      <WrapperInfinityScroll fetchHandler={() => nextPageHandler()}>
+      <WrapperInfinityQueryScroll
+        query={getSubscribingPosts}
+        pageItemCount={pageItemCount}
+        setItemLimit={setItemLimit}
+        itemLimit={itemLimit}
+      >
         {posts?.map((post, idx) => (
           <PostCard key={post.id} {...post} />
         ))}
-        {postsLoading &&
+        {getSubscribingPosts.loading &&
           Array(pageItemCount)
             .fill('')
             .map(() => <PostCardLoading key={Math.random()} />)}
-      </WrapperInfinityScroll>
-      {!postsLoading && !posts?.length && <NoContents />}
+      </WrapperInfinityQueryScroll>
+      {!getSubscribingPosts.loading && !posts?.length && <NoContents />}
     </WrapperColumn>
   );
 }
