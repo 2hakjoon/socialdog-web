@@ -1,10 +1,10 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENTS } from 'apllo-gqls/comments';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
-import { QGetComments, QGetCommentsVariables } from '__generated__/QGetComments';
+import { CursorArgs } from '__generated__/globalTypes';
+import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';
 import CommentCard from '../components/CommentCard';
 import CommentInput from '../components/CommentInput';
 
@@ -15,30 +15,42 @@ interface PostDetailComment {
 
 function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const pageItemCount = 6;
-  const [itemLimit, setItemLimit] = useState(pageItemCount);
-  const commentsQuery = useQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS, {
-    variables: {
-      args: { postId },
-      page: { take: pageItemCount, cursor: { createdAt: `0` } },
-    },
-  });
+  const [isLastPage, setIsLastPage] = useState(false);
+  const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
   const comments = commentsQuery.data?.getComments.data;
+
+  const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
+
+  const fetchHandler = async () => {
+    if (isLastPage) {
+      return;
+    }
+    const lastPost = comments?.[comments.length - 1];
+    const cursor: CursorArgs = { id: lastPost?.id || null, createdAt: lastPost?.createdAt || '0' };
+    const res = await fetchCommentsQuery({
+      variables: {
+        args: { postId },
+        page: { take: pageItemCount, cursor },
+      },
+    });
+    if (!res.data?.getComments.ok) {
+      alert(res.data?.getComments.error);
+      return;
+    }
+    if (res.data.getComments.data.length !== pageItemCount) {
+      setIsLastPage(true);
+    }
+    setCommentResult([...commentResult, ...res.data.getComments.data]);
+  };
 
   return (
     <>
       <WrapperColumn>
-        {comments && (
-          <WrapperInfinityQueryScroll
-            query={commentsQuery}
-            pageItemCount={pageItemCount}
-            itemLimit={itemLimit}
-            setItemLimit={setItemLimit}
-          >
-            {comments.map((comment) => (
-              <CommentCard key={comment.id} {...comment} authorId={authorId} />
-            ))}
-          </WrapperInfinityQueryScroll>
-        )}
+        <WrapperInfinityScroll fetchHandler={fetchHandler}>
+          {commentResult?.map((comment) => (
+            <CommentCard key={comment.id} {...comment} authorId={authorId} />
+          ))}
+        </WrapperInfinityScroll>
       </WrapperColumn>
       <CommentInput postId={postId} />
     </>

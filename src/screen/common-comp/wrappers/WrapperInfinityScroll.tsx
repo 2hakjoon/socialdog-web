@@ -15,13 +15,10 @@ interface IWrapperInfinityScroll {
 
 function WrapperInfinityScroll({ children, fetchHandler }: IWrapperInfinityScroll) {
   const { ref, inView, entry } = useInView({
-    // rootMargin: '-100px',
     threshold: 0,
   });
 
   useEffect(() => {
-    // console.log(inView);
-    // console.log('infinity', enableFetch);
     if (inView) {
       fetchHandler();
     }
