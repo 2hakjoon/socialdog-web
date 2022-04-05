@@ -98,7 +98,7 @@ function PostEditTemplate({
           contents: formData.contents,
         },
       });
-      window.alert('게시물 수젱을 성공했습니다.');
+      window.alert('게시물 수정을 성공했습니다.');
       navigate(routes.home, { replace: true });
     } catch (e) {
       console.log(e);
