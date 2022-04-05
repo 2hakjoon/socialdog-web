@@ -27,10 +27,10 @@ const Block = styled.div`
 
 interface ICommnetInput {
   postId: string;
-  refrechComment: () => void;
+  addComment: (content: string) => void;
 }
 
-function CommentInput({ postId, refrechComment }: ICommnetInput) {
+function CommentInput({ postId, addComment }: ICommnetInput) {
   const { register, getValues, setValue } = useForm();
   const [createComment] = useMutation<QCreateComment, QCreateCommentVariables>(CREAT_COMMENT);
 
@@ -41,8 +41,8 @@ function CommentInput({ postId, refrechComment }: ICommnetInput) {
       alert(res.data?.createComment.error);
       return;
     }
+    addComment(getValues('content'));
     setValue('content', '');
-    refrechComment();
   };
 
   return (
