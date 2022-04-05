@@ -113,9 +113,8 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
         },
       },
     });
-
-    if (authUser) {
-      evictCache(authUser.id, 'UserProfile');
+    if (user) {
+      evictCache(user.id, 'UserProfile');
     }
   };
 
