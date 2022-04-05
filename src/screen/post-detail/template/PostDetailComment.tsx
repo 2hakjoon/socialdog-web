@@ -1,5 +1,6 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENTS } from 'apllo-gqls/comments';
+import { useMeQuery } from 'hooks/useMeQuery';
 import React, { useEffect, useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
@@ -42,6 +43,8 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
     }
     setCommentResult([...commentResult, ...res.data.getComments.data]);
   };
+
+  const addNewComment = (content: string) => {};
 
   return (
     <>
