@@ -1,14 +1,13 @@
-import React, { useState } from 'react';
+import React, { Fragment, useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
-import { useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw } from '@fortawesome/free-solid-svg-icons';
-import { routes } from 'screen/routes';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QMe } from '__generated__/QMe';
 import { BlockState } from '__generated__/globalTypes';
@@ -18,6 +17,7 @@ import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
+import { useEffect } from 'react';
 
 export type Params = {
   username: string;
@@ -26,24 +26,20 @@ export type Params = {
 type PostType = 'MY' | 'LIKED';
 
 function ProfileScreen() {
-  const { cache } = useApolloClient();
-  const navigate = useNavigate();
   const [postsType, setPostType] = useState<PostType>('MY');
   const { username } = useParams<Params>();
   if (!username) {
-    navigate(routes.home);
     return <></>;
   }
   const { data: authUserData } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
-  const {
-    data: userData,
-    loading: userDataLoading,
-    refetch,
-  } = useQuery<QGetUserProfile, QGetUserProfileVariables>(GET_USER_PROFILE, {
-    variables: { args: { username } },
-  });
+  const { data: userData, loading: userDataLoading } = useQuery<QGetUserProfile, QGetUserProfileVariables>(
+    GET_USER_PROFILE,
+    {
+      variables: { args: { username } },
+    },
+  );
   const user = userData?.getUserProfile.data;
   const userProfileState = userData?.getUserProfile;
   // console.log('user', user, userProfileState);
@@ -68,45 +64,50 @@ function ProfileScreen() {
     return type === postsType;
   };
 
+  // Todo.
+  // 좋아요 게시물 눌렀다가 다른 사람 게시글로 이동시
+  // 게시물 선택 상태 초기화.(지금은 UseEffect라서 조금 딜레이 있음)
+  useEffect(() => {
+    setPostType('MY');
+  }, [username]);
+
   return (
-    <>
-      <>
-        <MainHeader />
-        <BaseWrapper>
-          {!userDataLoading && userData ? <UserProfileTemplate userData={userData} /> : <UserProfileLoading />}
-          {isMyProfile() && (
-            <WrapperRow h="60px" w="100%" jc="space-around">
-              <FontAwesomeIcon
-                icon={faIdBadge}
-                size="2x"
-                color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-                onClick={() => setPostType('MY')}
-              />
-              <FontAwesomeIcon
-                icon={faPaw}
-                size="2x"
-                color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-                onClick={() => setPostType('LIKED')}
-              />
-            </WrapperRow>
-          )}
-          {isBlokingPerson() ? (
-            <TextBase text={'차단한 계정입니다'} />
-          ) : (
-            <>
-              {isProfileOpened() ? (
-                <>
-                  {isSelectedPostType('MY') && <MyPosts username={username} itemsCount={12} />}
-                  {isSelectedPostType('LIKED') && <MyLikedPosts itemsCount={12} />}
-                </>
-              ) : (
-                <TextBase text={'비공개 계정입니다.'} />
-              )}
-            </>
-          )}
-        </BaseWrapper>
-      </>
-    </>
+    <Fragment key={`${username}`}>
+      <MainHeader />
+      <BaseWrapper>
+        {!userDataLoading && userData ? <UserProfileTemplate userData={userData} /> : <UserProfileLoading />}
+        {isMyProfile() && (
+          <WrapperRow h="60px" w="100%" jc="space-around">
+            <FontAwesomeIcon
+              icon={faIdBadge}
+              size="2x"
+              color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              onClick={() => setPostType('MY')}
+            />
+            <FontAwesomeIcon
+              icon={faPaw}
+              size="2x"
+              color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              onClick={() => setPostType('LIKED')}
+            />
+          </WrapperRow>
+        )}
+        {isBlokingPerson() ? (
+          <TextBase text={'차단한 계정입니다'} />
+        ) : (
+          <>
+            {isProfileOpened() ? (
+              <>
+                {isSelectedPostType('MY') && <MyPosts username={username} itemsCount={12} />}
+                {isSelectedPostType('LIKED') && <MyLikedPosts itemsCount={12} />}
+              </>
+            ) : (
+              <TextBase text={'비공개 계정입니다.'} />
+            )}
+          </>
+        )}
+      </BaseWrapper>
+    </Fragment>
   );
 }
 
