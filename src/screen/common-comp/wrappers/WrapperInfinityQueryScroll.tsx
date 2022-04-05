@@ -15,12 +15,15 @@ interface IQueryResult {
     data: [{ id: string; createdAt: string }];
     ok: boolean;
     error: string;
+    length: number;
   };
 }
 
-interface IWrapperInfinityScroll {
+interface IWrapperInfinityQueryScroll {
   children: ReactNode;
+  // 코드 작성 끝나면 any로 변경,
   query: QueryResult<any>;
+  // 코드 작성 중엔 IQueryResult로 변경.
   // query: QueryResult<IQueryResult>;
   pageItemCount?: number;
   itemLimit: number;
@@ -33,7 +36,7 @@ function WrapperInfinityQueryScroll({
   pageItemCount = 6,
   itemLimit,
   setItemLimit,
-}: IWrapperInfinityScroll) {
+}: IWrapperInfinityQueryScroll) {
   const [isLastPage, setIsLastPage] = useState(false);
   const { ref, inView, entry } = useInView({
     // rootMargin: '-100px',
@@ -42,14 +45,20 @@ function WrapperInfinityQueryScroll({
 
   // 무한스크롤 handling함수
   const fetchNextPage = async () => {
+    // 에러 없을때, 로딩중아닐때
+    if (error || loading) {
+      return;
+    }
     const items = data[Object.keys(data)[0]].data;
-    // console.log(error, loading, isLastPage, items);
-    // 에러 없을때, 로딩중아닐때, 마지막페이지 아닐때, posts가 있을때, posts.length랑 pageLimit이 같을때
-    if (error || loading || isLastPage || !items || !items.length) {
+    // console.log(data[Object.keys(data)[0]]);
+    // 마지막페이지 아닐때, posts가 있을때, posts.length가 0이 아닐때
+    if (isLastPage || !items || !items.length) {
       return;
     }
     // 캐시에 데이터가 있을때, pagelimit만 변경.
-    if (items.length > itemLimit) {
+    const cachedLength = data[Object.keys(data)[0]].length;
+    // console.log(cachedLength);
+    if (cachedLength > itemLimit) {
       setItemLimit((prev) => prev + pageItemCount);
       return;
     }
@@ -64,8 +73,6 @@ function WrapperInfinityQueryScroll({
         },
       },
     }).then(({ data }) => {
-      // console.log(data);
-      console.log(data[Object.keys(data)[0]].data);
       if (data[Object.keys(data)[0]].data?.length !== pageItemCount) {
         setIsLastPage(true);
       }
@@ -74,8 +81,6 @@ function WrapperInfinityQueryScroll({
   };
 
   useEffect(() => {
-    // console.log(inView);
-    // console.log('infinity', enableFetch);
     if (inView) {
       fetchNextPage();
     }
