@@ -49,7 +49,7 @@ function PostCreateTemplate({
         }
         return result.config.url.split('?Content')[0];
       });
-      console.log(uploadedUrl);
+      // console.log(uploadedUrl);
       const createOrEditRes = await createPost({
         variables: {
           args: {

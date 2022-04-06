@@ -1,4 +1,4 @@
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction } from 'react';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import { FetchResult, makeReference, useApolloClient, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
@@ -13,6 +13,7 @@ import { useLocation } from 'react-router-dom';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import PostCreateTemplate from './template/PostCreateTemplate';
 import PostEditTemplate from './template/PostEditTemplate';
+import Compressor from 'compressorjs';
 
 export interface IPlaceSerchResult {
   value: {
@@ -40,12 +41,13 @@ function PostWriteScreen() {
   const [uploadedFiles, setUploadedFiles] = useState<FileList | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
 
-  const inputFileHandler = (e: BaseSyntheticEvent) => {
-    if (Object.keys(e.target.files).length > 5) {
+  const inputFileHandler = async (e: BaseSyntheticEvent) => {
+    const fileList = e.target.files;
+    if (Object.keys(fileList).length > 5) {
       window.alert('파일은 최대 5개만 업로드 할 수 있습니다.');
       return;
     }
-    setUploadedFiles(e.target.files);
+    setUploadedFiles(fileList);
   };
 
   const requestSignedUrl = async () => {
@@ -63,8 +65,26 @@ function PostWriteScreen() {
     });
   };
 
-  const uploadFilesToS3 = async (files: FileList, urls: string[]) => {
-    const promisedUpload = urls.map((url, idx) => axios.put(url, files[idx]));
+  const compressImg = async (file: File) => {
+    const compressedFile = new Promise((resolve, reject) => {
+      (() =>
+        new Compressor(file, {
+          quality: 0.6,
+          maxHeight: 1200,
+          maxWidth: 1200,
+          success: resolve,
+          error: reject,
+        }))();
+    }).then((result: any) => {
+      const file = new File([result], result.name, { lastModified: result.lastModified });
+      return file;
+    });
+    return compressedFile;
+  };
+
+  const uploadFilesToS3 = async (files: FileList | File[], urls: string[]) => {
+    const promisedUpload = urls.map(async (url, idx) => axios.put(url, await compressImg(files[idx])));
+    console.log(promisedUpload);
     return Promise.all(promisedUpload).catch(() => {
       throw new Error('s3 업로드 에러');
     });

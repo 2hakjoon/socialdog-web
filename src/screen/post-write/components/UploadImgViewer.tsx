@@ -43,15 +43,6 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = []
         ))}
       </ImgPreviewgrid>
       <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
-      {/* <input
-        type="file"
-        name={'이미지 업로드'}
-        onChange={(e) => {
-          inputFileHandler(e);
-        }}
-        multiple
-        accept="image/*"
-      /> */}
     </>
   );
 }
