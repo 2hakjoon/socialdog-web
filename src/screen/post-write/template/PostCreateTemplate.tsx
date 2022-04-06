@@ -33,8 +33,9 @@ function PostCreateTemplate({
 
   const onSubmitForm = async (formData: CreatePostInputDto) => {
     setIsSaving(true);
-    if (!uploadedFiles) {
+    if (!uploadedFiles?.length) {
       window.alert('파일을 업로드 해주세요.');
+      setIsSaving(false);
       return;
     }
     try {

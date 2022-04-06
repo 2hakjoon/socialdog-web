@@ -36,6 +36,7 @@ function PostEditTemplate({
   const { cache } = useApolloClient();
   const { register, handleSubmit, formState, getValues, setValue } = useForm<EditPostInputDto>({ mode: 'onChange' });
   const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
+  const [uploadedPhotos, setUploadedPhotos] = useState<string[]>(JSON.parse(postData.photos));
 
   useEffect(() => {
     console.log(postData);
@@ -46,7 +47,7 @@ function PostEditTemplate({
   const onSubmitForm = async (formData: EditPostInputDto) => {
     setIsSaving(true);
     try {
-      let photoUrls = JSON.parse(postData.photos);
+      let photoUrls = uploadedPhotos;
       if (uploadedFiles) {
         const res = await requestSignedUrl();
         const preSignedUrls = res.data?.createPreSignedUrls;
@@ -63,7 +64,6 @@ function PostEditTemplate({
           }
           return result.config.url.split('?Content')[0];
         });
-        console.log(photoUrls);
       }
       const createOrEditRes = await editPost({
         variables: {
@@ -120,7 +120,8 @@ function PostEditTemplate({
           uploadedFiles={uploadedFiles}
           setUploadedFiles={setUploadedFiles}
           inputFileHandler={inputFileHandler}
-          uploadedImgUrls={JSON.parse(postData.photos)}
+          uploadedPhotos={uploadedPhotos}
+          setUploadedPhotos={setUploadedPhotos}
         />
         <WrapperRow jc="flex-start" w="100%">
           {searchResult?.value && <TextBase text={`이전 주소 : ${searchResult.value.description || '없음'}`} />}

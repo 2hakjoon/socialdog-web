@@ -21,53 +21,78 @@ const ImgPreviewgrid = styled.div`
 interface IUpoladImgViewr {
   uploadedFiles: File[] | null | undefined;
   inputFileHandler: (e: BaseSyntheticEvent) => void;
-  uploadedImgUrls?: [string] | [];
+  uploadedPhotos?: string[] | [];
+  setUploadedPhotos?: Dispatch<SetStateAction<string[]>>;
   setUploadedFiles: Dispatch<SetStateAction<File[] | null | undefined>>;
 }
 
-function UploadImgViewer({ uploadedFiles, setUploadedFiles, inputFileHandler, uploadedImgUrls = [] }: IUpoladImgViewr) {
+function UploadImgViewer({
+  uploadedFiles,
+  setUploadedFiles,
+  inputFileHandler,
+  uploadedPhotos = [],
+  setUploadedPhotos = () => {},
+}: IUpoladImgViewr) {
   const [imgUrls, setImgUrls] = useState<string[]>([]);
 
-  const removeUploadedPhoto = (selectedIdx: number) => {
+  const removeUploadedFiles = (selectedIdx: number) => {
     setUploadedFiles(uploadedFiles?.filter((file, idx) => idx !== selectedIdx));
+  };
+
+  const removeUploadedPhotos = (selectedIdx: number) => {
+    if (uploadedPhotos.length === 1) {
+      alert('사진 한장은 남아있어야 합니다.');
+      return;
+    }
+    setUploadedPhotos(uploadedPhotos.filter((file, idx) => idx !== selectedIdx));
   };
 
   const removeAllUploadedPhotos = () => {
     setUploadedFiles([]);
   };
 
+  const isEditPosting = () => {
+    return uploadedPhotos.length > 0;
+  };
+
   useEffect(() => {
     if (!uploadedFiles) {
-      setImgUrls(uploadedImgUrls);
+      setImgUrls(uploadedPhotos);
       return;
     }
     const objectUrl = Object.keys(uploadedFiles).map((_, idx) => URL.createObjectURL(uploadedFiles[idx]));
     setImgUrls([...objectUrl]);
     return () => imgUrls.forEach((imgUrl) => URL.revokeObjectURL(imgUrl));
-  }, [uploadedFiles]);
+  }, [uploadedFiles, uploadedPhotos]);
 
   return (
     <>
       <ImgPreviewgrid>
         {imgUrls.map((imgUrl, idx) => (
           <WrapperColumn ai={'flex-end'}>
-            <FontAwesomeIcon icon={faXmark} onClick={() => removeUploadedPhoto(idx)} />
+            <FontAwesomeIcon
+              icon={faXmark}
+              onClick={() => (isEditPosting() ? removeUploadedPhotos(idx) : removeUploadedFiles(idx))}
+            />
             <WrapperSquare>
               <ImageBase key={Date.now()} url={imgUrl} />
             </WrapperSquare>
           </WrapperColumn>
         ))}
       </ImgPreviewgrid>
-      <WrapperRow w="200px" jc="space-around">
-        <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
-        {Boolean(uploadedFiles?.length) && <ButtonSmallWhite title="전체삭제" onClick={removeAllUploadedPhotos} />}
-      </WrapperRow>
+      {!isEditPosting() && (
+        <WrapperRow w="200px" jc="space-around">
+          <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
+          {Boolean(uploadedFiles?.length) && <ButtonSmallWhite title="전체삭제" onClick={removeAllUploadedPhotos} />}
+        </WrapperRow>
+      )}
     </>
   );
 }
 
 UploadImgViewer.defaultProps = {
-  uploadedImgUrls: [],
+  uploadedPhotos: [],
+  setUploadedPhotos: () => {},
 };
 
 export default UploadImgViewer;
