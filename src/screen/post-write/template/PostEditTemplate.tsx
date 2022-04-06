@@ -108,6 +108,7 @@ function PostEditTemplate({
     } catch (e) {
       console.log(e);
       alretError();
+      setIsSaving(false);
     }
   };
 

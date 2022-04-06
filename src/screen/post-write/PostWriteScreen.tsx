@@ -28,10 +28,10 @@ export interface IPlaceSerchResult {
 export interface IPostWriteTemplate {
   searchResult: IPlaceSerchResult | null | undefined;
   setSearchResult: Dispatch<SetStateAction<any>>;
-  uploadedFiles: FileList | null | undefined;
+  uploadedFiles: File[] | null | undefined;
   inputFileHandler: (e: BaseSyntheticEvent) => void;
   requestSignedUrl: () => Promise<FetchResult<MCreatePreSignedUrls, Record<string, any>, Record<string, any>>>;
-  uploadFilesToS3: (files: FileList, urls: string[]) => Promise<AxiosResponse<any, any>[]>;
+  uploadFilesToS3: (files: File[], urls: string[]) => Promise<AxiosResponse<any, any>[]>;
   resetCache?: () => void;
   setIsSaving: Dispatch<SetStateAction<boolean>>;
 }
@@ -42,18 +42,24 @@ function PostWriteScreen() {
 
   const client = useApolloClient();
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
-  const [uploadedFiles, setUploadedFiles] = useState<FileList | null>();
+  const [uploadedFiles, setUploadedFiles] = useState<File[] | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
   const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const inputFileHandler = async (e: BaseSyntheticEvent) => {
     const fileList = e.target.files;
-    if (Object.keys(fileList).length > 5) {
+    if (Object.keys(fileList).length + (uploadedFiles?.length || 0) > 5) {
       window.alert('파일은 최대 5개만 업로드 할 수 있습니다.');
+      return;
+    }
+    if (uploadedFiles?.length) {
+      setUploadedFiles([...uploadedFiles, ...fileList]);
       return;
     }
     setUploadedFiles(fileList);
   };
+
+  const removeUploadedPhoto = () => {};
 
   const requestSignedUrl = async () => {
     console.log(uploadedFiles);
@@ -87,7 +93,7 @@ function PostWriteScreen() {
     return compressedFile;
   };
 
-  const uploadFilesToS3 = async (files: FileList | File[], urls: string[]) => {
+  const uploadFilesToS3 = async (files: File[], urls: string[]) => {
     const promisedUpload = urls.map(async (url, idx) => axios.put(url, await compressImg(files[idx])));
     console.log(promisedUpload);
     return Promise.all(promisedUpload).catch(() => {

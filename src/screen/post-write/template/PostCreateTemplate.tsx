@@ -75,6 +75,7 @@ function PostCreateTemplate({
     } catch (e) {
       console.log(e);
       alretError();
+      setIsSaving(false);
     }
   };
 

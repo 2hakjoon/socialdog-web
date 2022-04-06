@@ -1,5 +1,6 @@
 import React, { BaseSyntheticEvent, useEffect } from 'react';
 import { useState } from 'react';
+import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
@@ -15,7 +16,7 @@ const ImgPreviewgrid = styled.div`
 `;
 
 interface IUpoladImgViewr {
-  uploadedFiles: FileList | null | undefined;
+  uploadedFiles: File[] | null | undefined;
   inputFileHandler: (e: BaseSyntheticEvent) => void;
   uploadedImgUrls?: [string] | [];
 }
@@ -42,7 +43,10 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = []
           </WrapperSquare>
         ))}
       </ImgPreviewgrid>
-      <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
+      <WrapperRow>
+        <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
+        <ButtonSmallWhite title="전체삭제" onClick={() => {}} />
+      </WrapperRow>
     </>
   );
 }
