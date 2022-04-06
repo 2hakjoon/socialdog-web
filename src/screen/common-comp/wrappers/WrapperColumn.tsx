@@ -14,7 +14,7 @@ const Wrapper = styled.div<IWrapperColumn>`
 
 interface IWrapperColumn {
   children: React.ReactNode;
-  jc?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
+  jc?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around' | 'center';
   p?: string;
   m?: string;
   w?: string;

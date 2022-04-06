@@ -14,6 +14,7 @@ import UploadImgViewer from '../components/UploadImgViewer';
 import { IPostWriteTemplate } from '../PostWriteScreen';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
+import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
 
 function PostCreateTemplate({
   requestSignedUrl,
@@ -90,7 +91,7 @@ function PostCreateTemplate({
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
         </WrapperRow>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
-        <button type="submit">작성완료</button>
+        <ButtonSubmit title="저장하기" onClick={() => {}} />
       </WrapperColumn>
     </form>
   );

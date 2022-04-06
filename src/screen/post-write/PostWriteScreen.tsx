@@ -16,6 +16,7 @@ import PostEditTemplate from './template/PostEditTemplate';
 import Compressor from 'compressorjs';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 
 export interface IPlaceSerchResult {
   value: {
@@ -141,7 +142,9 @@ function PostWriteScreen() {
       </BaseWrapper>
       {isSaving && (
         <ModalBackground closeModal={() => setIsSaving(false)}>
-          <LoadingSpinner />
+          <WrapperColumn w="100%" h="100%" jc="center">
+            <LoadingSpinner />
+          </WrapperColumn>
         </ModalBackground>
       )}
     </>
