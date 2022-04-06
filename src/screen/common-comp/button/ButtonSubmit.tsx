@@ -13,10 +13,19 @@ const Button = styled.button`
 interface IButtonSubmit {
   title: string;
   onClick: (a: any) => void;
+  enable?: boolean;
 }
 
-function ButtonSubmit({ title, onClick }: IButtonSubmit) {
-  return <Button onClick={onClick}>{title}</Button>;
+function ButtonSubmit({ title, onClick, enable }: IButtonSubmit) {
+  return (
+    <Button type="submit" onClick={onClick} disabled={!enable}>
+      {title}
+    </Button>
+  );
 }
+
+ButtonSubmit.defaultProps = {
+  enable: true,
+};
 
 export default ButtonSubmit;

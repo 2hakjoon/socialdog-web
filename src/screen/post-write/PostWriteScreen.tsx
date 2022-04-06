@@ -14,6 +14,7 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import PostCreateTemplate from './template/PostCreateTemplate';
 import PostEditTemplate from './template/PostEditTemplate';
 import Compressor from 'compressorjs';
+import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 
 export interface IPlaceSerchResult {
   value: {
@@ -30,6 +31,7 @@ export interface IPostWriteTemplate {
   requestSignedUrl: () => Promise<FetchResult<MCreatePreSignedUrls, Record<string, any>, Record<string, any>>>;
   uploadFilesToS3: (files: FileList, urls: string[]) => Promise<AxiosResponse<any, any>[]>;
   resetCache?: () => void;
+  setIsSaving: Dispatch<SetStateAction<boolean>>;
 }
 
 function PostWriteScreen() {
@@ -40,6 +42,7 @@ function PostWriteScreen() {
   const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
   const [uploadedFiles, setUploadedFiles] = useState<FileList | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
+  const [isSaving, setIsSaving] = useState<boolean>(false);
 
   const inputFileHandler = async (e: BaseSyntheticEvent) => {
     const fileList = e.target.files;
@@ -120,6 +123,7 @@ function PostWriteScreen() {
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
             inputFileHandler={inputFileHandler}
+            setIsSaving={setIsSaving}
           />
         ) : (
           <PostCreateTemplate
@@ -130,9 +134,11 @@ function PostWriteScreen() {
             uploadedFiles={uploadedFiles}
             inputFileHandler={inputFileHandler}
             resetCache={resetCache}
+            setIsSaving={setIsSaving}
           />
         )}
       </BaseWrapper>
+      {isSaving && <ModalBackground closeModal={() => setIsSaving(false)}>a</ModalBackground>}
     </>
   );
 }

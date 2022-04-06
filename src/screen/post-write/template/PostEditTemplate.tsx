@@ -1,8 +1,9 @@
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { EDIT_POST } from 'apllo-gqls/posts';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
 import FormTextArea from 'screen/common-comp/input/FormTextArea';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -28,6 +29,7 @@ function PostEditTemplate({
   uploadedFiles,
   inputFileHandler,
   uploadFilesToS3,
+  setIsSaving,
 }: IPostEditTemplate) {
   const navigate = useNavigate();
   const { cache } = useApolloClient();
@@ -41,6 +43,7 @@ function PostEditTemplate({
   }, []);
 
   const onSubmitForm = async (formData: EditPostInputDto) => {
+    setIsSaving(true);
     try {
       let photoUrls = JSON.parse(postData.photos);
       if (uploadedFiles) {
@@ -99,6 +102,7 @@ function PostEditTemplate({
         },
       });
       window.alert('게시물 수정을 성공했습니다.');
+      setIsSaving(false);
       navigate(routes.home, { replace: true });
     } catch (e) {
       console.log(e);
@@ -123,7 +127,7 @@ function PostEditTemplate({
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
         </WrapperRow>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
-        <button type="submit">작성완료</button>
+        <ButtonSubmit title="저장" onClick={() => {}} />
       </WrapperColumn>
     </form>
   );
