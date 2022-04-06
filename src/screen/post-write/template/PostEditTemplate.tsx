@@ -30,6 +30,7 @@ function PostEditTemplate({
   inputFileHandler,
   uploadFilesToS3,
   setIsSaving,
+  setUploadedFiles,
 }: IPostEditTemplate) {
   const navigate = useNavigate();
   const { cache } = useApolloClient();
@@ -117,6 +118,7 @@ function PostEditTemplate({
       <WrapperColumn w="100%">
         <UploadImgViewer
           uploadedFiles={uploadedFiles}
+          setUploadedFiles={setUploadedFiles}
           inputFileHandler={inputFileHandler}
           uploadedImgUrls={JSON.parse(postData.photos)}
         />

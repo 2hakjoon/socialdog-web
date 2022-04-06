@@ -24,6 +24,7 @@ function PostCreateTemplate({
   inputFileHandler,
   uploadFilesToS3,
   setIsSaving,
+  setUploadedFiles,
   resetCache = () => {},
 }: IPostWriteTemplate) {
   const navigate = useNavigate();
@@ -82,7 +83,11 @@ function PostCreateTemplate({
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
       <WrapperColumn w="100%">
-        <UploadImgViewer uploadedFiles={uploadedFiles} inputFileHandler={inputFileHandler} />
+        <UploadImgViewer
+          setUploadedFiles={setUploadedFiles}
+          uploadedFiles={uploadedFiles}
+          inputFileHandler={inputFileHandler}
+        />
         <WrapperRow w="100%">
           <TextBase text={'주소검색'} />
           <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />

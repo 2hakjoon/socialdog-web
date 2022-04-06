@@ -34,6 +34,7 @@ export interface IPostWriteTemplate {
   uploadFilesToS3: (files: File[], urls: string[]) => Promise<AxiosResponse<any, any>[]>;
   resetCache?: () => void;
   setIsSaving: Dispatch<SetStateAction<boolean>>;
+  setUploadedFiles: Dispatch<SetStateAction<File[] | null | undefined>>;
 }
 
 function PostWriteScreen() {
@@ -56,10 +57,8 @@ function PostWriteScreen() {
       setUploadedFiles([...uploadedFiles, ...fileList]);
       return;
     }
-    setUploadedFiles(fileList);
+    setUploadedFiles([...fileList]);
   };
-
-  const removeUploadedPhoto = () => {};
 
   const requestSignedUrl = async () => {
     console.log(uploadedFiles);
@@ -130,6 +129,7 @@ function PostWriteScreen() {
             searchResult={searchResult}
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
+            setUploadedFiles={setUploadedFiles}
             inputFileHandler={inputFileHandler}
             setIsSaving={setIsSaving}
           />
@@ -140,6 +140,7 @@ function PostWriteScreen() {
             searchResult={searchResult}
             setSearchResult={setSearchResult}
             uploadedFiles={uploadedFiles}
+            setUploadedFiles={setUploadedFiles}
             inputFileHandler={inputFileHandler}
             resetCache={resetCache}
             setIsSaving={setIsSaving}

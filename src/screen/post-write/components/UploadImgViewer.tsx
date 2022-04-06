@@ -1,8 +1,11 @@
-import React, { BaseSyntheticEvent, useEffect } from 'react';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import { useState } from 'react';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import ImageBase from 'screen/common-comp/image/ImageBase';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
@@ -19,10 +22,19 @@ interface IUpoladImgViewr {
   uploadedFiles: File[] | null | undefined;
   inputFileHandler: (e: BaseSyntheticEvent) => void;
   uploadedImgUrls?: [string] | [];
+  setUploadedFiles: Dispatch<SetStateAction<File[] | null | undefined>>;
 }
 
-function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = [] }: IUpoladImgViewr) {
+function UploadImgViewer({ uploadedFiles, setUploadedFiles, inputFileHandler, uploadedImgUrls = [] }: IUpoladImgViewr) {
   const [imgUrls, setImgUrls] = useState<string[]>([]);
+
+  const removeUploadedPhoto = (selectedIdx: number) => {
+    setUploadedFiles(uploadedFiles?.filter((file, idx) => idx !== selectedIdx));
+  };
+
+  const removeAllUploadedPhotos = () => {
+    setUploadedFiles([]);
+  };
 
   useEffect(() => {
     if (!uploadedFiles) {
@@ -38,14 +50,17 @@ function UploadImgViewer({ uploadedFiles, inputFileHandler, uploadedImgUrls = []
     <>
       <ImgPreviewgrid>
         {imgUrls.map((imgUrl, idx) => (
-          <WrapperSquare>
-            <ImageBase key={Date.now()} url={imgUrl} />
-          </WrapperSquare>
+          <WrapperColumn ai={'flex-end'}>
+            <FontAwesomeIcon icon={faXmark} onClick={() => removeUploadedPhoto(idx)} />
+            <WrapperSquare>
+              <ImageBase key={Date.now()} url={imgUrl} />
+            </WrapperSquare>
+          </WrapperColumn>
         ))}
       </ImgPreviewgrid>
-      <WrapperRow>
+      <WrapperRow w="200px" jc="space-around">
         <ButtonUpload onChange={inputFileHandler} multiple accept="image/*" />
-        <ButtonSmallWhite title="전체삭제" onClick={() => {}} />
+        {Boolean(uploadedFiles?.length) && <ButtonSmallWhite title="전체삭제" onClick={removeAllUploadedPhotos} />}
       </WrapperRow>
     </>
   );
