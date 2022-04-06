@@ -22,6 +22,7 @@ function PostCreateTemplate({
   uploadedFiles,
   inputFileHandler,
   uploadFilesToS3,
+  setIsSaving,
   resetCache = () => {},
 }: IPostWriteTemplate) {
   const navigate = useNavigate();
@@ -29,6 +30,7 @@ function PostCreateTemplate({
   const [createPost] = useMutation<MCreatePost, MCreatePostVariables>(CREATE_POST);
 
   const onSubmitForm = async (formData: CreatePostInputDto) => {
+    setIsSaving(true);
     if (!uploadedFiles) {
       window.alert('파일을 업로드 해주세요.');
       return;
@@ -62,11 +64,13 @@ function PostCreateTemplate({
       });
       if (!createOrEditRes.data?.createPost.ok) {
         window.alert('게시물 업로드에 실패했습니다.');
+        setIsSaving(false);
         return;
       }
       resetCache();
       navigate(routes.home, { replace: true });
       window.alert('게시물 업로드를 성공했습니다.');
+      setIsSaving(false);
     } catch (e) {
       console.log(e);
       alretError();

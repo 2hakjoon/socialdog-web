@@ -77,6 +77,7 @@ function PostEditTemplate({
       });
       if (!createOrEditRes.data?.editPost.ok) {
         window.alert('게시물 수정에 실패했습니다.');
+        setIsSaving(false);
         return;
       }
       // 게시글 수정 캐싱
