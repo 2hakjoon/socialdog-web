@@ -47,24 +47,24 @@ function PostEditTemplate({
   const onSubmitForm = async (formData: EditPostInputDto) => {
     setIsSaving(true);
     try {
-      let photoUrls = uploadedPhotos;
-      if (uploadedFiles) {
-        const res = await requestSignedUrl();
-        const preSignedUrls = res.data?.createPreSignedUrls;
-        if (!preSignedUrls?.ok) {
-          throw new Error('PreSignedUrl 요청 에러');
-        }
-        const uploadResult = await uploadFilesToS3(uploadedFiles!, preSignedUrls.urls!);
-        photoUrls = uploadResult.map((result) => {
-          if (result.status !== 200) {
-            throw new Error('s3 업로드 에러');
-          }
-          if (!result.config.url) {
-            throw new Error('s3 업로드 에러');
-          }
-          return result.config.url.split('?Content')[0];
-        });
-      }
+      // 게시글 수정에서는 업로드 못하게 설정.
+      // if (uploadedFiles) {
+      //   const res = await requestSignedUrl();
+      //   const preSignedUrls = res.data?.createPreSignedUrls;
+      //   if (!preSignedUrls?.ok) {
+      //     throw new Error('PreSignedUrl 요청 에러');
+      //   }
+      //   const uploadResult = await uploadFilesToS3(uploadedFiles!, preSignedUrls.urls!);
+      //   photoUrls = uploadResult.map((result) => {
+      //     if (result.status !== 200) {
+      //       throw new Error('s3 업로드 에러');
+      //     }
+      //     if (!result.config.url) {
+      //       throw new Error('s3 업로드 에러');
+      //     }
+      //     return result.config.url.split('?Content')[0];
+      //   });
+      // }
       const createOrEditRes = await editPost({
         variables: {
           args: {
@@ -72,7 +72,7 @@ function PostEditTemplate({
             postId: postData.id,
             address: searchResult?.value.description,
             placeId: searchResult?.value.place_id,
-            photoUrls,
+            photoUrls: uploadedPhotos,
           },
         },
       });
@@ -99,7 +99,7 @@ function PostEditTemplate({
           id: postData.id,
           address: searchResult?.value.description,
           placeId: searchResult?.value.place_id,
-          photos: JSON.stringify(photoUrls),
+          photos: JSON.stringify(uploadedPhotos),
           contents: formData.contents,
         },
       });
