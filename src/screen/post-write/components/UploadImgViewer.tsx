@@ -2,6 +2,7 @@ import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
 import { useState } from 'react';
+import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import ImageBase from 'screen/common-comp/image/ImageBase';
@@ -55,6 +56,28 @@ function UploadImgViewer({
     return uploadedPhotos.length > 0;
   };
 
+  const shiftUploadedFile = (idx: number) => {
+    if (!uploadedFiles || idx === 0) {
+      return;
+    }
+    const swapArray = uploadedFiles;
+    const temp = swapArray[idx - 1];
+    swapArray[idx - 1] = swapArray[idx];
+    swapArray[idx] = temp;
+    setUploadedFiles([...swapArray]);
+  };
+
+  const shiftUploadedPhoto = (idx: number) => {
+    if (!uploadedPhotos || idx === 0) {
+      return;
+    }
+    const swapArray = uploadedPhotos;
+    const temp = swapArray[idx - 1];
+    swapArray[idx - 1] = swapArray[idx];
+    swapArray[idx] = temp;
+    setUploadedPhotos([...swapArray]);
+  };
+
   useEffect(() => {
     if (!uploadedFiles) {
       setImgUrls(uploadedPhotos);
@@ -77,6 +100,15 @@ function UploadImgViewer({
             <WrapperSquare>
               <ImageBase key={Date.now()} url={imgUrl} />
             </WrapperSquare>
+            {idx > 0 && (
+              <>
+                {isEditPosting() ? (
+                  <ButtonSmallWhite title="<-" onClick={() => shiftUploadedPhoto(idx)} />
+                ) : (
+                  <ButtonSmallWhite title="<-" onClick={() => shiftUploadedFile(idx)} />
+                )}
+              </>
+            )}
           </WrapperColumn>
         ))}
       </ImgPreviewgrid>

@@ -39,7 +39,7 @@ function PostEditTemplate({
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>(JSON.parse(postData.photos));
 
   useEffect(() => {
-    console.log(postData);
+    // console.log(postData);
     setValue('contents', postData.contents);
     setSearchResult({ value: { description: postData.address, place_id: postData.placeId } });
   }, []);
