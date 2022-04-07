@@ -27,9 +27,10 @@ interface ICommentCard {
   __typename: string;
   reCommentCounts?: number;
   authorId?: string;
+  setParentComment?: () => void;
 }
 
-function CommentCard({ id, content, user, authorId, __typename, reCommentCounts }: ICommentCard) {
+function CommentCard({ id, content, user, authorId, __typename, reCommentCounts, setParentComment }: ICommentCard) {
   const evictCache = useEvictCache();
   const navigate = useNavigate();
   const { data: meData } = useQuery<QMe>(MYPROFILE);
@@ -61,7 +62,7 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts 
     <WrapperColumn w="100%">
       <WrapperRow w="100%" p="8px 0px">
         <ProfilePhoto url={user.photo} size="48px" />
-        <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+        <WrapperColumn w="100%" ai="flex-start" p="0px 8px" onClick={setParentComment}>
           <TextBase text={user.username} />
           <TextBase text={content} />
         </WrapperColumn>
@@ -90,6 +91,7 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts 
 CommentCard.defaultProps = {
   reCommentCounts: 0,
   authorId: '',
+  setParentComment: () => {},
 };
 
 export default CommentCard;

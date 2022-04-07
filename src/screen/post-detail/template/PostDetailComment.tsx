@@ -22,6 +22,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
   const comments = commentsQuery.data?.getComments.data;
   const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
+  const [parentComment, setParentComment] = useState<QGetComments_getComments_data | null>();
 
   const getCommentHandler = async () => {
     const lastPost = comments?.[comments.length - 1];
@@ -73,11 +74,21 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
       <WrapperColumn>
         <WrapperInfinityScroll fetchHandler={getNextPage}>
           {commentResult?.map((comment) => (
-            <CommentCard key={comment.id} {...comment} authorId={authorId} />
+            <CommentCard
+              setParentComment={() => setParentComment(comment)}
+              key={comment.id}
+              {...comment}
+              authorId={authorId}
+            />
           ))}
         </WrapperInfinityScroll>
       </WrapperColumn>
-      <CommentInput postId={postId} addComment={addNewComment} />
+      <CommentInput
+        postId={postId}
+        addComment={addNewComment}
+        parentComment={parentComment}
+        setParentComment={setParentComment}
+      />
     </>
   );
 }

@@ -1,12 +1,18 @@
 import { useMutation } from '@apollo/client';
+import { faXmark } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CREAT_COMMENT } from 'apllo-gqls/comments';
-import React from 'react';
+import { theme } from 'assets/styles/theme';
+import React, { Dispatch, SetStateAction } from 'react';
 import { useForm } from 'react-hook-form';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import FormTextArea from 'screen/common-comp/input/FormTextArea';
+import TextBase from 'screen/common-comp/texts/TextBase';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { QCreateComment, QCreateCommentVariables } from '__generated__/QCreateComment';
+import { QGetComments_getComments_data } from '__generated__/QGetComments';
 
 const Wrapper = styled.div`
   width: 100%;
@@ -28,9 +34,11 @@ const Block = styled.div`
 interface ICommnetInput {
   postId: string;
   addComment: (content: string) => void;
+  setParentComment?: Dispatch<SetStateAction<QGetComments_getComments_data | null | undefined>>;
+  parentComment?: QGetComments_getComments_data | null;
 }
 
-function CommentInput({ postId, addComment }: ICommnetInput) {
+function CommentInput({ postId, addComment, parentComment, setParentComment }: ICommnetInput) {
   const { register, getValues, setValue } = useForm();
   const [createComment] = useMutation<QCreateComment, QCreateCommentVariables>(CREAT_COMMENT);
 
@@ -45,17 +53,45 @@ function CommentInput({ postId, addComment }: ICommnetInput) {
     setValue('content', '');
   };
 
+  const resetParentComment = () => {
+    if (!setParentComment) {
+      return;
+    }
+    setParentComment(null);
+  };
+
   return (
     <>
       <Block />
       <Wrapper>
-        <WrapperRow>
-          <FormTextArea register={register('content')} height={'30px'} minHeight={'30px'} />
-          <ButtonSmallBlue title="작성" onClick={createCommentHandler} />
-        </WrapperRow>
+        <WrapperColumn w="100%">
+          <WrapperRow w="100%">
+            {parentComment?.user.username && (
+              <>
+                <TextBase text={`${parentComment.user.username}에게 답글쓰는중`} />
+                <FontAwesomeIcon
+                  icon={faXmark}
+                  size="lg"
+                  color={theme.color.achromatic.black}
+                  onClick={() => {
+                    resetParentComment();
+                  }}
+                />
+              </>
+            )}
+          </WrapperRow>
+          <WrapperRow>
+            <FormTextArea register={register('content')} height={'30px'} minHeight={'30px'} />
+            <ButtonSmallBlue title="작성" onClick={createCommentHandler} />
+          </WrapperRow>
+        </WrapperColumn>
       </Wrapper>
     </>
   );
 }
+CommentInput.defaultProps = {
+  setParentComment: () => {},
+  parentComment: null,
+};
 
 export default CommentInput;
