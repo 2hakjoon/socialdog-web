@@ -28,8 +28,6 @@ function ProfilePhoto({ url, size }: IProfileImage) {
     switch (pixelSize) {
       case '12px':
         return 'xs';
-      case '14px':
-        return 'sm';
 
       case '14px':
         return 'sm';

@@ -7,8 +7,8 @@ import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { CursorArgs } from '__generated__/globalTypes';
 import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';
-import CommentCard from '../components/CommentCard';
-import CommentInput from '../components/CommentInput';
+import CommentCard from '../../comment-detail/components/CommentCard';
+import CommentInput from '../../comment-detail/components/CommentInput';
 
 interface PostDetailComment {
   postId: string;

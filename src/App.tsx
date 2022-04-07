@@ -12,6 +12,7 @@ import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
 import SearchScreen from 'screen/search/SearchScreen';
 import PostWriteScreen from 'screen/post-write/PostWriteScreen';
 import PostDetailScreen from 'screen/post-detail/PostDetailScreen';
+import CommentDetailScreen from 'screen/comment-detail/CommentDetailScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -30,6 +31,7 @@ function App() {
               <Route path={routes.profile} element={<ProfileScreen />} />
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
               <Route path={routes.search} element={<SearchScreen />} />
+              <Route path={routes.commentDetail} element={<CommentDetailScreen />} />
             </>
           ) : (
             <>

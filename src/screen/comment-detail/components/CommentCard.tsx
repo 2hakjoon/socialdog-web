@@ -6,10 +6,12 @@ import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useEvictCache from 'hooks/useEvictCache';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
 import { QGetComments_getComments_data } from '__generated__/QGetComments';
@@ -19,8 +21,9 @@ interface ICommentCard extends QGetComments_getComments_data {
   authorId: string;
 }
 
-function CommentCard({ id, content, user, authorId, __typename }: ICommentCard) {
+function CommentCard({ id, content, user, authorId, __typename, reCommentCounts }: ICommentCard) {
   const evictCache = useEvictCache();
+  const navigate = useNavigate();
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUser = meData?.me.data;
 
@@ -38,30 +41,41 @@ function CommentCard({ id, content, user, authorId, __typename }: ICommentCard) 
     evictCache(commentId, __typename);
   };
 
-  const idDeletable = () => {
+  const isDeletable = () => {
     return authUser?.id === user.id || authorId === user.id;
   };
 
+  const moveToCommentDetail = () => {
+    navigate(`${routes.commentDetailBase}${id}`);
+  };
+
   return (
-    <WrapperRow w="100%" p="8px 0px">
-      <ProfilePhoto url={user.photo} size="48px" />
-      <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
-        <TextBase text={user.username} />
-        <TextBase text={content} />
-      </WrapperColumn>
-      {idDeletable() && (
-        <>
-          <FontAwesomeIcon
-            icon={faXmark}
-            size="lg"
-            color={theme.color.achromatic.black}
-            onClick={() => {
-              deleteCommentHandler(id);
-            }}
-          />
-        </>
+    <WrapperColumn w="100%">
+      <WrapperRow w="100%" p="8px 0px">
+        <ProfilePhoto url={user.photo} size="48px" />
+        <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+          <TextBase text={user.username} />
+          <TextBase text={content} />
+        </WrapperColumn>
+        {isDeletable() && (
+          <>
+            <FontAwesomeIcon
+              icon={faXmark}
+              size="lg"
+              color={theme.color.achromatic.black}
+              onClick={() => {
+                deleteCommentHandler(id);
+              }}
+            />
+          </>
+        )}
+      </WrapperRow>
+      {reCommentCounts > 0 && (
+        <WrapperRow onClick={moveToCommentDetail}>
+          <TextBase text={`댓글 수${reCommentCounts}`} />
+        </WrapperRow>
       )}
-    </WrapperRow>
+    </WrapperColumn>
   );
 }
 

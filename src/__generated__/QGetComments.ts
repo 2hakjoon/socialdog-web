@@ -22,7 +22,7 @@ export interface QGetComments_getComments_data {
   content: string;
   createdAt: string;
   updatedAt: string;
-  reCommentCounts: number | null;
+  reCommentCounts: number;
   user: QGetComments_getComments_data_user;
 }
 
