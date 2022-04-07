@@ -29,7 +29,7 @@ export const GET_COMMENTS = gql`
 `
 
 export const CREAT_COMMENT = gql`
-  mutation QCreateComment($args: CreateCommentInputDto!) {
+  mutation MCreateComment($args: CreateCommentInputDto!) {
   createComment(args: $args) {
     ok
     error

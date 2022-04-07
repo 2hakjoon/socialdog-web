@@ -44,7 +44,7 @@ function CommentDetailScreen() {
           {Boolean(recomments) && (
             <>
               {recomments?.map((recomment) => (
-                <CommentCard {...recomment} />
+                <CommentCard key={recomment.id} {...recomment} />
               ))}
             </>
           )}

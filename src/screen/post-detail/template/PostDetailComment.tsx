@@ -22,7 +22,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
   const comments = commentsQuery.data?.getComments.data;
   const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
-  const [parentComment, setParentComment] = useState<QGetComments_getComments_data | null>();
+  const [parentComment, setParentComment] = useState<QGetComments_getComments_data | null>(null);
 
   const getCommentHandler = async () => {
     const lastPost = comments?.[comments.length - 1];
@@ -88,6 +88,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
         addComment={addNewComment}
         parentComment={parentComment}
         setParentComment={setParentComment}
+        setCommentResult={setCommentResult}
       />
     </>
   );

@@ -22,7 +22,6 @@ export interface QGetReComments_getReComments_data {
   content: string;
   createdAt: string;
   updatedAt: string;
-  reCommentCounts: number;
   user: QGetReComments_getReComments_data_user;
 }
 

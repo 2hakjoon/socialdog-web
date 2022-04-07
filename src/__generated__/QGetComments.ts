@@ -18,11 +18,11 @@ export interface QGetComments_getComments_data_user {
 
 export interface QGetComments_getComments_data {
   __typename: "Comments";
+  reCommentCounts: number;
   id: string;
   content: string;
   createdAt: string;
   updatedAt: string;
-  reCommentCounts: number;
   user: QGetComments_getComments_data_user;
 }
 
