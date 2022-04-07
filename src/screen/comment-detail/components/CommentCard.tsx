@@ -14,11 +14,19 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
-import { QGetComments_getComments_data } from '__generated__/QGetComments';
 import { QMe } from '__generated__/QMe';
 
-interface ICommentCard extends QGetComments_getComments_data {
-  authorId: string;
+interface ICommentCard {
+  id: string;
+  content: string;
+  user: {
+    id: string;
+    username: string;
+    photo: string | null;
+  };
+  __typename: string;
+  reCommentCounts?: number;
+  authorId?: string;
 }
 
 function CommentCard({ id, content, user, authorId, __typename, reCommentCounts }: ICommentCard) {
@@ -70,7 +78,7 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts 
           </>
         )}
       </WrapperRow>
-      {reCommentCounts > 0 && (
+      {Boolean(reCommentCounts) && (
         <WrapperRow onClick={moveToCommentDetail}>
           <TextBase text={`댓글 수${reCommentCounts}`} />
         </WrapperRow>
@@ -78,5 +86,10 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts 
     </WrapperColumn>
   );
 }
+
+CommentCard.defaultProps = {
+  reCommentCounts: 0,
+  authorId: '',
+};
 
 export default CommentCard;

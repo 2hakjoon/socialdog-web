@@ -120,6 +120,10 @@ export interface FindUserByUsernameInputDto {
   username: string;
 }
 
+export interface GetCommentInputDto {
+  id: string;
+}
+
 export interface GetCommentsInputDto {
   postId: string;
 }

@@ -6,7 +6,6 @@ export const COMMENT_FRAGMENT = gql`
     content
     createdAt
     updatedAt
-    reCommentCounts
     user {
       id
       username
@@ -21,6 +20,7 @@ export const GET_COMMENTS = gql`
       ok
       error
       data {
+        reCommentCounts
         ...CommentData
       }
     }
@@ -75,4 +75,17 @@ export const DELETE_COMMENT = gql`
       error
     }
   }
+`
+
+export const GET_COMMENT = gql`
+  query QGetComment($args: GetCommentInputDto!) {
+    getComment(args: $args) {
+      ok
+      error
+      data {
+        ...CommentData
+      }
+    }
+  }
+  ${COMMENT_FRAGMENT}
 `
