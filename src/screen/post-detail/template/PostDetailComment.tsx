@@ -61,6 +61,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
         __typename: 'Comments',
         createdAt: dayjs().millisecond().toString(),
         updatedAt: dayjs().millisecond().toString(),
+        reCommentCounts: 0,
         user: { ...me },
       },
       ...commentResult,

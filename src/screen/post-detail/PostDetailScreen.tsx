@@ -69,7 +69,7 @@ function PostDetailScreen() {
   const [getPostDetail] = useLazyQuery<QGetPostDetail, QGetPostDetailVariables>(GET_POST_DETAIL, {
     onCompleted: onPostDetailComplete,
   });
-  const [post, setPost] = useState<QGetSubscribingPosts_getSubscribingPosts_data>();
+  const [post, setPost] = useState<QGetSubscribingPosts_getSubscribingPosts_data | null>();
 
   const moveToPostEdit = (postId: string) => {
     navigate(`${routes.postWrite}`, { state: { ...post } });

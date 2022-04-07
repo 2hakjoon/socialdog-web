@@ -20,5 +20,6 @@ export interface CommentData {
   content: string;
   createdAt: string;
   updatedAt: string;
+  reCommentCounts: number | null;
   user: CommentData_user;
 }

@@ -6,6 +6,7 @@ export const COMMENT_FRAGMENT = gql`
     content
     createdAt
     updatedAt
+    reCommentCounts
     user {
       id
       username

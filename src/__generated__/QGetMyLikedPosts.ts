@@ -24,7 +24,7 @@ export interface QGetMyLikedPosts_getMyLikedPosts_data {
   address: string | null;
   contents: string;
   liked: boolean;
-  commentCounts: number | null;
+  commentCounts: number;
   createdAt: string;
   updatedAt: string;
   user: QGetMyLikedPosts_getMyLikedPosts_data_user;

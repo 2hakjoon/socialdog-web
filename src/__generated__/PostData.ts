@@ -22,7 +22,7 @@ export interface PostData {
   address: string | null;
   contents: string;
   liked: boolean;
-  commentCounts: number | null;
+  commentCounts: number;
   createdAt: string;
   updatedAt: string;
   user: PostData_user;
