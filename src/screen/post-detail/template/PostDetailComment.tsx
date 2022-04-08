@@ -8,7 +8,7 @@ import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinitySc
 import { CursorArgs } from '__generated__/globalTypes';
 import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';
 import CommentCard from '../../comment-detail/components/CommentCard';
-import CommentInput from '../../comment-detail/components/CommentInput';
+import CommentInput from '../components/CommentInput';
 
 interface PostDetailComment {
   postId: string;
@@ -50,23 +50,9 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
     getCommentHandler();
   };
 
-  const addNewComment = async (content: string) => {
-    if (!me) {
-      return;
-    }
-    // console.log(content);
-    setCommentResult([
-      {
-        id: dayjs().toString(),
-        content,
-        __typename: 'Comments',
-        createdAt: dayjs().millisecond().toString(),
-        updatedAt: dayjs().millisecond().toString(),
-        reCommentCounts: 0,
-        user: { ...me },
-      },
-      ...commentResult,
-    ]);
+  const addNewComment = async () => {
+    setIsLastPage(false);
+    setCommentResult([]);
   };
 
   return (
@@ -85,7 +71,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
       </WrapperColumn>
       <CommentInput
         postId={postId}
-        addComment={addNewComment}
+        refrechComment={addNewComment}
         parentComment={parentComment}
         setParentComment={setParentComment}
         setCommentResult={setCommentResult}

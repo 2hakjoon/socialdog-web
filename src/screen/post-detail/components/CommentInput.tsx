@@ -11,7 +11,6 @@ import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
-import { alretError } from 'utils/alret';
 import { MCreateReComment, MCreateReCommentVariables } from '__generated__/MCreateReComment';
 import { QCreateComment, QCreateCommentVariables } from '__generated__/QCreateComment';
 import { QGetComments_getComments_data } from '__generated__/QGetComments';
@@ -35,13 +34,13 @@ const Block = styled.div`
 
 interface ICommnetInput {
   postId: string;
-  addComment: (content: string) => void;
+  refrechComment: () => void;
   setParentComment?: Dispatch<SetStateAction<QGetComments_getComments_data | null>>;
   parentComment?: QGetComments_getComments_data | null;
   setCommentResult?: Dispatch<SetStateAction<QGetComments_getComments_data[]>>;
 }
 
-function CommentInput({ postId, addComment, parentComment, setParentComment, setCommentResult }: ICommnetInput) {
+function CommentInput({ postId, refrechComment, parentComment, setParentComment, setCommentResult }: ICommnetInput) {
   const client = useApolloClient();
   const { register, getValues, setValue } = useForm();
   const [createComment] = useMutation<QCreateComment, QCreateCommentVariables>(CREAT_COMMENT);
@@ -60,7 +59,7 @@ function CommentInput({ postId, addComment, parentComment, setParentComment, set
         window.alert(res.data?.createComment.error);
         return;
       }
-      addComment(content);
+      refrechComment();
     } else {
       const res = await createReComment({
         variables: { args: { parentCommentId: parentComment.id, postId, content } },

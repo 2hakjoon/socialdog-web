@@ -1,18 +1,24 @@
-import { useQuery } from '@apollo/client';
+import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
+import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { routes } from 'screen/routes';
 import { QGetComment, QGetCommentVariables } from '__generated__/QGetComment';
-import { QGetReComments, QGetReCommentsVariables } from '__generated__/QGetReComments';
+import {
+  QGetReComments,
+  QGetReCommentsVariables,
+  QGetReComments_getReComments_data,
+} from '__generated__/QGetReComments';
 import CommentCard from './components/CommentCard';
+import ReCommentInput from './components/ReCommentInput';
 
 function CommentDetailScreen() {
-  const pageItemCount = 6;
-  const [itemLimit, setItemLimit] = useState<number>(pageItemCount);
+  const pageItemCount = 12;
+  const [reCommentsList, setReCommentsList] = useState<QGetReComments_getReComments_data[]>([]);
+  const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const navigate = useNavigate();
   const { commentId } = useParams();
   if (!commentId) {
@@ -24,32 +30,58 @@ function CommentDetailScreen() {
     variables: { args: { id: commentId } },
   });
   const comment = commentData?.getComment.data;
+  const postId = comment?.postId;
 
-  const reCommentsData = useQuery<QGetReComments, QGetReCommentsVariables>(GET_RECOMMENTS, {
-    variables: { args: { parentCommentId: commentId }, page: { take: 6 } },
-  });
-  const recomments = reCommentsData.data?.getReComments.data;
-  console.log(comment);
+  const [getReCommentsData] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(GET_RECOMMENTS);
+
+  const refetchReComments = async () => {
+    if (isLastPage) {
+      return;
+    }
+    const res = await getReCommentsData({
+      variables: {
+        args: { parentCommentId: commentId },
+        page: {
+          take: pageItemCount,
+          cursor: {
+            id: reCommentsList[reCommentsList.length - 1]?.id || null,
+            createdAt: reCommentsList[reCommentsList.length - 1]?.createdAt || null,
+          },
+        },
+      },
+    });
+    if (!res.data?.getReComments.ok) {
+      window.alert(res.data?.getReComments.error);
+      return;
+    }
+    const reComments = res.data.getReComments.data;
+    if (reComments.length < pageItemCount) {
+      setIsLastPage(true);
+    }
+    setReCommentsList([...reCommentsList, ...reComments]);
+  };
+
+  const refrechComment = () => {
+    setIsLastPage(false);
+    setReCommentsList([]);
+  };
+
   return (
     <>
       <MainHeader />
       {comment && <CommentCard {...comment} />}
       <BaseWrapper>
-        <WrapperInfinityQueryScroll
-          query={reCommentsData}
-          pageItemCount={pageItemCount}
-          itemLimit={itemLimit}
-          setItemLimit={setItemLimit}
-        >
-          {Boolean(recomments) && (
+        <WrapperInfinityScroll fetchHandler={refetchReComments}>
+          {Boolean(reCommentsList) && (
             <>
-              {recomments?.map((recomment) => (
+              {reCommentsList.map((recomment) => (
                 <CommentCard key={recomment.id} {...recomment} />
               ))}
             </>
           )}
-        </WrapperInfinityQueryScroll>
+        </WrapperInfinityScroll>
       </BaseWrapper>
+      {postId && <ReCommentInput parentCommentId={commentId} postId={postId} refrechComment={refrechComment} />}
     </>
   );
 }

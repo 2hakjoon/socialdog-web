@@ -84,6 +84,7 @@ export const GET_COMMENT = gql`
       error
       data {
         ...CommentData
+        postId
       }
     }
   }

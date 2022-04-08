@@ -23,6 +23,7 @@ export interface QGetComment_getComment_data {
   createdAt: string;
   updatedAt: string;
   user: QGetComment_getComment_data_user;
+  postId: string | null;
 }
 
 export interface QGetComment_getComment {
