@@ -6,6 +6,7 @@ const GrayCircle = styled.div<ISkeletonCircle>`
   height: ${(p) => p.size};
   border-radius: 30px;
   background-color: ${({ theme }) => theme.color.achromatic.lightGray};
+  flex-shrink: 0;
 `;
 
 interface ISkeletonCircle {

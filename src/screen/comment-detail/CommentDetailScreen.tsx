@@ -1,5 +1,6 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
+import dayjs from 'dayjs';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
@@ -13,6 +14,7 @@ import {
   QGetReComments_getReComments_data,
 } from '__generated__/QGetReComments';
 import CommentCard from './components/CommentCard';
+import CommentCardLoading from './components/CommentCardLoading';
 import ReCommentInput from './components/ReCommentInput';
 
 function CommentDetailScreen() {
@@ -32,7 +34,9 @@ function CommentDetailScreen() {
   const comment = commentData?.getComment.data;
   const postId = comment?.postId;
 
-  const [getReCommentsData] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(GET_RECOMMENTS);
+  const [getReCommentsData, { loading: reCommentLoading }] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(
+    GET_RECOMMENTS,
+  );
 
   const refetchReComments = async () => {
     if (isLastPage) {
@@ -79,6 +83,10 @@ function CommentDetailScreen() {
               ))}
             </>
           )}
+          {reCommentLoading &&
+            Array(pageItemCount)
+              .fill('')
+              .map((_) => <CommentCardLoading key={Math.random()} />)}
         </WrapperInfinityScroll>
       </BaseWrapper>
       {postId && <ReCommentInput parentCommentId={commentId} postId={postId} refrechComment={refrechComment} />}

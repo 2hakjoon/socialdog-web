@@ -3,6 +3,7 @@ import { GET_COMMENTS } from 'apllo-gqls/comments';
 import dayjs from 'dayjs';
 import { useMeQuery } from 'hooks/useMeQuery';
 import React, { useEffect, useState } from 'react';
+import CommentCardLoading from 'screen/comment-detail/components/CommentCardLoading';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { CursorArgs } from '__generated__/globalTypes';
@@ -20,13 +21,13 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const me = useMeQuery();
   const [isLastPage, setIsLastPage] = useState(false);
   const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
-  const comments = commentsQuery.data?.getComments.data;
+
   const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
   const [parentComment, setParentComment] = useState<QGetComments_getComments_data | null>(null);
 
   const getCommentHandler = async () => {
-    const lastPost = comments?.[comments.length - 1];
-    const cursor: CursorArgs = { id: lastPost?.id, createdAt: lastPost?.createdAt };
+    const lastPost = commentResult?.[commentResult.length - 1];
+    const cursor: CursorArgs = { id: lastPost?.id || null, createdAt: lastPost?.createdAt || null };
     const res = await fetchCommentsQuery({
       variables: {
         args: { postId },
@@ -67,6 +68,11 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
               authorId={authorId}
             />
           ))}
+
+          {commentsQuery.loading &&
+            Array(pageItemCount)
+              .fill('')
+              .map((_) => <CommentCardLoading key={Math.random()} />)}
         </WrapperInfinityScroll>
       </WrapperColumn>
       <CommentInput
