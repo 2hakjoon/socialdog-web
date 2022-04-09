@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { theme } from 'assets/styles/theme';
 import React, { Dispatch, SetStateAction } from 'react';
-import GooglePlacesAutocomplete from 'react-google-places-autocomplete';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
@@ -60,12 +59,16 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
   const [searchEnable, setSearchEnable] = useState(false);
 
   const handleResultToTerm = (data: IPlaceSerchResult) => {
-    console.log(data.value.terms);
-    setAddressTerms(data.value.terms.reverse());
+    setAddressTerms([...data.value.terms.reverse()]);
+    setSearchEnable(false);
   };
 
   const removeLastTerm = () => {
     if (!addressTerms) {
+      return;
+    }
+    if (addressTerms.length <= 1) {
+      setSearchEnable(true);
       return;
     }
     setAddressTerms([...addressTerms.slice(0, -1)]);
