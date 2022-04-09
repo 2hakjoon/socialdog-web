@@ -58,7 +58,7 @@ function ReCommentInput({ postId, refrechComment, parentCommentId }: IReCommentI
       <Block />
       <Wrapper>
         <WrapperColumn w="100%">
-          <WrapperRow>
+          <WrapperRow w="100%">
             <FormTextArea register={register('content')} height={'30px'} minHeight={'30px'} />
             <ButtonSmallBlue title="작성" onClick={createCommentHandler} />
           </WrapperRow>

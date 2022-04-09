@@ -6,6 +6,7 @@ const Wrapper = styled.p<IWrapperEllipsis>`
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
+  word-break: break-all;
   display: -webkit-box;
   -webkit-line-clamp: ${(p) => p.line}; /* ellipsis line */
   -webkit-box-orient: vertical;

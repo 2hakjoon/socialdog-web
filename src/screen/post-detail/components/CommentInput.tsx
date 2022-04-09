@@ -123,7 +123,7 @@ function CommentInput({ postId, refrechComment, parentComment, setParentComment,
               </>
             )}
           </WrapperRow>
-          <WrapperRow>
+          <WrapperRow w="100%">
             <FormTextArea register={register('content')} height={'30px'} minHeight={'30px'} />
             <ButtonSmallBlue title="작성" onClick={createCommentHandler} />
           </WrapperRow>
