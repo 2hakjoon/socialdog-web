@@ -111,7 +111,7 @@ function PostDetailScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper>
+      <BaseWrapper p="">
         {post && (
           <Wrapper>
             <Carousel showThumbs={false} dynamicHeight>
@@ -123,7 +123,7 @@ function PostDetailScreen() {
                 </WrapperSquare>
               ))}
             </Carousel>
-            <WrapperColumn ai="flex-start" w="100%">
+            <WrapperColumn ai="flex-start" w="100%" p="0px 16px">
               <WrapperRow jc="space-between" w="100%" p="8px 0">
                 <WrapperRow>
                   <WrapperRow onClick={(e) => toggleLikeState()}>

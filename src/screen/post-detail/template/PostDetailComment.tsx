@@ -1,6 +1,5 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENTS } from 'apllo-gqls/comments';
-import dayjs from 'dayjs';
 import { useMeQuery } from 'hooks/useMeQuery';
 import React, { useEffect, useState } from 'react';
 import CommentCardLoading from 'screen/comment-detail/components/CommentCardLoading';
@@ -58,7 +57,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
 
   return (
     <>
-      <WrapperColumn>
+      <WrapperColumn p="0 16px">
         <WrapperInfinityScroll fetchHandler={getNextPage}>
           {commentResult?.map((comment) => (
             <CommentCard
