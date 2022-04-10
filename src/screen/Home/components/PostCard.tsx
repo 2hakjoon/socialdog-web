@@ -8,7 +8,7 @@ import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons';
-import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
@@ -129,9 +129,9 @@ function PostCard({
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
-          <WrapperEllipsis line={3}>
+          <TextEllipsis line={3}>
             <TextBase text={contents} />
-          </WrapperEllipsis>
+          </TextEllipsis>
           {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
         </WrapperColumn>
       </Contents>

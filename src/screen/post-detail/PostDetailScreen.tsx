@@ -13,7 +13,7 @@ import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { routes } from 'screen/routes';
@@ -168,9 +168,9 @@ function PostDetailScreen() {
                   </>
                 )}
               </WrapperRow>
-              <WrapperEllipsis line={3}>
+              <TextEllipsis line={3}>
                 <TextBase text={post.contents} />
-              </WrapperEllipsis>
+              </TextEllipsis>
             </WrapperColumn>
           </Wrapper>
         )}

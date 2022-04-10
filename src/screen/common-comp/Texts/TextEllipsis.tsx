@@ -2,7 +2,7 @@ import React from 'react';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.p<IWrapperEllipsis>`
+const Wrapper = styled.p<ITextEllipsis>`
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
@@ -16,14 +16,14 @@ const Wrapper = styled.p<IWrapperEllipsis>`
   height: ${(p) => p.lineHeight! * p.line + 0.2}em;
 `;
 
-interface IWrapperEllipsis {
+interface ITextEllipsis {
   line: number;
   lineHeight?: number;
   children: ReactNode;
   onClick?: () => void;
 }
 
-function WrapperEllipsis({ line, children, lineHeight, onClick }: IWrapperEllipsis) {
+function TextEllipsis({ line, children, lineHeight, onClick }: ITextEllipsis) {
   return (
     <Wrapper line={line} lineHeight={lineHeight} onClick={onClick}>
       {children}
@@ -31,9 +31,9 @@ function WrapperEllipsis({ line, children, lineHeight, onClick }: IWrapperEllips
   );
 }
 
-WrapperEllipsis.defaultProps = {
+TextEllipsis.defaultProps = {
   lineHeight: 1.2,
   onClick: () => {},
 };
 
-export default WrapperEllipsis;
+export default TextEllipsis;

@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperEllipsis from 'screen/common-comp/wrappers/WrapperEllipsis';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
@@ -65,9 +65,9 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
         <ProfilePhoto url={user.photo} size="48px" />
         <WrapperColumn w="100%" ai="flex-start" p="0px 8px" onClick={setParentComment}>
           <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
-          <WrapperEllipsis line={3}>
+          <TextEllipsis line={3}>
             <TextBase fontSize="0.875rem" text={content} />
-          </WrapperEllipsis>
+          </TextEllipsis>
           {Boolean(reCommentCounts) && (
             <WrapperRow onClick={moveToCommentDetail} jc="flex-start" w="100%" p="4px 0px">
               <TextBase fontSize="0.75rem" text={`댓글 수${reCommentCounts}`} />

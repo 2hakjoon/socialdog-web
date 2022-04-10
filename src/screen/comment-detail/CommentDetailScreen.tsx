@@ -1,12 +1,20 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
+import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
 import dayjs from 'dayjs';
+import useEvictCache from 'hooks/useEvictCache';
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
+import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
+import TextBase from 'screen/common-comp/texts/TextBase';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
+import { alretError } from 'utils/alret';
+import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
 import { QGetComment, QGetCommentVariables } from '__generated__/QGetComment';
 import {
   QGetReComments,
@@ -19,6 +27,7 @@ import ReCommentInput from './components/ReCommentInput';
 
 function CommentDetailScreen() {
   const pageItemCount = 12;
+  const evictCache = useEvictCache();
   const [reCommentsList, setReCommentsList] = useState<QGetReComments_getReComments_data[]>([]);
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const navigate = useNavigate();
@@ -33,6 +42,7 @@ function CommentDetailScreen() {
   });
   const comment = commentData?.getComment.data;
   const postId = comment?.postId;
+  const [deleteComment] = useMutation<MDeleteComment, MDeleteCommentVariables>(DELETE_COMMENT);
 
   const [getReCommentsData, { loading: reCommentLoading }] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(
     GET_RECOMMENTS,
@@ -65,6 +75,22 @@ function CommentDetailScreen() {
     setReCommentsList([...reCommentsList, ...reComments]);
   };
 
+  const deleteCommentHandler = async (commentId: string) => {
+    if (!comment) {
+      return;
+    }
+    if (!window.confirm('댓글을 삭제할까요?')) {
+      return;
+    }
+    const res = await deleteComment({ variables: { args: { id: commentId } } });
+    if (!res.data?.deleteComment.ok) {
+      alretError();
+      return;
+    }
+    evictCache(commentId, comment.__typename);
+    navigate(-1);
+  };
+
   const refrechComment = () => {
     setIsLastPage(false);
     setReCommentsList([]);
@@ -73,7 +99,17 @@ function CommentDetailScreen() {
   return (
     <>
       <MainHeader />
-      {comment && <CommentCard {...comment} />}
+      {comment && (
+        <WrapperColumn w="100%">
+          <WrapperRow w="100%" p="8px 0px" ai="flex-start">
+            <ProfilePhoto url={comment.user.photo} size="48px" />
+            <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+              <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
+            </WrapperColumn>
+          </WrapperRow>
+          <TextBase fontSize="0.875rem" text={comment.content} p={'0px 16px'} />
+        </WrapperColumn>
+      )}
       <BaseWrapper>
         <WrapperInfinityScroll fetchHandler={refetchReComments}>
           {Boolean(reCommentsList) && (
