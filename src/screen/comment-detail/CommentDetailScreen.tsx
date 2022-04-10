@@ -9,7 +9,6 @@ import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
@@ -27,6 +26,15 @@ import ReCommentInput from './components/ReCommentInput';
 import TextParagraph from 'screen/common-comp/texts/TextParagraph';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
+import styled from 'styled-components';
+
+const CommentWrapper = styled.div`
+  width: 100%;
+  border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
+  padding: 16px 16px;
+  display: flex;
+  flex-direction: column;
+`;
 
 function CommentDetailScreen() {
   const pageItemCount = 12;
@@ -103,7 +111,7 @@ function CommentDetailScreen() {
     <>
       <MainHeader />
       {comment && (
-        <WrapperColumn w="100%" p="0px 16px">
+        <CommentWrapper>
           <WrapperRow w="100%" p="8px 0px" ai="flex-start">
             <ProfilePhoto url={comment.user.photo} size="48px" />
             <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
@@ -114,7 +122,7 @@ function CommentDetailScreen() {
           <TextParagraph>
             <TextBase fontSize="0.875rem" text={comment.content} />
           </TextParagraph>
-        </WrapperColumn>
+        </CommentWrapper>
       )}
       <BaseWrapper>
         <WrapperInfinityScroll fetchHandler={refetchReComments}>

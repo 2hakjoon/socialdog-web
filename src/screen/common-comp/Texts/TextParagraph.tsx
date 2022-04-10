@@ -5,6 +5,7 @@ import styled from 'styled-components';
 const Wrapper = styled.p<ITextParagraph>`
   word-wrap: break-word;
   word-break: break-all;
+  width: 100%;
 `;
 
 interface ITextParagraph {
