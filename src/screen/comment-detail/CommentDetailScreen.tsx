@@ -24,6 +24,9 @@ import {
 import CommentCard from './components/CommentCard';
 import CommentCardLoading from './components/CommentCardLoading';
 import ReCommentInput from './components/ReCommentInput';
+import TextParagraph from 'screen/common-comp/texts/TextParagraph';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 
 function CommentDetailScreen() {
   const pageItemCount = 12;
@@ -100,14 +103,17 @@ function CommentDetailScreen() {
     <>
       <MainHeader />
       {comment && (
-        <WrapperColumn w="100%">
+        <WrapperColumn w="100%" p="0px 16px">
           <WrapperRow w="100%" p="8px 0px" ai="flex-start">
             <ProfilePhoto url={comment.user.photo} size="48px" />
             <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
               <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
             </WrapperColumn>
+            <FontAwesomeIcon icon={faTrashCan} size="lg" onClick={() => deleteCommentHandler(comment.id)} />
           </WrapperRow>
-          <TextBase fontSize="0.875rem" text={comment.content} p={'0px 16px'} />
+          <TextParagraph>
+            <TextBase fontSize="0.875rem" text={comment.content} />
+          </TextParagraph>
         </WrapperColumn>
       )}
       <BaseWrapper>
