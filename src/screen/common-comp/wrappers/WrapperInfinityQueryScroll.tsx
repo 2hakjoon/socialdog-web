@@ -84,7 +84,7 @@ function WrapperInfinityQueryScroll({
     if (inView) {
       fetchNextPage();
     }
-  }, [inView]);
+  }, [inView, data]);
 
   return (
     <>
