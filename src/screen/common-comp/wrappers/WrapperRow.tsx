@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div<IWrapperRow>`
   display: flex;
-  align-items: center;
+  align-items: ${(p) => p.ai};
   padding: ${(p) => p.p};
   justify-content: ${(p) => p.jc};
   width: ${(p) => p.w};
@@ -19,12 +19,13 @@ interface IWrapperRow {
   h?: string;
   bc?: string;
   m?: string;
+  ai?: string;
   onClick?: (arg?: any) => void;
 }
 
-function WrapperRow({ children, jc, p, w, h, bc, m, onClick }: IWrapperRow) {
+function WrapperRow({ children, jc, p, w, h, bc, m, ai, onClick }: IWrapperRow) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} bc={bc} m={m} onClick={onClick}>
+    <Wrapper jc={jc} p={p} w={w} h={h} bc={bc} m={m} ai={ai} onClick={onClick}>
       {children}
     </Wrapper>
   );
@@ -37,6 +38,7 @@ WrapperRow.defaultProps = {
   h: '',
   m: '',
   bc: 'none',
+  ai: 'center',
   onClick: () => {},
 };
 

@@ -61,13 +61,18 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
 
   return (
     <WrapperColumn w="100%">
-      <WrapperRow w="100%" p="8px 0px">
+      <WrapperRow w="100%" p="8px 0px" ai="flex-start">
         <ProfilePhoto url={user.photo} size="48px" />
         <WrapperColumn w="100%" ai="flex-start" p="0px 8px" onClick={setParentComment}>
-          <TextBase text={user.username} />
+          <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
           <WrapperEllipsis line={3}>
-            <TextBase text={content} />
+            <TextBase fontSize="0.875rem" text={content} />
           </WrapperEllipsis>
+          {Boolean(reCommentCounts) && (
+            <WrapperRow onClick={moveToCommentDetail} jc="flex-start" w="100%" p="4px 0px">
+              <TextBase fontSize="0.75rem" text={`댓글 수${reCommentCounts}`} />
+            </WrapperRow>
+          )}
         </WrapperColumn>
         {isDeletable() && (
           <>
@@ -82,11 +87,6 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
           </>
         )}
       </WrapperRow>
-      {Boolean(reCommentCounts) && (
-        <WrapperRow onClick={moveToCommentDetail}>
-          <TextBase text={`댓글 수${reCommentCounts}`} />
-        </WrapperRow>
-      )}
     </WrapperColumn>
   );
 }

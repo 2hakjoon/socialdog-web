@@ -7,6 +7,7 @@ const Wrapper = styled.div<{ size: string }>`
   height: ${(p) => p.size};
   border-radius: ${(p) => p.size};
   overflow: hidden;
+  flex-shrink: 0;
 `;
 interface IImageRound {
   size: string;
