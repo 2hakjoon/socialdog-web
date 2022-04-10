@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import styled from 'styled-components';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { theme } from 'assets/styles/theme';
 import SubscribingsTemplate from './templates/SubscribingsTemplate';
 import AddressPostsTemplate from './templates/AddressPostsTemplate';
-import dayjs from 'dayjs';
-
-const SectionWrapper = styled.div``;
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';
@@ -27,7 +23,7 @@ function HomeScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper>
+      <BaseWrapper p={''}>
         <WrapperRow bc={'white'} w="100%" h="60px" jc="space-around">
           <FontAwesomeIcon
             icon={faMapLocationDot}

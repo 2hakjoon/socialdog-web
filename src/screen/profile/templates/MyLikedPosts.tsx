@@ -41,7 +41,7 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
         <PostsGrid>
           {posts?.map((post) => (
             <WrapperSquare key={post.id}>
-              <BaseWrapper>
+              <BaseWrapper p={''}>
                 <PostSmallBox __typename={post.__typename} id={post.id} photos={post.photos} />
               </BaseWrapper>
             </WrapperSquare>
@@ -51,7 +51,7 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
               .fill('')
               .map(() => (
                 <WrapperSquare key={Math.random()}>
-                  <BaseWrapper>
+                  <BaseWrapper p={''}>
                     <PostSmallBox photos="" __typename="Posts" id="" />
                   </BaseWrapper>
                 </WrapperSquare>

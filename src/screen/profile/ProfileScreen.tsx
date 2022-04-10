@@ -74,7 +74,7 @@ function ProfileScreen() {
   return (
     <Fragment key={`${username}`}>
       <MainHeader />
-      <BaseWrapper>
+      <BaseWrapper p="">
         {!userDataLoading && userData ? <UserProfileTemplate userData={userData} /> : <UserProfileLoading />}
         {isMyProfile() && (
           <WrapperRow h="60px" w="100%" jc="space-around">

@@ -42,7 +42,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
         <PostsGrid>
           {posts?.map((post) => (
             <WrapperSquare key={post.id}>
-              <BaseWrapper>
+              <BaseWrapper p={''}>
                 <PostSmallBox {...post} />
               </BaseWrapper>
             </WrapperSquare>
@@ -52,7 +52,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
               .fill('')
               .map(() => (
                 <WrapperSquare key={Math.random()}>
-                  <BaseWrapper>
+                  <BaseWrapper p={''}>
                     <PostSmallBox photos="" __typename="Posts" id="" />
                   </BaseWrapper>
                 </WrapperSquare>

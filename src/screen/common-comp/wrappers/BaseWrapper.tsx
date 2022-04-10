@@ -22,7 +22,7 @@ function BaseWrapper({ children, p }: IBaseWrapper) {
 }
 
 BaseWrapper.defaultProps = {
-  p: '0',
+  p: '0px 16px',
 };
 
 export default BaseWrapper;

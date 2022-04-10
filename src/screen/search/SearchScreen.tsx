@@ -55,7 +55,7 @@ function SearchScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper>
+      <BaseWrapper p={''}>
         <WrapperRow w="100%" jc="center" h="30px">
           <TextBase text={'친구 찾기'} />
         </WrapperRow>

@@ -111,7 +111,7 @@ function PostDetailScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper p="0px 16px">
+      <BaseWrapper>
         {post && (
           <Wrapper>
             <Carousel showThumbs={false} dynamicHeight>

@@ -120,7 +120,7 @@ function PostWriteScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper p={'0 16px'}>
+      <BaseWrapper>
         {postData ? (
           <PostEditTemplate
             postData={postData}
