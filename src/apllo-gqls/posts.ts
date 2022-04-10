@@ -8,7 +8,6 @@ export const POST_FRAGMENT = gql`
     address
     contents
     liked
-    commentCounts
     createdAt
     updatedAt
     user {
@@ -25,6 +24,7 @@ export const GET_SUBSCRIBING_POSTS = gql`
       ok
       error
       data {
+      commentCounts
       ...PostData
       }
       length
@@ -99,6 +99,7 @@ export const GET_POSTS_BY_ADDRESS = gql`
       ok
       error
       data {
+        commentCounts
         ...PostData
       }
       length
@@ -145,6 +146,7 @@ export const GET_POST_DETAIL = gql`
       ok
       error
       data {
+        commentCounts
         ...PostData
       }
     }
