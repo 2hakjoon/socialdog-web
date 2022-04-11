@@ -123,7 +123,7 @@ function PostDetailScreen() {
                 </WrapperSquare>
               ))}
             </Carousel>
-            <WrapperColumn ai="flex-start" w="100%" p="0px 16px">
+            <WrapperColumn ai="flex-start" w="100%" p="10px 16px 16px 16px">
               <WrapperRow jc="space-between" w="100%" p="8px 0">
                 <WrapperRow>
                   <WrapperRow onClick={(e) => toggleLikeState()}>

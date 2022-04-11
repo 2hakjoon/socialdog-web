@@ -98,7 +98,7 @@ function PostCard({
         ))}
       </Carousel>
       <Contents>
-        <WrapperRow jc="space-between" w="100%" p="8px 0">
+        <WrapperRow jc="space-between" w="100%" p="8px 0 0 0">
           <WrapperRow>
             <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
               {liked ? (
@@ -126,12 +126,16 @@ function PostCard({
             <TextBase text={address} fontSize="14px" />
           </WrapperRow>
         </WrapperRow>
-        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
+        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="8px 0 20px 0">
           <TextEllipsis lineHeight={1.2} line={3}>
             <TextBase text={contents} />
           </TextEllipsis>
-          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
         </WrapperColumn>
+        {Boolean(commentCounts) && (
+          <WrapperColumn p="0px 0 20px 0" ai="flex-start" w="100%">
+            <TextBase text={`댓글 수 : ${commentCounts}개`} />
+          </WrapperColumn>
+        )}
       </Contents>
     </Wrapper>
   );
