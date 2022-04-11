@@ -1,12 +1,15 @@
 import { theme } from 'assets/styles/theme';
 import React from 'react';
 import { useEffect } from 'react';
+import { useState } from 'react';
 import { useRef } from 'react';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
-import { ITextBase } from './TextBase';
+import WrapperRow from '../wrappers/WrapperRow';
+import TextBase, { ITextBase } from './TextBase';
+import TextParagraph from './TextParagraph';
 
-const Wrapper = styled.p<ITextEllipsis>`
+const EllipsisWrapper = styled.p<ITextEllipsis>`
   overflow: hidden;
   text-overflow: ellipsis;
   word-wrap: break-word;
@@ -27,6 +30,24 @@ const Wrapper = styled.p<ITextEllipsis>`
   font-size: ${(p) => p.fontSize};
 `;
 
+interface IParagraphWrapper {
+  fontFamily?: 'Nanum-Gothic' | 'Noto-Sans-KR';
+  fontWeight?: number;
+  fontSize?: string;
+  color?: string;
+  lineHeight?: number;
+}
+
+const ParagraphWrapper = styled.p<IParagraphWrapper>`
+  word-wrap: break-word;
+  word-break: break-all;
+  font-family: ${(p) => p.fontFamily}, sans-serif;
+  font-weight: ${(p) => p.fontWeight};
+  font-size: ${(p) => p.fontSize};
+  color: ${(p) => p.color};
+  line-height: ${(p) => p.lineHeight}em;
+`;
+
 interface ITextEllipsis extends ITextBase {
   line: number;
   lineHeight?: number;
@@ -42,31 +63,71 @@ function TextEllipsis({
   fontWeight = 400,
   color,
   fontSize = '1rem',
-  lineHeight,
+  lineHeight = 1.2,
   onClick,
 }: ITextEllipsis) {
-  const ref = useRef(null);
+  const ref = useRef<HTMLInputElement>(null);
+  const [showExpand, setShowExpand] = useState<boolean>(false);
+  const [commentExpand, setCommentExpand] = useState<boolean>(false);
+
+  const commentExpandHandler = () => {
+    setCommentExpand(true);
+  };
+
+  const commentcontractHandler = () => {
+    setCommentExpand(false);
+  };
 
   useEffect(() => {
-    console.log(ref);
+    if (!ref?.current?.offsetHeight) {
+      return;
+    }
+    if (ref?.current?.offsetHeight > (line + 1) * 16) {
+      setShowExpand(true);
+    }
   }, []);
 
   return (
-    <Wrapper
-      ref={ref}
-      text={text}
-      p={p}
-      m={m}
-      fontFamily={fontFamily}
-      fontWeight={fontWeight}
-      color={color}
-      fontSize={fontSize}
-      line={line}
-      lineHeight={lineHeight}
-      onClick={onClick}
-    >
-      {text}
-    </Wrapper>
+    <>
+      {!commentExpand ? (
+        <>
+          <EllipsisWrapper
+            text={text}
+            p={p}
+            m={m}
+            fontFamily={fontFamily}
+            fontWeight={fontWeight}
+            color={color}
+            fontSize={fontSize}
+            line={line}
+            lineHeight={lineHeight}
+            onClick={onClick}
+          >
+            <span ref={ref}>{text}</span>
+          </EllipsisWrapper>
+          {showExpand && (
+            <WrapperRow onClick={commentExpandHandler}>
+              <TextBase fontSize="0.875rem" text={'자세히 보기'} />
+            </WrapperRow>
+          )}
+        </>
+      ) : (
+        <>
+          <ParagraphWrapper
+            lineHeight={lineHeight}
+            fontFamily={fontFamily}
+            fontWeight={fontWeight}
+            color={color}
+            fontSize={fontSize}
+          >
+            <span ref={ref}>{text}</span>
+          </ParagraphWrapper>
+          <WrapperRow onClick={commentcontractHandler}>
+            <TextBase fontSize="0.875rem" text={'간략히 보기'} />
+          </WrapperRow>
+        </>
+      )}
+    </>
   );
 }
 

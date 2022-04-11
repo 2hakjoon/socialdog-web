@@ -67,8 +67,8 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
           <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
           <TextEllipsis line={3} fontSize="0.875rem" text={content} />
           {Boolean(reCommentCounts) && (
-            <WrapperRow onClick={moveToCommentDetail} jc="flex-start" w="100%" p="4px 0px">
-              <TextBase fontSize="0.75rem" text={`댓글 수${reCommentCounts}`} />
+            <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
+              <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
             </WrapperRow>
           )}
         </WrapperColumn>
