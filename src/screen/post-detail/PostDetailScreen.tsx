@@ -168,9 +168,7 @@ function PostDetailScreen() {
                   </>
                 )}
               </WrapperRow>
-              <TextEllipsis line={3}>
-                <TextBase text={post.contents} />
-              </TextEllipsis>
+              <TextEllipsis text={post.contents} line={3} />
             </WrapperColumn>
           </Wrapper>
         )}

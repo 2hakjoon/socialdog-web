@@ -2,7 +2,7 @@ import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
 import dayjs from 'dayjs';
 import useEvictCache from 'hooks/useEvictCache';
-import React, { useState } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
@@ -43,6 +43,7 @@ function CommentDetailScreen() {
   const [isLastPage, setIsLastPage] = useState<boolean>(false);
   const navigate = useNavigate();
   const { commentId } = useParams();
+
   if (!commentId) {
     navigate(routes.home);
     return <></>;

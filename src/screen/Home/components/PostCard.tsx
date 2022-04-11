@@ -129,9 +129,7 @@ function PostCard({
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
-          <TextEllipsis line={3}>
-            <TextBase text={contents} />
-          </TextEllipsis>
+          <TextEllipsis text={contents} line={3} />
           {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
         </WrapperColumn>
       </Contents>

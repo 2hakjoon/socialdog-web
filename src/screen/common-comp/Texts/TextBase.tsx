@@ -2,15 +2,16 @@ import { theme } from 'assets/styles/theme';
 import React from 'react';
 import styled from 'styled-components';
 
-interface IText {
+interface ITextProps {
   m?: string;
   p?: string;
-  fontFamily: string;
+  fontFamily?: string;
   fontWeight?: number;
   fontSize?: string;
+  color?: string;
 }
 
-const Text = styled.span<IText>`
+export const Text = styled.span<ITextProps>`
   margin: ${(p) => p.m};
   padding: ${(p) => p.p};
   font-family: ${(p) => p.fontFamily}, sans-serif;
@@ -19,14 +20,8 @@ const Text = styled.span<IText>`
   font-size: ${(p) => p.fontSize};
 `;
 
-interface ITextBase {
-  text?: string | null | number;
-  m?: string;
-  p?: string;
-  color?: string;
-  fontFamily?: 'noto' | 'nanum';
-  fontWeight?: number;
-  fontSize?: string;
+export interface ITextBase extends ITextProps {
+  text: string | null | number;
 }
 
 function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: ITextBase) {
