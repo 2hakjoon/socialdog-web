@@ -16,22 +16,25 @@ import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
 import { QMe } from '__generated__/QMe';
+import { QGetComments_getComments_data } from '__generated__/QGetComments';
+import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 
-interface ICommentCard {
-  id: string;
-  content: string;
-  user: {
-    id: string;
-    username: string;
-    photo: string | null;
-  };
-  __typename: string;
-  reCommentCounts?: number;
+interface ICommentCard extends QGetComments_getComments_data {
   authorId?: string;
   setParentComment?: () => void;
 }
 
-function CommentCard({ id, content, user, authorId, __typename, reCommentCounts, setParentComment }: ICommentCard) {
+function CommentCard({
+  id,
+  content,
+  user,
+  authorId,
+  __typename,
+  reCommentCounts,
+  createdAt,
+  updatedAt,
+  setParentComment,
+}: ICommentCard) {
   const evictCache = useEvictCache();
   const navigate = useNavigate();
   const { data: meData } = useQuery<QMe>(MYPROFILE);
@@ -64,7 +67,10 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
       <WrapperRow w="100%" p="8px 0px" ai="flex-start">
         <ProfilePhoto url={user.photo} size="48px" />
         <WrapperColumn w="100%" ai="flex-start" p="0px 8px" onClick={setParentComment}>
-          <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
+          <WrapperRow>
+            <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
+            <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 8px" />
+          </WrapperRow>
           <TextEllipsis line={3} fontSize="0.875rem" text={content} />
           {Boolean(reCommentCounts) && (
             <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
@@ -90,7 +96,6 @@ function CommentCard({ id, content, user, authorId, __typename, reCommentCounts,
 }
 
 CommentCard.defaultProps = {
-  reCommentCounts: 0,
   authorId: '',
   setParentComment: () => {},
 };
