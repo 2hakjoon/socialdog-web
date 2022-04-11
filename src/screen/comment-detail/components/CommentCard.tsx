@@ -10,7 +10,7 @@ import { useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
+import TextEllipsis from 'screen/common-comp/texts/TextExpandEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';

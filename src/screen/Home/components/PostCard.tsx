@@ -7,19 +7,17 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
+import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { gql, makeReference, useApolloClient, useMutation } from '@apollo/client';
-import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { useApolloClient } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -129,7 +127,9 @@ function PostCard({
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
-          <TextEllipsis text={contents} line={3} />
+          <TextEllipsis lineHeight={1.2} line={3}>
+            <TextBase text={contents} />
+          </TextEllipsis>
           {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
         </WrapperColumn>
       </Contents>

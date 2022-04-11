@@ -34,7 +34,6 @@ const FormWrapper = styled.form`
   align-items: center;
   justify-content: space-around;
   max-width: 500px;
-  width: 60%;
   height: 100%;
   margin: 0 auto;
 `;

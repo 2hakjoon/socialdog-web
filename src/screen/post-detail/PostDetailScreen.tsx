@@ -11,9 +11,9 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import { routes } from 'screen/routes';
@@ -168,7 +168,9 @@ function PostDetailScreen() {
                   </>
                 )}
               </WrapperRow>
-              <TextEllipsis text={post.contents} line={3} />
+              <TextEllipsis lineHeight={1.2} line={3}>
+                <TextBase text={post.contents} />
+              </TextEllipsis>
             </WrapperColumn>
           </Wrapper>
         )}

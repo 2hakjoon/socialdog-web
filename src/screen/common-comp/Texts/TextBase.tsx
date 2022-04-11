@@ -21,7 +21,7 @@ export const Text = styled.span<ITextProps>`
 `;
 
 export interface ITextBase extends ITextProps {
-  text: string | null | number;
+  text?: string | null | number;
 }
 
 function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: ITextBase) {
@@ -33,6 +33,7 @@ function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: IText
 }
 
 TextBase.defaultProps = {
+  text: '',
   p: '0',
   m: '0',
   color: theme.color.achromatic.black,
