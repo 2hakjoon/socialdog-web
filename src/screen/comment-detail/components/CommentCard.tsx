@@ -5,7 +5,7 @@ import { DELETE_COMMENT } from 'apllo-gqls/comments';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useEvictCache from 'hooks/useEvictCache';
-import React, { useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -18,10 +18,13 @@ import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteCo
 import { QMe } from '__generated__/QMe';
 import { QGetComments_getComments_data } from '__generated__/QGetComments';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
+import { QGetReComments_getReComments_data } from '__generated__/QGetReComments';
 
 interface ICommentCard extends QGetComments_getComments_data {
   authorId?: string;
   setParentComment?: () => void;
+  setCommentList?: Dispatch<SetStateAction<QGetComments_getComments_data[]>>;
+  setReCommentList?: Dispatch<SetStateAction<QGetReComments_getReComments_data[]>>;
 }
 
 function CommentCard({
@@ -33,6 +36,8 @@ function CommentCard({
   reCommentCounts,
   createdAt,
   updatedAt,
+  setCommentList,
+  setReCommentList,
   setParentComment,
 }: ICommentCard) {
   const evictCache = useEvictCache();
@@ -50,6 +55,12 @@ function CommentCard({
     if (!res.data?.deleteComment.ok) {
       alretError();
       return;
+    }
+    if (setCommentList) {
+      setCommentList((prev) => prev.filter((comment) => comment.id !== commentId));
+    }
+    if (setReCommentList) {
+      setReCommentList((prev) => prev.filter((comment) => comment.id !== commentId));
     }
     evictCache(commentId, __typename);
   };
@@ -98,6 +109,8 @@ function CommentCard({
 CommentCard.defaultProps = {
   authorId: '',
   setParentComment: () => {},
+  setCommentList: () => {},
+  setReCommentList: () => {},
 };
 
 export default CommentCard;

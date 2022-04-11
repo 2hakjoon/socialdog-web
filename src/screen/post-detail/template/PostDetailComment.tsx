@@ -65,6 +65,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
               key={comment.id}
               {...comment}
               authorId={authorId}
+              setCommentList={setCommentResult}
             />
           ))}
 
