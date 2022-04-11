@@ -84,7 +84,7 @@ function PostCard({
     <Wrapper key={id}>
       <TopBar>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
-        <TextBase text={user.username} m="0 8px" fontFamily="nanum" fontWeight={700} />
+        <TextBase text={user.username} m="0 8px" fontFamily="Nanum-Gothic" fontWeight={700} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
         {createdAt !== updatedAt && (
           <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />

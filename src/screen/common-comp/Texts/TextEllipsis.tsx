@@ -1,5 +1,7 @@
 import { theme } from 'assets/styles/theme';
 import React from 'react';
+import { useEffect } from 'react';
+import { useRef } from 'react';
 import { ReactNode } from 'react';
 import styled from 'styled-components';
 import { ITextBase } from './TextBase';
@@ -29,24 +31,29 @@ interface ITextEllipsis extends ITextBase {
   line: number;
   lineHeight?: number;
   onClick?: () => void;
-  ref?: any;
 }
 
 function TextEllipsis({
-  ref,
   line,
   text,
-  p,
-  m,
-  fontFamily,
-  fontWeight,
+  p = '0',
+  m = '0',
+  fontFamily = 'Noto-Sans-KR',
+  fontWeight = 400,
   color,
-  fontSize,
+  fontSize = '1rem',
   lineHeight,
   onClick,
 }: ITextEllipsis) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    console.log(ref);
+  }, []);
+
   return (
     <Wrapper
+      ref={ref}
       text={text}
       p={p}
       m={m}
@@ -54,7 +61,6 @@ function TextEllipsis({
       fontWeight={fontWeight}
       color={color}
       fontSize={fontSize}
-      ref={ref}
       line={line}
       lineHeight={lineHeight}
       onClick={onClick}
@@ -67,7 +73,6 @@ function TextEllipsis({
 TextEllipsis.defaultProps = {
   lineHeight: 1.2,
   onClick: () => {},
-  ref: () => {},
 };
 
 export default TextEllipsis;

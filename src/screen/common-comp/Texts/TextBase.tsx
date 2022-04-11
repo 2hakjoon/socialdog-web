@@ -5,7 +5,7 @@ import styled from 'styled-components';
 interface ITextProps {
   m?: string;
   p?: string;
-  fontFamily?: string;
+  fontFamily?: 'Nanum-Gothic' | 'Noto-Sans-KR';
   fontWeight?: number;
   fontSize?: string;
   color?: string;
@@ -25,28 +25,18 @@ export interface ITextBase extends ITextProps {
 }
 
 function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: ITextBase) {
-  const setFontName = (font: string | undefined) => {
-    switch (font) {
-      case 'nanum':
-        return 'Nanum Gothic';
-      default:
-        return 'Noto Sans KR';
-    }
-  };
-
   return (
-    <Text m={m} p={p} color={color} fontFamily={setFontName(fontFamily)} fontWeight={fontWeight} fontSize={fontSize}>
+    <Text m={m} p={p} color={color} fontFamily={fontFamily} fontWeight={fontWeight} fontSize={fontSize}>
       {text}
     </Text>
   );
 }
 
 TextBase.defaultProps = {
-  text: '',
   p: '0',
   m: '0',
   color: theme.color.achromatic.black,
-  fontFamily: 'noto',
+  fontFamily: 'Noto Sans KR',
   fontWeight: 400,
   fontSize: '1rem',
 };
