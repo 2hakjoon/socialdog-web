@@ -106,6 +106,7 @@ function CommentDetailScreen() {
   const refrechComment = () => {
     setIsLastPage(false);
     setReCommentsList([]);
+    refetchReComments();
   };
 
   return (
