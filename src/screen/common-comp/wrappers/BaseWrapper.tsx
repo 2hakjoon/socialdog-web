@@ -1,6 +1,4 @@
-import { theme } from 'assets/styles/theme';
-import React, { ReactChild } from 'react';
-import { ReactNode } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.div<IBaseWrapper>`
