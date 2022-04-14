@@ -9,6 +9,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ImageRound from 'screen/common-comp/image/ImageRound';
+import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -158,7 +159,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
         <>
           <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
             <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
-              <ImageRound size="90px" url={user.photo || ''} />
+              <ProfilePhoto size="80px" url={user.photo} />
               <WrapperRow>
                 <TextBase text={user.username} p="0 6px" />
                 <FontAwesomeIcon icon={faPenToSquare} size="1x" />
