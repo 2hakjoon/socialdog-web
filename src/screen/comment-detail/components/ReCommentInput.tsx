@@ -49,7 +49,6 @@ function ReCommentInput({ postId, refrechComment, parentCommentId }: IReCommentI
       return;
     }
     refrechComment();
-
     setValue('content', '');
   };
 

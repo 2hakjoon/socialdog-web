@@ -103,10 +103,25 @@ function CommentDetailScreen() {
     navigate(-1);
   };
 
-  const refrechComment = () => {
+  const refrechComment = async () => {
     setIsLastPage(false);
-    setReCommentsList([]);
-    refetchReComments();
+    const res = await getReCommentsData({
+      variables: {
+        args: { parentCommentId: commentId },
+        page: {
+          take: pageItemCount,
+        },
+      },
+    });
+    if (!res.data?.getReComments.ok) {
+      window.alert(res.data?.getReComments.error);
+      return;
+    }
+    const reComments = res.data.getReComments.data;
+    if (reComments.length < pageItemCount) {
+      setIsLastPage(true);
+    }
+    setReCommentsList([...reComments]);
   };
 
   return (

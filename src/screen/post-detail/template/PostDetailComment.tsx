@@ -52,7 +52,21 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
 
   const addNewComment = async () => {
     setIsLastPage(false);
-    setCommentResult([]);
+    const res = await fetchCommentsQuery({
+      variables: {
+        args: { postId },
+        page: { take: pageItemCount },
+      },
+    });
+    if (!res.data?.getComments.ok) {
+      window.alert(res.data?.getComments.error);
+      return;
+    }
+    const comments = res.data.getComments.data;
+    if (comments.length < pageItemCount) {
+      setIsLastPage(true);
+    }
+    setCommentResult([...comments]);
   };
 
   return (
