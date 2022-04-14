@@ -165,8 +165,8 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                 <FontAwesomeIcon icon={faPenToSquare} size="1x" />
               </WrapperRow>
             </WrapperColumn>
-            <WrapperColumn jc="space-around">
-              <WrapperRow>
+            <WrapperColumn jc="space-around" h={'100%'}>
+              <WrapperRow jc="space-between" w="150px" h={'100%'} p={'0 0 20px 0'}>
                 <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />

@@ -1,7 +1,6 @@
 import React from 'react';
 import { theme } from 'assets/styles/theme';
 import ImageBase from 'screen/common-comp/image/ImageBase';
-import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -79,9 +78,13 @@ function PostCard({
     navigate(`${routes.postDetailBase}${id}`);
   };
 
+  const moveToProfile = (username: string) => {
+    navigate(`/${username}`);
+  };
+
   return (
     <Wrapper key={id}>
-      <TopBar>
+      <TopBar onClick={() => moveToProfile(user.username)}>
         <ProfilePhoto size="32px" url={user.photo} />
         <TextBase text={user.username} m="0 8px" fontFamily="Nanum-Gothic" fontWeight={700} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
