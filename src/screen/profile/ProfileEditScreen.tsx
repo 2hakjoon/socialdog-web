@@ -27,6 +27,7 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
+import Compressor from 'compressorjs';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -64,6 +65,23 @@ function ProfileEditScreen() {
     }
   };
 
+  const compressImg = async (file: File) => {
+    const compressedFile = new Promise((resolve, reject) => {
+      (() =>
+        new Compressor(file, {
+          quality: 0.6,
+          maxHeight: 1200,
+          maxWidth: 1200,
+          success: resolve,
+          error: reject,
+        }))();
+    }).then((result: any) => {
+      const file = new File([result], result.name, { lastModified: result.lastModified });
+      return file;
+    });
+    return compressedFile;
+  };
+
   const onSubmit = async (formData: EditProfileInputDto) => {
     let newPhoto: string | undefined = '';
     if (uploadedFile) {
@@ -74,7 +92,7 @@ function ProfileEditScreen() {
         window.alert('preSignedUrl발급 실패');
         return;
       }
-      const s3Res = await axios.put(resPresigned.data.createPreSignedUrls.urls[0], uploadedFile[0]);
+      const s3Res = await axios.put(resPresigned.data.createPreSignedUrls.urls[0], await compressImg(uploadedFile[0]));
       if (s3Res.status !== 200) {
         window.alert('s3 업로드 에러');
         return;
