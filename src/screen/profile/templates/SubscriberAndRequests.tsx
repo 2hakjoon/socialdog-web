@@ -124,7 +124,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   };
 
   return (
-    <ModalRound closeModal={closeModal} title="삼촌-이모 및 신청">
+    <ModalRound closeModal={closeModal} title="구독자 및 신청">
       <WrapperRow jc="space-around">
         <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)}>
           <TextBase text={'구독자'} />

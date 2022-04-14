@@ -166,13 +166,13 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
               </WrapperRow>
             </WrapperColumn>
             <WrapperColumn jc="space-around" h={'100%'}>
-              <WrapperRow jc="space-between" w="150px" h={'100%'} p={'0 0 20px 0'}>
+              <WrapperRow jc="space-between" w="120px" h={'100%'} p={'0 0 20px 0'}>
                 <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />
                 </WrapperColumn>
                 <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
-                  <TextBase text={'삼촌-이모들'} />
+                  <TextBase text={'구독자'} />
                   <TextBase text={user.subscribers || 0} />
                 </WrapperColumn>
               </WrapperRow>

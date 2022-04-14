@@ -121,13 +121,17 @@ function PostCard({
                 />
               )}
             </OnClickWrapper>
-            <FontAwesomeIcon
-              icon={faLocationDot}
-              size="lg"
-              color={theme.color.blue.primaryBlue}
-              style={{ marginRight: 10 }}
-            />
-            <TextBase text={address} fontSize="14px" />
+            {address && (
+              <>
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  size="lg"
+                  color={theme.color.blue.primaryBlue}
+                  style={{ marginRight: 10 }}
+                />
+                <TextBase text={address} fontSize="14px" />
+              </>
+            )}
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="8px 0 20px 0">
