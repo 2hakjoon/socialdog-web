@@ -119,20 +119,24 @@ function PostCard({
                 />
               )}
             </OnClickWrapper>
-            <FontAwesomeIcon
-              icon={faLocationDot}
-              size="lg"
-              color={theme.color.blue.primaryBlue}
-              style={{ marginRight: 10 }}
-            />
-            <TextBase text={address} fontSize="14px" />
+            {address && (
+              <>
+                <FontAwesomeIcon
+                  icon={faLocationDot}
+                  size="lg"
+                  color={theme.color.blue.primaryBlue}
+                  style={{ marginRight: 10 }}
+                />
+                <TextBase text={address} fontSize="14px" />
+              </>
+            )}
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
           <TextEllipsis line={3}>
             <TextBase text={contents} />
           </TextEllipsis>
-          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
+          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
         </WrapperColumn>
       </Contents>
     </Wrapper>
