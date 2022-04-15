@@ -5,8 +5,8 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons';
 import { theme } from 'assets/styles/theme';
-import SubscribingsTemplate from './templates/SubscribingsTemplate';
 import AddressPostsTemplate from './templates/AddressPostsTemplate';
+import SubscribingsTemplate from './templates/SubscribingsTemplate';
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';

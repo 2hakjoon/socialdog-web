@@ -1,23 +1,25 @@
 import React from 'react';
 import { theme } from 'assets/styles/theme';
 import ImageBase from 'screen/common-comp/image/ImageBase';
+import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons';
+import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { useApolloClient } from '@apollo/client';
+import { gql, makeReference, useApolloClient, useMutation } from '@apollo/client';
+import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
+import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
-import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -78,14 +80,10 @@ function PostCard({
     navigate(`${routes.postDetailBase}${id}`);
   };
 
-  const moveToProfile = (username: string) => {
-    navigate(`/${username}`);
-  };
-
   return (
     <Wrapper key={id}>
-      <TopBar onClick={() => moveToProfile(user.username)}>
-        <ProfilePhoto size="32px" url={user.photo} />
+      <TopBar>
+        <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="Nanum-Gothic" fontWeight={700} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
         {createdAt !== updatedAt && (
@@ -102,7 +100,7 @@ function PostCard({
         ))}
       </Carousel>
       <Contents>
-        <WrapperRow jc="space-between" w="100%" p="8px 0 0 0">
+        <WrapperRow jc="space-between" w="100%" p="8px 0">
           <WrapperRow>
             <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
               {liked ? (
@@ -121,29 +119,21 @@ function PostCard({
                 />
               )}
             </OnClickWrapper>
-            {address && (
-              <>
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  size="lg"
-                  color={theme.color.blue.primaryBlue}
-                  style={{ marginRight: 10 }}
-                />
-                <TextBase text={address} fontSize="14px" />
-              </>
-            )}
+            <FontAwesomeIcon
+              icon={faLocationDot}
+              size="lg"
+              color={theme.color.blue.primaryBlue}
+              style={{ marginRight: 10 }}
+            />
+            <TextBase text={address} fontSize="14px" />
           </WrapperRow>
         </WrapperRow>
-        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="8px 0 20px 0">
-          <TextEllipsis lineHeight={1.2} line={3}>
+        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
+          <TextEllipsis line={3}>
             <TextBase text={contents} />
           </TextEllipsis>
+          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} />}
         </WrapperColumn>
-        {Boolean(commentCounts) && (
-          <WrapperColumn p="0px 0 20px 0" ai="flex-start" w="100%">
-            <TextBase text={`댓글 수 : ${commentCounts}개`} />
-          </WrapperColumn>
-        )}
       </Contents>
     </Wrapper>
   );

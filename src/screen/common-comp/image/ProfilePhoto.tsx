@@ -71,11 +71,7 @@ function ProfilePhoto({ url, size }: IProfileImage) {
   };
   return (
     <>
-      {url?.length ? (
-        <ImageRound url={url} size={size} />
-      ) : (
-        <FontAwesomeIcon icon={faCircleUser} size={iconSizeMapper(size)} />
-      )}
+      {url ? <ImageRound url={url} size={size} /> : <FontAwesomeIcon icon={faCircleUser} size={iconSizeMapper(size)} />}
     </>
   );
 }

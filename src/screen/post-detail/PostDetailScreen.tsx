@@ -152,7 +152,7 @@ function PostDetailScreen() {
                   <TextBase text={post.address} />
                 </WrapperRow>
                 {authUser?.id === post.user.id && (
-                  <>
+                  <WrapperRow w="40px" jc="space-between">
                     <FontAwesomeIcon
                       icon={faPenToSquare}
                       size="lg"
@@ -165,7 +165,7 @@ function PostDetailScreen() {
                       color={theme.color.achromatic.black}
                       onClick={() => deletePostHandler(post.id)}
                     />
-                  </>
+                  </WrapperRow>
                 )}
               </WrapperRow>
               <TextEllipsis lineHeight={1.2} line={3}>
