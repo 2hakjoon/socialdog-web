@@ -5,7 +5,6 @@ import { theme } from 'assets/styles/theme';
 import { routes } from 'screen/routes';
 import ProfileScreen from 'screen/profile/ProfileScreen';
 import HomeScreen from 'screen/home/HomeScreen';
-import LoginScreen from 'screen/login/LoginScreen';
 import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
 import ProfileEditScreen from 'screen/profile/ProfileEditScreen';
@@ -13,6 +12,7 @@ import SearchScreen from 'screen/search/SearchScreen';
 import PostWriteScreen from 'screen/post-write/PostWriteScreen';
 import PostDetailScreen from 'screen/post-detail/PostDetailScreen';
 import CommentDetailScreen from 'screen/comment-detail/CommentDetailScreen';
+import LoginScreen from 'screen/login/LoginScreen';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
