@@ -6,7 +6,6 @@ export const aFewTimeAgo = (targetTime :string) => {
 
   dayjs.extend(relativeTime);
   dayjs.locale('ko');
-  
-  return dayjs(Number(targetTime)).fromNow()
+  return dayjs(Number(targetTime)-1000).fromNow()
 
 }
