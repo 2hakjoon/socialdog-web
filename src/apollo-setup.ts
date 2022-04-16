@@ -10,8 +10,8 @@ import { MReissueAccessToken, MReissueAccessTokenVariables } from "__generated__
 
 
 
-const httpLink = new HttpLink({ uri: 'http://121.154.94.120/graphql' });
-// const httpLink = new HttpLink({ uri: 'http://15.164.162.217/graphql' });
+// const httpLink = new HttpLink({ uri: 'http://121.154.94.120/graphql' });
+const httpLink = new HttpLink({ uri: 'https://api.2hakjoon.com/graphql' });
 
 const authMiddleware = new ApolloLink((operation, forward) => {
   operation.setContext(({ headers = {} }) => ({
