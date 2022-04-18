@@ -15,6 +15,7 @@ import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import { QMe } from '__generated__/QMe';
 import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'hooks/useEvictCache';
+import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
 
 interface ITabBox {
   selected: boolean;
@@ -40,7 +41,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
   const blockingUsers = blockAndRejectedData?.getMyBlockingUsers.data;
   const rejectedUsers = blockAndRejectedData?.getMyRejectRequests.data;
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
-  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
+  const { data: authUserData, loading: authUserDataLoading } = useQuery<QMe>(MYPROFILE);
   const authUser = authUserData?.me.data;
 
   const onConfirmRequest = async (fromId: string) => {
@@ -102,6 +103,17 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
                   <UserCardThin onClick={closeModal} {...blockingUser} />
                 </WrapperRow>
               ))}
+            </>
+          )}
+          {authUserDataLoading && (
+            <>
+              {Array(6)
+                .fill('')
+                .map((_) => (
+                  <WrapperRow key={Math.random()} w={'100%'} p={'0px 12px'}>
+                    <UserCardThinLoading />
+                  </WrapperRow>
+                ))}
             </>
           )}
         </>

@@ -20,6 +20,7 @@ import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import { QMe } from '__generated__/QMe';
 import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'hooks/useEvictCache';
+import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
 
 interface ITabBox {
   selected: boolean;
@@ -41,7 +42,8 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const { cache } = useApolloClient();
   const evitCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const { data: mySubscriberRequests } = useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
+  const { data: mySubscriberRequests, loading: mySubscriberRequestsLoading } =
+    useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
   const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
   const subscribers = mySubscriberRequests?.getMySubscribers.data;
   const subscribeRequests = mySubscriberRequests?.getSubscribeRequests.data;
@@ -164,6 +166,17 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
                   />
                 </WrapperRow>
               ))}
+            </>
+          )}
+          {mySubscriberRequestsLoading && (
+            <>
+              {Array(6)
+                .fill('')
+                .map((_) => (
+                  <WrapperRow key={Math.random()} w={'100%'} p={'0px 12px'}>
+                    <UserCardThinLoading />
+                  </WrapperRow>
+                ))}
             </>
           )}
         </>

@@ -12,6 +12,7 @@ import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequ
 import { MCancelSubscribingRequest, MCancelSubscribingRequestVariables } from '__generated__/MCancelSubscribingRequest';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import useEvictCache from 'hooks/useEvictCache';
+import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
 
 interface ITabBox {
   selected: boolean;
@@ -36,7 +37,8 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   const [cancleSubscribingRequest] = useMutation<MCancelSubscribingRequest, MCancelSubscribingRequestVariables>(
     CANCEL_SUBSCRIBE_REQUEST,
   );
-  const { data: mySubscribingsRequests } = useQuery<QGetMySubscribingsRequests>(GET_MY_SUBSCRIBINGS_REQUESTS);
+  const { data: mySubscribingsRequests, loading: mySubscribingsRequestsLoading } =
+    useQuery<QGetMySubscribingsRequests>(GET_MY_SUBSCRIBINGS_REQUESTS);
   const subscribingUsers = mySubscribingsRequests?.getMySubscribings.data;
   const subscribingRequests = mySubscribingsRequests?.getSubscribingRequests.data;
 
@@ -95,6 +97,17 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
                   />
                 </WrapperRow>
               ))}
+            </>
+          )}
+          {mySubscribingsRequestsLoading && (
+            <>
+              {Array(6)
+                .fill('')
+                .map((_) => (
+                  <WrapperRow key={Math.random()} w={'100%'} p={'0px 12px'}>
+                    <UserCardThinLoading />
+                  </WrapperRow>
+                ))}
             </>
           )}
         </>
