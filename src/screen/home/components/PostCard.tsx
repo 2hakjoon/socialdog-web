@@ -80,9 +80,13 @@ function PostCard({
     navigate(`${routes.postDetailBase}${id}`);
   };
 
+  const moveToProfile = () => {
+    navigate(`${routes.home}${user.username}`);
+  };
+
   return (
     <Wrapper key={id}>
-      <TopBar>
+      <TopBar onClick={moveToProfile}>
         <ImageRound size="30px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="Nanum-Gothic" fontWeight={700} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
