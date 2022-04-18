@@ -1,5 +1,5 @@
-import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import { ThemeProvider } from 'styled-components';
 import { theme } from 'assets/styles/theme';
 import { routes } from 'screen/routes';
@@ -13,6 +13,7 @@ import PostWriteScreen from 'screen/post-write/PostWriteScreen';
 import PostDetailScreen from 'screen/post-detail/PostDetailScreen';
 import CommentDetailScreen from 'screen/comment-detail/CommentDetailScreen';
 import LoginScreen from 'screen/login/LoginScreen';
+import ScrollToTop from 'screen/common-comp/scroll/ScrollToTop';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -22,6 +23,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
+        <ScrollToTop />
         <Routes>
           {isLoggedIn ? (
             <>
