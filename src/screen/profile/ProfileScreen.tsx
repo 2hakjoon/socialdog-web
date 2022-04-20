@@ -77,7 +77,7 @@ function ProfileScreen() {
       <BaseWrapper p="">
         {!userDataLoading && userData ? <UserProfileTemplate userData={userData} /> : <UserProfileLoading />}
         {isMyProfile() && (
-          <WrapperRow h="60px" w="100%" jc="space-around">
+          <WrapperRow h="60px" w="100%" jc="space-around" bc={'white'}>
             <FontAwesomeIcon
               icon={faIdBadge}
               size="2x"
