@@ -89,14 +89,14 @@ function PostCreateTemplate({
           uploadedFiles={uploadedFiles}
           inputFileHandler={inputFileHandler}
         />
-        <WrapperRow w="100%" p="20px 0">
-          <TextBase text={'주소검색'} />
+        <WrapperColumn w="100%" p="20px 0" ai="flex-start">
+          <TextBase text={'주소검색'} m={'0px 0px 10px 0px'} />
           <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
-        </WrapperRow>
-        <WrapperRow w="100%" p="20px 0 40px 0">
-          <TextBase text="내용" />
+        </WrapperColumn>
+        <WrapperColumn w="100%" p="20px 0 40px 0" ai="flex-start">
+          <TextBase text="내용" m={'0px 0px 10px 0px'} />
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
-        </WrapperRow>
+        </WrapperColumn>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
         <ButtonSubmit title="저장하기" onClick={() => {}} />
       </WrapperColumn>
