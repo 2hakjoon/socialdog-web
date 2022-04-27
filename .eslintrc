@@ -32,6 +32,13 @@
     "default-param-last":0,
     "no-underscore-dangle":0,
     "@typescript-eslint/no-empty-function":0,
-    "object-shorthand":0
+    "object-shorthand":0,
+    "no-console":0,
+    "no-alert":0,
+    "eslint-disable @typescript-eslint/no-non-null-assertion ":0,
+    "no-unused-vars":0,
+    "@typescript-eslint/no-unused-vars": 0,
+    "@typescript-eslint/no-non-null-assertion": 0,
+    "@typescript-eslint/no-explicit-any":0
   }
 }

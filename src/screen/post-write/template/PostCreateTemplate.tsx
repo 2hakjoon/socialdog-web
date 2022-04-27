@@ -90,11 +90,11 @@ function PostCreateTemplate({
           inputFileHandler={inputFileHandler}
         />
         <WrapperColumn w="100%" p="20px 0" ai="flex-start">
-          <TextBase text={'주소검색'} m={'0px 0px 10px 0px'} />
+          <TextBase text={'주소검색'} m={"0px 0px 10px 0px"}/>
           <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
         </WrapperColumn>
         <WrapperColumn w="100%" p="20px 0 40px 0" ai="flex-start">
-          <TextBase text="내용" m={'0px 0px 10px 0px'} />
+          <TextBase text="내용" m={"0px 0px 10px 0px"}/>
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
         </WrapperColumn>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
