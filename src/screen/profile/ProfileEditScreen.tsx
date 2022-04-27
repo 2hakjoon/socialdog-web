@@ -1,12 +1,10 @@
-import React from 'react';
+import React, { useEffect , useState } from 'react';
 import { gql, useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
 import { CHECK_USERNAME_EXIST, EDIT_PROFILE, MYPROFILE } from 'apllo-gqls/users';
 import axios from 'axios';
-import { useEffect } from 'react';
-import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
 import MainHeader from 'screen/common-comp/header/MainHeader';
@@ -28,6 +26,8 @@ import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import Compressor from 'compressorjs';
+import { removeAllTokens } from 'utils/local-storage';
+import { loginState } from 'apollo-setup';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -158,6 +158,12 @@ function ProfileEditScreen() {
     }
   }, [user]);
 
+  const logoutHandler = () => {
+    removeAllTokens()
+    navigate(routes.home)
+    loginState(false)
+  }
+
   return (
     <>
       <MainHeader />
@@ -184,6 +190,9 @@ function ProfileEditScreen() {
                 }}
                 accept="image/*"
               />
+            </WrapperColumn>
+            <WrapperColumn p='20px 0px 0px 0px'>
+              <ButtonSmallBlue title="로그아웃" onClick={logoutHandler}/>
             </WrapperColumn>
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">
