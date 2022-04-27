@@ -12,6 +12,9 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import logoWhite from 'assets/svg/social-dog-white.svg';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
+import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import { theme } from 'assets/styles/theme';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -20,6 +23,16 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: space-around;
   background-color: ${({ theme }) => theme.color.blue.primaryBlue};
+`;
+
+const InnerWrapper = styled.div`
+  max-width: 500px;
+  width: 100%;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
 `;
 
 interface IkakaoLoginSuccess {
@@ -84,12 +97,14 @@ function LoginScreen() {
 
   return (
     <Wrapper>
-      <WrapperRow p={'30px'} jc="center">
-        <ImageBase url={logoWhite} />
-      </WrapperRow>
-      <WrapperRow p="32px" onClick={kakaoLoginApi}>
-        <ImageBase url={KakaoImg} />
-      </WrapperRow>
+      <InnerWrapper>
+        <WrapperColumn p={'30px'} jc="center">
+          <ImageBase url={logoWhite} />
+        </WrapperColumn>
+        <WrapperRow p='32px' onClick={kakaoLoginApi}>
+          <ImageBase url={KakaoImg} />
+        </WrapperRow>
+      </InnerWrapper>
     </Wrapper>
   );
 }
