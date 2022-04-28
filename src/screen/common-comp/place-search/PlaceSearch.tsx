@@ -16,6 +16,9 @@ const PlaceSearchContainer = styled.div`
   .css-1wy0on6 {
     display: none;
   }
+  * div {
+    font-family: 'Noto Sans KR', sans-serif;
+  }
 `;
 
 interface IPlaceSearch {
