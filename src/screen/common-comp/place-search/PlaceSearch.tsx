@@ -13,9 +13,9 @@ const PlaceSearchContainer = styled.div`
   > :nth-child(2) {
     width: 500px;
   }
-  /* .css-1wy0on6 {
+  .css-1wy0on6 {
     display: none;
-  } */
+  }
   * div {
     font-family: 'Noto Sans KR', sans-serif;
   }

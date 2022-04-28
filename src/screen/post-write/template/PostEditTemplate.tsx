@@ -123,16 +123,20 @@ function PostEditTemplate({
           uploadedPhotos={uploadedPhotos}
           setUploadedPhotos={setUploadedPhotos}
         />
-        <WrapperRow jc="flex-start" w="100%">
-          {searchResult?.value && <TextBase text={`이전 주소 : ${searchResult.value.description || '없음'}`} />}
-        </WrapperRow>
-        <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
-        <WrapperRow w="100%">
-          <TextBase text="내용" />
+        <WrapperColumn w="100%" ai="flex-start">
+          <WrapperRow jc="flex-start" w="100%">
+              <TextBase text={`이전 주소 : ${postData.address || '없음'}`} p="10px 0" />
+          </WrapperRow>
+          <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
+        </WrapperColumn>
+        <WrapperColumn w="100%" ai="flex-start">
+          <TextBase text="내용" p="10px 0px" />
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
-        </WrapperRow>
+        </WrapperColumn>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}
-        <ButtonSubmit title="저장" onClick={() => {}} />
+        <WrapperColumn p='20px 0 50px 0' w='100%'>
+          <ButtonSubmit title="저장" onClick={() => {}} />
+        </WrapperColumn>
       </WrapperColumn>
     </form>
   );
