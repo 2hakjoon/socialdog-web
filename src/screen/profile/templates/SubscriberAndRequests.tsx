@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
-import { useState } from 'react';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
 import { makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -153,7 +152,7 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
           {selectedTab === 1 && (
             <>
               {subscribeRequests?.map((user) => (
-                <WrapperRow key={user.id} p={'0px 12px'}>
+                <WrapperRow key={user.id} w="100%" p={'0px 12px'}>
                   <UserCardThin onClick={closeModal} {...user} />
                   <ButtonSmallBlue
                     title="수락"

@@ -11,7 +11,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
+import TextExpandEllipsis from 'screen/common-comp/texts/TextExpandEllipsis';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
@@ -36,6 +36,7 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   margin: auto;
+  background-color: white;
 `;
 type Params = {
   postId: string;
@@ -114,7 +115,7 @@ function PostDetailScreen() {
       <BaseWrapper p="">
         {post && (
           <Wrapper>
-            <Carousel showThumbs={false} dynamicHeight>
+            <Carousel showThumbs={false} dynamicHeight showStatus={false}>
               {JSON.parse(post.photos).map((photo: string) => (
                 <WrapperSquare key={`${photo}`}>
                   <ImgWrapper>
@@ -168,9 +169,13 @@ function PostDetailScreen() {
                   </WrapperRow>
                 )}
               </WrapperRow>
-              <TextEllipsis lineHeight={1.2} line={3}>
-                <TextBase text={post.contents} />
-              </TextEllipsis>
+              <TextBase
+                text={`댓글 수 ${post.commentCounts} 개`}
+                fontSize={'0.875rem'}
+                fontWeight={400}
+                p={'0 0 6px 0'}
+              />
+              <TextExpandEllipsis text={post.contents} line={3} />
             </WrapperColumn>
           </Wrapper>
         )}

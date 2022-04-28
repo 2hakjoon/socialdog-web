@@ -10,6 +10,7 @@ const Wrapper = styled.div<IWrapperColumn>`
   width: ${(p) => p.w};
   height: ${(p) => p.h};
   margin: ${(p) => p.m};
+  background-color: ${(p) => p.bc};
 `;
 
 interface IWrapperColumn {
@@ -18,14 +19,15 @@ interface IWrapperColumn {
   p?: string;
   m?: string;
   w?: string;
+  bc?: string;
   h?: string;
   ai?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
   onClick?: (e: any) => void;
 }
 
-function WrapperColumn({ children, jc, p, w, h, ai, m, onClick }: IWrapperColumn) {
+function WrapperColumn({ children, jc, p, w, h, ai, m, bc, onClick }: IWrapperColumn) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} onClick={onClick}>
+    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} bc={bc} onClick={onClick}>
       {children}
     </Wrapper>
   );
@@ -38,6 +40,7 @@ WrapperColumn.defaultProps = {
   h: '',
   m: '',
   ai: 'center',
+  bc: 'white',
   onClick: (e: any) => {},
 };
 

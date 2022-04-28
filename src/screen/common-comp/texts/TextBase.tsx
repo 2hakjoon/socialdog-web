@@ -5,10 +5,11 @@ import styled from 'styled-components';
 interface ITextProps {
   m?: string;
   p?: string;
-  fontFamily?: 'Nanum-Gothic' | 'Noto-Sans-KR';
+  fontFamily?: 'Nanum Gothic' | 'Noto Sans KR';
   fontWeight?: number;
   fontSize?: string;
   color?: string;
+  lineHight?: number;
 }
 
 export const Text = styled.span<ITextProps>`
@@ -18,15 +19,24 @@ export const Text = styled.span<ITextProps>`
   font-weight: ${(p) => p.fontWeight};
   color: ${(p) => p.color};
   font-size: ${(p) => p.fontSize};
+  line-height: ${(p) => p.lineHight};
 `;
 
 export interface ITextBase extends ITextProps {
   text?: string | null | number;
 }
 
-function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize }: ITextBase) {
+function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight }: ITextBase) {
   return (
-    <Text m={m} p={p} color={color} fontFamily={fontFamily} fontWeight={fontWeight} fontSize={fontSize}>
+    <Text
+      m={m}
+      p={p}
+      color={color}
+      fontFamily={fontFamily}
+      fontWeight={fontWeight}
+      fontSize={fontSize}
+      lineHight={lineHight}
+    >
       {text}
     </Text>
   );
@@ -40,6 +50,7 @@ TextBase.defaultProps = {
   fontFamily: 'Noto Sans KR',
   fontWeight: 400,
   fontSize: '1rem',
+  lineHight: 1.2,
 };
 
 export default TextBase;

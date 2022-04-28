@@ -107,7 +107,7 @@ function CommentInput({ postId, refrechComment, parentComment, setParentComment,
     <>
       <Block />
       <Wrapper>
-        <WrapperColumn w="100%">
+        <WrapperColumn w="612px" m='0 auto'>
           <WrapperRow w="100%">
             {parentComment?.user.username && (
               <>
