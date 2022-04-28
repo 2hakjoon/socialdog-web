@@ -7,13 +7,12 @@ import { loginState } from 'apollo-setup';
 import { KAKAO_LOGIN } from 'apllo-gqls/auth';
 import ImageBase from 'screen/common-comp/image/ImageBase';
 import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
+import SplashImg from '../../assets/png/splash.png';
 import styled from 'styled-components';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import logoWhite from 'assets/svg/social-dog-white.svg';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import { theme } from 'assets/styles/theme';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
@@ -35,6 +34,16 @@ const InnerWrapper = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-around;
+`;
+
+const ButtonWrapper = styled.div`
+  position: fixed;
+  bottom: 30px;
+  margin: 0 auto;
+  padding: 32px;
+  width: 100%;
+  max-width: 500px;
+
 `;
 
 interface IkakaoLoginSuccess {
@@ -106,12 +115,10 @@ function LoginScreen() {
   return (
     <Wrapper>
       <InnerWrapper>
-        <WrapperColumn p={'30px'} jc="center">
-          <ImageBase url={logoWhite} />
-        </WrapperColumn>
-        <WrapperRow p="32px" onClick={kakaoLoginApi}>
+        <ImageBase url={SplashImg} />
+        <ButtonWrapper onClick={kakaoLoginApi}>
           <ImageBase url={KakaoImg} />
-        </WrapperRow>
+        </ButtonWrapper>
       </InnerWrapper>
       {modalOpen && (
         <ModalBackground closeModal={closeModal}>
