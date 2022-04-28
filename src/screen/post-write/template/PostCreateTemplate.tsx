@@ -83,7 +83,7 @@ function PostCreateTemplate({
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
-      <WrapperColumn w="100%">
+      <WrapperColumn w="100%" p='0px 0px 50px 0px'>
         <UploadImgViewer
           setUploadedFiles={setUploadedFiles}
           uploadedFiles={uploadedFiles}

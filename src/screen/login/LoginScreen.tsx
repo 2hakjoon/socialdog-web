@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { gql, useMutation } from '@apollo/client';
 import { getAccessToken, removeAllTokens, setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
@@ -15,6 +15,8 @@ import { routes } from 'screen/routes';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { theme } from 'assets/styles/theme';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import LoadingSpinner from 'assets/svg/LoadingSpinner';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -45,6 +47,7 @@ interface IkakaoLoginSuccess {
 
 function LoginScreen() {
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
 
   useEffect(() => {
@@ -53,6 +56,10 @@ function LoginScreen() {
       alert('보안을 위해서 다시 로그인 해 주세요');
     }
   }, []);
+
+  const closeModal = () => {
+    setModalOpen(false);
+  };
 
   const kakaoAuthHandler = async (authObj: IkakaoLoginSuccess) => {
     const res = await kakaoLogin({
@@ -84,6 +91,7 @@ function LoginScreen() {
     try {
       window.Kakao.Auth.login({
         success: async (authObj: IkakaoLoginSuccess) => {
+          setModalOpen(true);
           kakaoAuthHandler(authObj);
         },
         fail: () => {
@@ -101,10 +109,15 @@ function LoginScreen() {
         <WrapperColumn p={'30px'} jc="center">
           <ImageBase url={logoWhite} />
         </WrapperColumn>
-        <WrapperRow p='32px' onClick={kakaoLoginApi}>
+        <WrapperRow p="32px" onClick={kakaoLoginApi}>
           <ImageBase url={KakaoImg} />
         </WrapperRow>
       </InnerWrapper>
+      {modalOpen && (
+        <ModalBackground closeModal={closeModal}>
+          <LoadingSpinner />
+        </ModalBackground>
+      )}
     </Wrapper>
   );
 }

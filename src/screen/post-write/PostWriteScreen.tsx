@@ -1,9 +1,8 @@
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FetchResult, makeReference, useApolloClient, useMutation } from '@apollo/client';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
 import { FileInputDto, FileType } from '../../__generated__/globalTypes';
-import { useState } from 'react';
 import axios, { AxiosResponse } from 'axios';
 import { USER_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';

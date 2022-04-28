@@ -20,6 +20,7 @@ import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -87,7 +88,7 @@ function PostCard({
   return (
     <Wrapper key={id}>
       <TopBar onClick={moveToProfile}>
-        <ImageRound size="30px" url={user.photo ? user.photo : ''} />
+        <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
         <TextBase text={user.username} m="0 8px" fontFamily="Nanum-Gothic" fontWeight={700} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
         {createdAt !== updatedAt && (
