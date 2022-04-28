@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from 'screen/common-comp/texts/TextBase';
-import { useState } from 'react';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';

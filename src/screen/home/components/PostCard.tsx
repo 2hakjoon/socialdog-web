@@ -12,9 +12,7 @@ import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { gql, makeReference, useApolloClient, useMutation } from '@apollo/client';
-import { MToggleLikePost, MToggleLikePostVariables } from '__generated__/MToggleLikePost';
-import { TOGGLE_LIKE_POST } from 'apllo-gqls/posts';
+import { useApolloClient } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
