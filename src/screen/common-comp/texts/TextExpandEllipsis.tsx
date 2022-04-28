@@ -1,7 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
-import { useState } from 'react';
-import { useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import WrapperRow from '../wrappers/WrapperRow';
 import TextBase, { ITextBase } from './TextBase';
 import TextEllipsis from './TextEllipsis';
@@ -18,7 +15,7 @@ function TextExpandEllipsis({
   text,
   p = '0',
   m = '0',
-  fontFamily = 'Noto-Sans-KR',
+  fontFamily = 'Noto Sans KR',
   fontWeight = 400,
   color,
   fontSize = '1rem',
@@ -51,7 +48,6 @@ function TextExpandEllipsis({
       {!commentExpand ? (
         <>
           <TextEllipsis
-            text={text}
             p={p}
             m={m}
             fontFamily={fontFamily}
@@ -62,11 +58,16 @@ function TextExpandEllipsis({
             lineHeight={lineHeight}
             onClick={onClick}
           >
-            <span ref={ref}>{text}</span>
+            <span
+              ref={ref}
+              style={{ fontWeight, fontFamily: `${fontFamily}, sans-serif`, fontSize, color, lineHeight }}
+            >
+              {text}
+            </span>
           </TextEllipsis>
           {showExpand && (
             <WrapperRow onClick={commentExpandHandler}>
-              <TextBase fontSize="0.875rem" text={'자세히 보기'} />
+              <TextBase fontSize="0.875rem" text={'자세히 보기'} p={'8px 0 0 0'}/>
             </WrapperRow>
           )}
         </>
@@ -82,7 +83,7 @@ function TextExpandEllipsis({
             <span ref={ref}>{text}</span>
           </TextParagraph>
           <WrapperRow onClick={commentcontractHandler}>
-            <TextBase fontSize="0.875rem" text={'간략히 보기'} />
+            <TextBase fontSize="0.875rem" text={'간략히 보기'} p={'8px 0 0 0'}/>
           </WrapperRow>
         </>
       )}

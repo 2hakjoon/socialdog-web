@@ -1,6 +1,5 @@
 import { theme } from 'assets/styles/theme';
-import React from 'react';
-import { ReactNode } from 'react';
+import React, { ReactNode } from 'react';
 import styled from 'styled-components';
 
 const Wrapper = styled.p<ITextParagraph>`
@@ -16,7 +15,7 @@ const Wrapper = styled.p<ITextParagraph>`
 
 interface ITextParagraph {
   children: ReactNode;
-  fontFamily?: 'Nanum-Gothic' | 'Noto-Sans-KR';
+  fontFamily?: 'Nanum Gothic' | 'Noto Sans KR';
   fontWeight?: number;
   fontSize?: string;
   color?: string;
