@@ -179,7 +179,7 @@ function PostDetailScreen() {
             </WrapperColumn>
           </Wrapper>
         )}
-        {post && postId && Boolean(post.commentCounts) && <PostDetailComment postId={postId} authorId={post.user.id} />}
+        {post && postId && <PostDetailComment postId={postId} authorId={post.user.id} />}
       </BaseWrapper>
     </>
   );

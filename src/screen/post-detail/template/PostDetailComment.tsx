@@ -71,7 +71,7 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
 
   return (
     <>
-      <WrapperColumn p="0 16px">
+      <WrapperColumn w="612px" p="0 16px" m="0px auto" bc="white">
         <WrapperInfinityScroll fetchHandler={getNextPage}>
           {commentResult?.map((comment) => (
             <CommentCard
