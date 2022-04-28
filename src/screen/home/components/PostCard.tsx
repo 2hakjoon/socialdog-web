@@ -89,7 +89,7 @@ function PostCard({
     <Wrapper key={id}>
       <TopBar onClick={moveToProfile}>
         <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
-        <TextBase text={user.username} m="0 8px" fontFamily="Nanum Gothic" fontWeight={700} />
+        <TextBase text={user.username} m="0 8px" fontSize='1rem' fontFamily="Nanum Gothic" fontWeight={600} />
         <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
         {createdAt !== updatedAt && (
           <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
@@ -132,14 +132,14 @@ function PostCard({
                   color={theme.color.blue.primaryBlue}
                   style={{ marginRight: 10 }}
                 />
-                <TextBase text={address} fontSize="14px" />
+                <TextBase text={address} fontSize="14px" fontWeight={500} />
               </>
             )}
           </WrapperRow>
         </WrapperRow>
         <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
           <TextEllipsis line={3}>
-            <TextBase text={contents} p={'0'} m={'0'} />
+            <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
           </TextEllipsis>
           {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
         </WrapperColumn>
