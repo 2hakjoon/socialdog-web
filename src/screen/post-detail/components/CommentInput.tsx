@@ -26,6 +26,9 @@ const Wrapper = styled.div`
   button {
     margin-left: 10px;
   }
+  >div{
+    max-width: 612px;
+  }
 `;
 
 const Block = styled.div`
@@ -107,7 +110,7 @@ function CommentInput({ postId, refrechComment, parentComment, setParentComment,
     <>
       <Block />
       <Wrapper>
-        <WrapperColumn w="612px" m='0 auto'>
+        <WrapperColumn m='0 auto'>
           <WrapperRow w="100%">
             {parentComment?.user.username && (
               <>

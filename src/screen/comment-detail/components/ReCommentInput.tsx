@@ -20,6 +20,10 @@ const Wrapper = styled.div`
   button {
     margin-left: 10px;
   }
+  > div {
+    max-width: ${({ theme }) => theme.layout.screenMaxWidth};
+    margin: 0 auto;
+  }
 `;
 
 const Block = styled.div`
