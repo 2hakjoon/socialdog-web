@@ -66,7 +66,7 @@ function PostCreateTemplate({
         },
       });
       if (!createOrEditRes.data?.createPost.ok) {
-        window.alert('게시물 업로드에 실패했습니다.');
+        window.alert(createOrEditRes.data?.createPost.error);
         setIsSaving(false);
         return;
       }
@@ -83,18 +83,18 @@ function PostCreateTemplate({
 
   return (
     <form onSubmit={handleSubmit(onSubmitForm)}>
-      <WrapperColumn w="100%" p='0px 0px 50px 0px'>
+      <WrapperColumn w="100%" p="0px 0px 50px 0px">
         <UploadImgViewer
           setUploadedFiles={setUploadedFiles}
           uploadedFiles={uploadedFiles}
           inputFileHandler={inputFileHandler}
         />
         <WrapperColumn w="100%" p="20px 0" ai="flex-start">
-          <TextBase text={'주소검색'} m={"0px 0px 10px 0px"}/>
+          <TextBase text={'주소검색'} m={'0px 0px 10px 0px'} />
           <PlaceSearch searchResult={searchResult} setSearchResult={setSearchResult} />
         </WrapperColumn>
         <WrapperColumn w="100%" p="20px 0 40px 0" ai="flex-start">
-          <TextBase text="내용" m={"0px 0px 10px 0px"}/>
+          <TextBase text="내용" m={'0px 0px 10px 0px'} />
           <FormTextArea register={register('contents', { required: '내용을 입력해주세요', maxLength: 300 })} />
         </WrapperColumn>
         {formState.errors.contents?.message && <TextBase text={formState.errors.contents?.message} />}

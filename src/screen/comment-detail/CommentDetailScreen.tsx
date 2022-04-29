@@ -130,7 +130,7 @@ function CommentDetailScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper>
+      <BaseWrapper p="0">
         {comment && (
           <CommentWrapper>
             <WrapperRow w="100%" p="8px 0px" ai="flex-start">
@@ -145,7 +145,7 @@ function CommentDetailScreen() {
             </TextParagraph>
           </CommentWrapper>
         )}
-        <WrapperColumn w="100%" p="0px 16px">
+        <WrapperColumn w="100%" p="0px 16px" bc="white">
           <WrapperInfinityScroll fetchHandler={refetchReComments}>
             {Boolean(reCommentsList) && (
               <>
