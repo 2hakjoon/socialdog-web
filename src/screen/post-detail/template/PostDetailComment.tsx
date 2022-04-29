@@ -5,10 +5,17 @@ import React, { useEffect, useState } from 'react';
 import CommentCardLoading from 'screen/comment-detail/components/CommentCardLoading';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
 import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';
 import CommentCard from '../../comment-detail/components/CommentCard';
 import CommentInput from '../components/CommentInput';
+
+const Wrapper = styled.div`
+  > div {
+    max-width: 612px;
+  }
+`;
 
 interface PostDetailComment {
   postId: string;
@@ -71,24 +78,26 @@ function PostDetailComment({ postId, authorId }: PostDetailComment) {
 
   return (
     <>
-      <WrapperColumn w="612px" p="0 16px" m="0px auto" bc="white">
-        <WrapperInfinityScroll fetchHandler={getNextPage}>
-          {commentResult?.map((comment) => (
-            <CommentCard
-              setParentComment={() => setParentComment(comment)}
-              key={comment.id}
-              {...comment}
-              authorId={authorId}
-              setCommentList={setCommentResult}
-            />
-          ))}
+      <Wrapper>
+        <WrapperColumn p="0 16px" m="0px auto" bc="white">
+          <WrapperInfinityScroll fetchHandler={getNextPage}>
+            {commentResult?.map((comment) => (
+              <CommentCard
+                setParentComment={() => setParentComment(comment)}
+                key={comment.id}
+                {...comment}
+                authorId={authorId}
+                setCommentList={setCommentResult}
+              />
+            ))}
 
-          {commentsQuery.loading &&
-            Array(pageItemCount)
-              .fill('')
-              .map((_) => <CommentCardLoading key={Math.random()} />)}
-        </WrapperInfinityScroll>
-      </WrapperColumn>
+            {commentsQuery.loading &&
+              Array(pageItemCount)
+                .fill('')
+                .map((_) => <CommentCardLoading key={Math.random()} />)}
+          </WrapperInfinityScroll>
+        </WrapperColumn>
+      </Wrapper>
       <CommentInput
         postId={postId}
         refrechComment={addNewComment}
