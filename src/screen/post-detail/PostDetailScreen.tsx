@@ -77,6 +77,9 @@ function PostDetailScreen() {
   };
 
   const deletePostHandler = async (postId: string) => {
+    if (!window.confirm('게시글을 삭제하시겠습니까?')) {
+      return;
+    }
     const res = await deletePost({ variables: { args: { id: postId } } });
     if (!res.data?.deletePost.ok) {
       window.alert(res.data?.deletePost.error);
@@ -85,6 +88,8 @@ function PostDetailScreen() {
     const normalizedId = client.cache.identify({ id: post?.id, __typename: post?.__typename });
     client.cache.evict({ id: normalizedId });
     client.cache.gc();
+    window.alert('게시글이 삭제되었습니다');
+    navigate(-1);
   };
   // console.log(post);
 
