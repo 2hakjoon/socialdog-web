@@ -29,11 +29,14 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
 
 const CommentWrapper = styled.div`
+  max-width: ${({ theme }) => theme.layout.screenMaxWidth};
+  margin: 0 auto;
   width: 100%;
   border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
   padding: 16px 16px;
   display: flex;
   flex-direction: column;
+  background-color: white;
 `;
 
 function CommentDetailScreen() {
@@ -127,39 +130,41 @@ function CommentDetailScreen() {
   return (
     <>
       <MainHeader />
-      {comment && (
-        <CommentWrapper>
-          <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-            <ProfilePhoto url={comment.user.photo} size="48px" />
-            <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
-              <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
-            </WrapperColumn>
-            <FontAwesomeIcon icon={faTrashCan} size="lg" onClick={() => deleteCommentHandler(comment.id)} />
-          </WrapperRow>
-          <TextParagraph>
-            <TextBase fontSize="0.875rem" text={comment.content} />
-          </TextParagraph>
-        </CommentWrapper>
-      )}
       <BaseWrapper>
-        <WrapperInfinityScroll fetchHandler={refetchReComments}>
-          {Boolean(reCommentsList) && (
-            <>
-              {reCommentsList.map((recomment) => (
-                <CommentCard
-                  reCommentCounts={0}
-                  key={recomment.id}
-                  {...recomment}
-                  setReCommentList={setReCommentsList}
-                />
-              ))}
-            </>
-          )}
-          {reCommentLoading &&
-            Array(pageItemCount)
-              .fill('')
-              .map((_) => <CommentCardLoading key={Math.random()} />)}
-        </WrapperInfinityScroll>
+        {comment && (
+          <CommentWrapper>
+            <WrapperRow w="100%" p="8px 0px" ai="flex-start">
+              <ProfilePhoto url={comment.user.photo} size="48px" />
+              <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+                <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
+              </WrapperColumn>
+              <FontAwesomeIcon icon={faTrashCan} size="lg" onClick={() => deleteCommentHandler(comment.id)} />
+            </WrapperRow>
+            <TextParagraph>
+              <TextBase fontSize="0.875rem" text={comment.content} />
+            </TextParagraph>
+          </CommentWrapper>
+        )}
+        <WrapperColumn w="100%" p="0px 16px">
+          <WrapperInfinityScroll fetchHandler={refetchReComments}>
+            {Boolean(reCommentsList) && (
+              <>
+                {reCommentsList.map((recomment) => (
+                  <CommentCard
+                    reCommentCounts={0}
+                    key={recomment.id}
+                    {...recomment}
+                    setReCommentList={setReCommentsList}
+                  />
+                ))}
+              </>
+            )}
+            {reCommentLoading &&
+              Array(pageItemCount)
+                .fill('')
+                .map((_) => <CommentCardLoading key={Math.random()} />)}
+          </WrapperInfinityScroll>
+        </WrapperColumn>
       </BaseWrapper>
       {postId && <ReCommentInput parentCommentId={commentId} postId={postId} refrechComment={refrechComment} />}
     </>
