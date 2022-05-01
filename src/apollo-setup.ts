@@ -63,9 +63,9 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
         return forward(operation)
       })
     }
-    console.log(
-      `[GraphQL error]: Message: ${graphQLErrors?.[0].message}, Location: ${graphQLErrors?.[0].locations}, Path: ${graphQLErrors?.[0].path}`
-      )
+    // console.log(
+    //   `[GraphQL error]: Message: ${graphQLErrors?.[0].message}, Location: ${graphQLErrors?.[0].locations}, Path: ${graphQLErrors?.[0].path}`
+    //   )
       if (networkError) console.log(`[Network error]: ${networkError}`);
 });
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
@@ -48,6 +48,14 @@ const LogoWrapper = styled.div`
 function MainHeader() {
   const { data: userData } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
+
+  const { userAgent } = window.navigator;
+  console.log(userAgent);
+
+  if (userAgent === 'SOCIALDOG_APP') {
+    return <></>;
+  }
+
   return (
     <>
       <Block />
