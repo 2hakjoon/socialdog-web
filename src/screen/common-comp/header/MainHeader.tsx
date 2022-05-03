@@ -50,7 +50,7 @@ function MainHeader() {
   const user = userData?.me.data;
 
   const { userAgent } = window.navigator;
-  console.log(userAgent);
+  // console.log(userAgent);
 
   if (userAgent === 'SOCIALDOG_APP') {
     return <></>;
