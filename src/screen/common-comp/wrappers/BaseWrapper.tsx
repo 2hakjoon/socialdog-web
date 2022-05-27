@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.div<IBaseWrapper>`
   max-width: ${({ theme }) => theme.layout.screenMaxWidth};
-  background-color: ${({ theme }) => theme.color.achromatic.primaryWhite};
+  background-color: ${({ theme }) => theme.color.achromatic.white};
   margin: 0 auto;
   width: 100%;
   height: 100%;
