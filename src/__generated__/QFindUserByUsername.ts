@@ -13,7 +13,6 @@ export interface QFindUserByUsername_findUsersByUsername_data {
   __typename: "UserProfile";
   photo: string | null;
   username: string;
-  dogname: string | null;
   id: string;
 }
 

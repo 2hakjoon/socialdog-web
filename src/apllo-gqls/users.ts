@@ -6,7 +6,6 @@ export const MYPROFILE = gql`
       data {
         id
         username
-        dogname
         photo
         profileOpen
       }
@@ -22,7 +21,6 @@ export const GET_USER_PROFILE = gql`
       data {
         id
         username
-        dogname
         photo
         subscribings
         subscribers
@@ -50,7 +48,6 @@ export const FIND_USER_BY_USERNAME = gql`
       data {
         photo
         username
-        dogname
         id
       }
       ok
@@ -77,7 +74,6 @@ export const GET_PROFILE_OPEN_USER = gql`
     data {
       id
       username
-      dogname
       photo
     }
   }

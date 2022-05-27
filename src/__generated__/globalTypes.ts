@@ -105,7 +105,6 @@ export interface EditPostInputDto {
 
 export interface EditProfileInputDto {
   username?: string | null;
-  dogname?: string | null;
   photo?: string | null;
   profileOpen?: boolean | null;
   password?: string | null;

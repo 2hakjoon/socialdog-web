@@ -11,7 +11,6 @@ export interface QMe_me_data {
   __typename: "UserProfile";
   id: string;
   username: string;
-  dogname: string | null;
   photo: string | null;
   profileOpen: boolean | null;
 }

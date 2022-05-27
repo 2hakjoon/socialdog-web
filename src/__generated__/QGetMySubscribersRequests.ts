@@ -12,7 +12,6 @@ export interface QGetMySubscribersRequests_getMySubscribers_data {
   photo: string | null;
   username: string;
   id: string;
-  dogname: string | null;
 }
 
 export interface QGetMySubscribersRequests_getMySubscribers {
@@ -26,7 +25,6 @@ export interface QGetMySubscribersRequests_getSubscribeRequests_data {
   updatedAt: string;
   id: string;
   username: string;
-  dogname: string | null;
   photo: string | null;
 }
 

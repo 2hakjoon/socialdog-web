@@ -13,7 +13,6 @@ export interface QGetUserProfile_getUserProfile_data {
   __typename: "UserProfile";
   id: string;
   username: string;
-  dogname: string | null;
   photo: string | null;
   subscribings: number;
   subscribers: number;

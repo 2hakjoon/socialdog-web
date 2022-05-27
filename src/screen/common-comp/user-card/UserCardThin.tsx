@@ -16,11 +16,10 @@ interface IUserCardThin {
   id: string | null;
   username: string | null;
   photo: string | null;
-  dogname: string | null;
   onClick?: () => void;
 }
 
-function UserCardThin({ id, username, photo, dogname, onClick = () => {} }: IUserCardThin) {
+function UserCardThin({ id, username, photo, onClick = () => {} }: IUserCardThin) {
   const navigate = useNavigate();
 
   return (
@@ -33,7 +32,6 @@ function UserCardThin({ id, username, photo, dogname, onClick = () => {} }: IUse
       <ProfilePhoto url={photo} size="48px" />
       <WrapperColumn m={'0 16px'} jc="space-around" ai="flex-start">
         <TextBase text={username} />
-        <TextBase text={dogname || ''} />
       </WrapperColumn>
     </Wrapper>
   );

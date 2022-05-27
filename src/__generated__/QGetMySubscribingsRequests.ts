@@ -12,7 +12,6 @@ export interface QGetMySubscribingsRequests_getMySubscribings_data {
   photo: string | null;
   username: string;
   id: string;
-  dogname: string | null;
 }
 
 export interface QGetMySubscribingsRequests_getMySubscribings {
@@ -26,7 +25,6 @@ export interface QGetMySubscribingsRequests_getSubscribingRequests_data {
   updatedAt: string;
   id: string;
   username: string;
-  dogname: string | null;
   photo: string | null;
 }
 

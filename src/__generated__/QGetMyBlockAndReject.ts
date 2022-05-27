@@ -12,7 +12,6 @@ export interface QGetMyBlockAndReject_getMyRejectRequests_data {
   id: string;
   username: string;
   photo: string | null;
-  dogname: string | null;
 }
 
 export interface QGetMyBlockAndReject_getMyRejectRequests {
@@ -27,7 +26,6 @@ export interface QGetMyBlockAndReject_getMyBlockingUsers_data {
   id: string;
   username: string;
   photo: string | null;
-  dogname: string | null;
 }
 
 export interface QGetMyBlockAndReject_getMyBlockingUsers {

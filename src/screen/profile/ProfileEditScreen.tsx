@@ -1,4 +1,4 @@
-import React, { useEffect , useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { gql, useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { faCircleUser } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -105,7 +105,6 @@ function ProfileEditScreen() {
         args: {
           photo: newPhoto || user?.photo,
           username: formData.username,
-          dogname: formData.dogname,
           profileOpen: profileOpenState,
         },
       },
@@ -121,7 +120,6 @@ function ProfileEditScreen() {
           __typename
           id
           username
-          dogname
           photo
           profileOpen
         }
@@ -130,7 +128,6 @@ function ProfileEditScreen() {
         __typename: 'UserProfile',
         id: user?.id,
         username: formData.username || user?.username,
-        dogname: formData.dogname || user?.dogname,
         photo: newPhoto || user?.photo,
         profileOpen: profileOpenState,
       },
@@ -152,17 +149,16 @@ function ProfileEditScreen() {
 
   useEffect(() => {
     if (user) {
-      setValue('dogname', user.dogname);
       setValue('username', user.username);
       setProfileOpenState(user.profileOpen || false);
     }
   }, [user]);
 
   const logoutHandler = () => {
-    removeAllTokens()
-    navigate(routes.home)
-    loginState(false)
-  }
+    removeAllTokens();
+    navigate(routes.home);
+    loginState(false);
+  };
 
   return (
     <>
@@ -191,8 +187,8 @@ function ProfileEditScreen() {
                 accept="image/*"
               />
             </WrapperColumn>
-            <WrapperColumn p='20px 0px 0px 0px'>
-              <ButtonSmallBlue title="로그아웃" onClick={logoutHandler}/>
+            <WrapperColumn p="20px 0px 0px 0px">
+              <ButtonSmallBlue title="로그아웃" onClick={logoutHandler} />
             </WrapperColumn>
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">
@@ -208,7 +204,6 @@ function ProfileEditScreen() {
               </WrapperColumn>
               <WrapperColumn w={'100%'} ai="flex-start">
                 <TextBase text={'강아지 이름'} m={'16px 0'} />
-                <FormInput register={register('dogname')} ph={'15자 이내로 입력해주세요'} />
               </WrapperColumn>
               <WrapperRow w={'100%'}>
                 <TextBase

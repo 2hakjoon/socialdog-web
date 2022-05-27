@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react';
+import React, { Fragment, useState,useEffect } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
@@ -17,7 +17,6 @@ import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
-import { useEffect } from 'react';
 
 export type Params = {
   username: string;

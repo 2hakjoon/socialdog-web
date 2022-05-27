@@ -8,7 +8,6 @@ export const GET_MY_SUBSCRIBINGS_REQUESTS = gql`
         photo
         username
         id
-        dogname
       }
     }
     getSubscribingRequests {
@@ -16,7 +15,6 @@ export const GET_MY_SUBSCRIBINGS_REQUESTS = gql`
         updatedAt
         id
         username
-        dogname
         photo
       }
     }
@@ -31,7 +29,6 @@ export const GET_MY_SUBSCRIBERS_REQUESTS = gql`
         photo
         username
         id
-        dogname
       }
     }
     getSubscribeRequests {
@@ -39,7 +36,6 @@ export const GET_MY_SUBSCRIBERS_REQUESTS = gql`
         updatedAt
         id
         username
-        dogname
         photo
       }
     }
@@ -98,7 +94,6 @@ query QGetMyBlockAndReject{
       id
       username
       photo
-      dogname
     }
     error
   }
@@ -109,7 +104,6 @@ query QGetMyBlockAndReject{
       id
       username
       photo
-      dogname
     }
 }
   }`
