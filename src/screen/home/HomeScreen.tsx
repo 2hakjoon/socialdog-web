@@ -7,6 +7,7 @@ import { faMapLocationDot, faUserGroup } from '@fortawesome/free-solid-svg-icons
 import { theme } from 'assets/styles/theme';
 import AddressPostsTemplate from './templates/AddressPostsTemplate';
 import SubscribingsTemplate from './templates/SubscribingsTemplate';
+import TextBase, { Text } from 'screen/common-comp/texts/TextBase';
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';
@@ -25,18 +26,12 @@ function HomeScreen() {
       <MainHeader />
       <BaseWrapper p={''}>
         <WrapperRow bc={'white'} w="100%" h="60px" jc="space-around">
-          <FontAwesomeIcon
-            icon={faMapLocationDot}
-            color={tabIconColor(ADDRESS)}
-            size="lg"
-            onClick={() => setSelectedTab(ADDRESS)}
-          />
-          <FontAwesomeIcon
-            icon={faUserGroup}
-            color={tabIconColor(SUBSCRIBING)}
-            size="lg"
-            onClick={() => setSelectedTab(SUBSCRIBING)}
-          />
+          <WrapperRow onClick={() => setSelectedTab(ADDRESS)}>
+            <TextBase text={'지역별'} color={tabIconColor(ADDRESS)} />
+          </WrapperRow>
+          <WrapperRow onClick={() => setSelectedTab(SUBSCRIBING)}>
+            <TextBase text={'구독중'} color={tabIconColor(SUBSCRIBING)} />
+          </WrapperRow>
         </WrapperRow>
         {selectedTab === ADDRESS && <AddressPostsTemplate />}
         {selectedTab === SUBSCRIBING && <SubscribingsTemplate />}
