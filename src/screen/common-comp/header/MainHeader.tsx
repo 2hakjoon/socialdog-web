@@ -4,13 +4,13 @@ import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { getAccessToken } from 'utils/local-storage';
 import socialDogLogoBlack from '../../../assets/svg/social-dog-black.svg';
-import IconBook from 'assets/svg/IconBook';
 import WrapperRow from '../wrappers/WrapperRow';
-import IconClipBoard from 'assets/svg/IconClipBoard';
-import IconUserSearch from 'assets/svg/IconUserSearch';
 import { useQuery } from '@apollo/client';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { QMe } from '__generated__/QMe';
+import IconSearch from 'assets/svg/IconSearch';
+import IconPlus from 'assets/svg/IconPlus';
+import IconUser from 'assets/svg/IconUser';
 
 const Wrapper = styled.header`
   width: 100%;
@@ -68,14 +68,14 @@ function MainHeader() {
           </Link>
           <WrapperRow w="100px" jc={'space-between'}>
             <Link to={routes.search}>
-              <IconUserSearch size={24} />
+              <IconSearch size={24} />
             </Link>
             <Link to={routes.postWrite}>
-              <IconClipBoard size={24} />
+              <IconPlus size={24} />
             </Link>
             {getAccessToken() ? (
               <Link to={user?.username ? `/${user?.username}` : routes.home}>
-                <IconBook size={30} />
+                <IconUser size={24} />
               </Link>
             ) : (
               <Link to={routes.login}>
