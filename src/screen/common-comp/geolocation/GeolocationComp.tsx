@@ -6,6 +6,7 @@ function GeolocationComp() {
   const { userAgent } = window.navigator;
   // console.log(userAgent);
 
+  // gelocation정보 업데이트
   useEffect(() => {
     if (userAgent !== 'SOCIALDOG_APP') {
       const options = {
@@ -33,6 +34,7 @@ function GeolocationComp() {
     }
   }, []);
 
+  // addressSearch 페이지에서 쓸 termState 초기화
   useEffect(() => {
     getStoredAddressTerms().then((addressTerm) => {
       addressTermState(addressTerm);

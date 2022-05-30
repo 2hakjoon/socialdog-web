@@ -108,9 +108,9 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
   }, [geolocation]);
 
   return (
-    <WrapperRow bc={'white'} w="100%" p="0 8px">
+    <WrapperRow bc={'white'} w="100%" p="0px 8px">
       {addressTerms && !searchEnable ? (
-        <WrapperRow bc={'white'} w="100%" jc="space-between">
+        <WrapperRow bc={'white'} w="100%" jc="space-between" p="8px 0px">
           <TermWrapper>
             {addressTerms.map((term, idx) => (
               <TermBlock
