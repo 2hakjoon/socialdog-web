@@ -21,11 +21,13 @@ function GeolocationComp() {
       const error = (err: any) => {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       };
+
       navigator.geolocation.getCurrentPosition(success, error, options);
     } else {
       getStoredGeolocation().then((geolocation) => geolocationState(geolocation));
     }
   }, []);
+  return <></>;
 }
 
 export default GeolocationComp;

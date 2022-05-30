@@ -2,12 +2,10 @@ import { gql, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { QGetSubscribingPosts } from '__generated__/QGetSubscribingPosts';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
-import { CursorArgs } from '__generated__/globalTypes';
 import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
 
 function SubscribingsTemplate() {

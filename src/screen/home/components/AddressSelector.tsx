@@ -7,6 +7,8 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
+import axios from 'axios';
+import { geolocationState } from 'apollo-setup';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -78,6 +80,25 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
       return idx === addressTerms.length - 1;
     }
   };
+
+  const getAddressFromLatLng = async () => {
+    const geolocation = geolocationState();
+    console.log(geolocation);
+    if (!geolocation) {
+      return null;
+    }
+    const response = await axios(
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GEOCODING_API_KEY}`,
+    );
+    console.log(response);
+    // console.log(json);
+    // const [_, country, province, city] = response.plus_code.compound_code.split(' ');
+    // return `${country} ${province} ${city}`;
+  };
+
+  useEffect(() => {
+    getAddressFromLatLng();
+  }, []);
 
   return (
     <WrapperRow bc={'white'} w="100%" p="0 8px">
