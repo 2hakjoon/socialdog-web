@@ -40,7 +40,7 @@ function HomeScreen() {
       <BaseWrapper p={''}>
         <WrapperRow bc={'white'} w="100%" h="60px" jc="space-around">
           <BorderWrapper color={tabIconColor(ADDRESS)} onClick={() => setSelectedTab(ADDRESS)}>
-            <TextBase text={'지역별'} fontSize={'1.125rem'} fontWeight={500} color={tabIconColor(ADDRESS)} />
+            <TextBase text={'장소별'} fontSize={'1.125rem'} fontWeight={500} color={tabIconColor(ADDRESS)} />
           </BorderWrapper>
           <BorderWrapper color={tabIconColor(SUBSCRIBING)} onClick={() => setSelectedTab(SUBSCRIBING)}>
             <TextBase text={'구독중'} fontSize={'1.125rem'} fontWeight={500} color={tabIconColor(SUBSCRIBING)} />

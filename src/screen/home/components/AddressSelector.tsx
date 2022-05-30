@@ -63,7 +63,10 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
   const geolocation = useReactiveVar(geolocationState);
 
   const handleResultToTerm = (data: IPlaceSerchResult) => {
-    setAddressTerms([...data.value.terms.reverse()]);
+    const termObj = data.value.terms.reverse()
+    setAddressTerms(termObj);
+    storeAddressTerms(termObj);
+    addressTermState(termObj);
     setSearchEnable(false);
   };
 
@@ -92,12 +95,13 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GEOCODING_API_KEY}`,
     );
     const address = response.data.plus_code.compound_code.split(' ').splice(1);
-    const termObj:IPlaceTerms = [];
+    const termObj: IPlaceTerms = [];
     let offset = 0;
     for (let i = 0; i < address.length; i++) {
       termObj.push({ offset, value: address[i] });
       offset += address[i].length + 1;
     }
+    console.log(termObj);
     setAddressTerms(termObj);
     storeAddressTerms(termObj);
     addressTermState(termObj);
