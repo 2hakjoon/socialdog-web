@@ -1,13 +1,11 @@
-import { faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons';
+import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { theme } from 'assets/styles/theme';
-import React, { Dispatch, SetStateAction } from 'react';
+import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
-import { useState } from 'react';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
 
 const PlaceSearchContainer = styled.div`
@@ -16,6 +14,7 @@ const PlaceSearchContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-around;
+  padding-top: 14px;
   > :first-child {
     flex-shrink: 0;
   }

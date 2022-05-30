@@ -14,4 +14,10 @@ export interface IPlaceTerm{
   offset: number;
   value: string;
 }
-export interface IPlaceTerms extends Array<IPlaceTerm> {}
+
+export interface IGeolocation{
+  latitude: number;
+  longitude: number;
+}
+
+export type IPlaceTerms = Array<IPlaceTerm>

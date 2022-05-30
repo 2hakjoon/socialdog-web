@@ -7,11 +7,15 @@ import { QGetPostsByAddress_getPostsByAddress } from "__generated__/QGetPostsByA
 import { QGetMyLikedPosts_getMyLikedPosts } from "__generated__/QGetMyLikedPosts";
 import { REISSUE_ACCESS_TOKEN } from "apllo-gqls/auth";
 import { MReissueAccessToken, MReissueAccessTokenVariables } from "__generated__/MReissueAccessToken";
+import { IGeolocation } from "types/GooglePlace";
 
 
 
 // const httpLink = new HttpLink({ uri: 'http://121.154.94.120/graphql' });
 // const httpLink = new HttpLink({ uri: 'https://api.2hakjoon.com/graphql' });
+export const loginState = makeVar(Boolean(getAccessToken()))
+export const geolocationState = makeVar<IGeolocation | null>(null)
+
 const apiServerUrl = process.env.REACT_APP_API_SERVER_URL;
 const httpLink = new HttpLink({ uri: apiServerUrl });
 
@@ -70,7 +74,6 @@ const errorLink = onError(({ graphQLErrors, networkError, operation, forward }) 
 });
 
 
-export const loginState = makeVar(Boolean(getAccessToken()))
 
 export const cache = new InMemoryCache({
   typePolicies: {
