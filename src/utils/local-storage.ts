@@ -1,8 +1,9 @@
-import { IGeolocation } from "types/GooglePlace"
+import { IGeolocation, IPlaceTerms } from "types/GooglePlace"
 
 const USER_ACCESS_TOKEN = 'USER_ACCESS_TOKEN'
 const USER_REFRESH_TOKEN = 'USER_REFRESH_TOKEN'
 const GEOLOCATION = "GEOLOCATION"
+const ADDRESS_TERM = "ADDRESS_TERM"
 
 export const setAccessToken = (accessToken:string) => {
   localStorage.setItem(USER_ACCESS_TOKEN, accessToken)
@@ -31,5 +32,22 @@ export const getStoredGeolocation = async():Promise<IGeolocation | null> => {
     return JSON.parse(res)
   }
   return null
+}
 
+export const storeGelocation = async (data:IGeolocation) => {
+  const stringData = await JSON.stringify(data)
+  localStorage.setItem(GEOLOCATION, stringData)
+}
+
+export const storeAddressTerms = async (data:IPlaceTerms)=>{
+  const stringData = await JSON.stringify(data)
+  localStorage.setItem(ADDRESS_TERM, stringData)
+}
+
+export const getStoredAddressTerms = async () :Promise<IPlaceTerms | null> =>{
+  const res = await localStorage.getItem(ADDRESS_TERM)
+  if(res){
+    return JSON.parse(res)
+  }
+  return null
 }

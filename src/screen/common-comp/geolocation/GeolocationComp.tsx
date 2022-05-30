@@ -1,6 +1,6 @@
-import { geolocationState } from 'apollo-setup';
+import { addressTermState, geolocationState } from 'apollo-setup';
 import React, { useEffect } from 'react';
-import { getStoredGeolocation } from 'utils/local-storage';
+import { getStoredAddressTerms, getStoredGeolocation, storeGelocation } from 'utils/local-storage';
 
 function GeolocationComp() {
   const { userAgent } = window.navigator;
@@ -17,16 +17,28 @@ function GeolocationComp() {
       const success = (pos: any) => {
         const crd = pos.coords;
         geolocationState({ latitude: crd.latitude, longitude: crd.longitude });
+        storeGelocation({ latitude: crd.latitude, longitude: crd.longitude });
       };
       const error = (err: any) => {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       };
-
-      navigator.geolocation.getCurrentPosition(success, error, options);
+      getStoredGeolocation().then((geolocation) => {
+        if (geolocation?.latitude && geolocation.longitude) {
+          geolocationState({ latitude: geolocation.latitude, longitude: geolocation.longitude });
+        }
+        navigator.geolocation.getCurrentPosition(success, error, options);
+      });
     } else {
       getStoredGeolocation().then((geolocation) => geolocationState(geolocation));
     }
   }, []);
+
+  useEffect(() => {
+    getStoredAddressTerms().then((addressTerm) => {
+      addressTermState(addressTerm);
+    });
+  }, []);
+
   return <></>;
 }
 

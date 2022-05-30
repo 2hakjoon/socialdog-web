@@ -8,8 +8,9 @@ import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
 import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
 import axios from 'axios';
-import { geolocationState } from 'apollo-setup';
+import { addressTermState, geolocationState } from 'apollo-setup';
 import { useReactiveVar } from '@apollo/client';
+import { storeAddressTerms } from 'utils/local-storage';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -90,16 +91,16 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
     const response = await axios(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GEOCODING_API_KEY}`,
     );
-    // console.log(response);
-    // console.log(json);
     const address = response.data.plus_code.compound_code.split(' ').splice(1);
-    const termObj = [];
+    const termObj:IPlaceTerms = [];
     let offset = 0;
     for (let i = 0; i < address.length; i++) {
       termObj.push({ offset, value: address[i] });
       offset += address[i].length + 1;
     }
     setAddressTerms(termObj);
+    storeAddressTerms(termObj);
+    addressTermState(termObj);
   };
 
   useEffect(() => {
