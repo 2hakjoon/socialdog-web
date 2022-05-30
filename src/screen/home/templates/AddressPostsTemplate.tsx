@@ -4,9 +4,7 @@ import React, { useEffect, useState } from 'react';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
 import { IPlaceTerms } from 'types/GooglePlace';
-import { CursorArgs } from '__generated__/globalTypes';
 import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/QGetPostsByAddress';
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
@@ -30,6 +28,7 @@ function AddressPostsTemplate() {
 
   useEffect(() => {
     setItemLimit(pageItemCount);
+    console.log(searchAddressTerms);
   }, [searchAddressTerms]);
 
   return (
