@@ -24,8 +24,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <GeolocationComp />
         <ScrollToTop />
+        <GeolocationComp />
         <Routes>
           {isLoggedIn ? (
             <>

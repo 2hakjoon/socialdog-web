@@ -1,5 +1,6 @@
 import { addressTermState, geolocationState } from 'apollo-setup';
 import React, { useEffect } from 'react';
+import { IGeolocation, IPlaceTerms } from 'types/GooglePlace';
 import { getStoredAddressTerms, getStoredGeolocation, storeGelocation } from 'utils/local-storage';
 
 function GeolocationComp() {
@@ -14,7 +15,6 @@ function GeolocationComp() {
         timeout: 5000,
         maximumAge: 0,
       };
-
       const success = (pos: any) => {
         const crd = pos.coords;
         geolocationState({ latitude: crd.latitude, longitude: crd.longitude });
@@ -23,20 +23,25 @@ function GeolocationComp() {
       const error = (err: any) => {
         console.warn(`ERROR(${err.code}): ${err.message}`);
       };
-      getStoredGeolocation().then((geolocation) => {
+
+      getStoredGeolocation().then((geolocation: IGeolocation | null) => {
         if (geolocation?.latitude && geolocation.longitude) {
           geolocationState({ latitude: geolocation.latitude, longitude: geolocation.longitude });
         }
         navigator.geolocation.getCurrentPosition(success, error, options);
       });
     } else {
-      getStoredGeolocation().then((geolocation) => geolocationState(geolocation));
+      getStoredGeolocation().then((geolocation: IGeolocation | null) => {
+        if (geolocation) {
+          geolocationState(geolocation);
+        }
+      });
     }
   }, []);
 
   // addressSearch 페이지에서 쓸 termState 초기화
   useEffect(() => {
-    getStoredAddressTerms().then((addressTerm) => {
+    getStoredAddressTerms().then((addressTerm: IPlaceTerms | null) => {
       addressTermState(addressTerm);
     });
   }, []);

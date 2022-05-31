@@ -62,11 +62,15 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
   const [searchEnable, setSearchEnable] = useState(false);
   const geolocation = useReactiveVar(geolocationState);
 
+  const modifyAllTerms = (data: IPlaceTerms) => {
+    setAddressTerms(data);
+    storeAddressTerms(data);
+    addressTermState(data);
+  };
+
   const handleResultToTerm = (data: IPlaceSerchResult) => {
-    const termObj = data.value.terms.reverse()
-    setAddressTerms(termObj);
-    storeAddressTerms(termObj);
-    addressTermState(termObj);
+    const termObj = data.value.terms.reverse();
+    modifyAllTerms(termObj);
     setSearchEnable(false);
   };
 
@@ -78,7 +82,9 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
       setSearchEnable(true);
       return;
     }
-    setAddressTerms([...addressTerms.slice(0, -1)]);
+    const removedArray = addressTerms.slice(0, -1);
+    setAddressTerms(removedArray);
+    modifyAllTerms(removedArray);
   };
 
   const isLastAddressBlock = (idx: number) => {
@@ -89,11 +95,12 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
 
   const getAddressFromLatLng = async () => {
     if (!geolocation) {
-      return null;
+      return;
     }
     const response = await axios(
-      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GEOCODING_API_KEY}`,
+      `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GOOGLE_API_KEY_2}`,
     );
+    console.log(response);
     const address = response.data.plus_code.compound_code.split(' ').splice(1);
     const termObj: IPlaceTerms = [];
     let offset = 0;
@@ -101,14 +108,13 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
       termObj.push({ offset, value: address[i] });
       offset += address[i].length + 1;
     }
-    console.log(termObj);
-    setAddressTerms(termObj);
-    storeAddressTerms(termObj);
-    addressTermState(termObj);
+    modifyAllTerms(termObj);
   };
 
   useEffect(() => {
-    getAddressFromLatLng();
+    if (geolocation && !addressTermState()) {
+      getAddressFromLatLng();
+    }
   }, [geolocation]);
 
   return (

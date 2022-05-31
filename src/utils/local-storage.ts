@@ -26,26 +26,26 @@ export const removeAllTokens = () => {
   localStorage.removeItem(USER_REFRESH_TOKEN)
 }
 
-export const getStoredGeolocation = async():Promise<IGeolocation | null> => {
-  const res = await localStorage.getItem(GEOLOCATION)
+export const getStoredGeolocation = async () => {
+  const res = localStorage.getItem(GEOLOCATION)
   if(res){
     return JSON.parse(res)
   }
   return null
 }
 
-export const storeGelocation = async (data:IGeolocation) => {
-  const stringData = await JSON.stringify(data)
+export const storeGelocation = (data:IGeolocation) => {
+  const stringData = JSON.stringify(data)
   localStorage.setItem(GEOLOCATION, stringData)
 }
 
-export const storeAddressTerms = async (data:IPlaceTerms)=>{
-  const stringData = await JSON.stringify(data)
+export const storeAddressTerms =  (data:IPlaceTerms)=>{
+  const stringData = JSON.stringify(data)
   localStorage.setItem(ADDRESS_TERM, stringData)
 }
 
-export const getStoredAddressTerms = async () :Promise<IPlaceTerms | null> =>{
-  const res = await localStorage.getItem(ADDRESS_TERM)
+export const getStoredAddressTerms = async () =>{
+  const res = localStorage.getItem(ADDRESS_TERM)
   if(res){
     return JSON.parse(res)
   }
