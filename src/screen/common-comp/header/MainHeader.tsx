@@ -52,9 +52,9 @@ function MainHeader() {
   const { userAgent } = window.navigator;
   // console.log(userAgent);
 
-  if (userAgent === 'SOCIALDOG_APP') {
-    return <></>;
-  }
+  // if (userAgent === 'SOCIALDOG_APP') {
+  //   return <></>;
+  // }
 
   return (
     <>
