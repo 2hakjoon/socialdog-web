@@ -10,4 +10,5 @@ export const routes = {
   login: '/login',
   join: '/join',
   search: '/search',
+  termsOfService: 'terms-of-service'
 };

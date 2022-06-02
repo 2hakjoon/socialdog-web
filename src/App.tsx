@@ -15,6 +15,7 @@ import CommentDetailScreen from 'screen/comment-detail/CommentDetailScreen';
 import LoginScreen from 'screen/login/LoginScreen';
 import ScrollToTop from 'screen/common-comp/scroll/ScrollToTop';
 import GeolocationComp from 'screen/common-comp/geolocation/GeolocationComp';
+import TermsOfService from 'screen/terms/TermsOfService';
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();
@@ -36,6 +37,7 @@ function App() {
               <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
               <Route path={routes.search} element={<SearchScreen />} />
               <Route path={routes.commentDetail} element={<CommentDetailScreen />} />
+              <Route path={routes.termsOfService} element={<TermsOfService />}/>
             </>
           ) : (
             <>
