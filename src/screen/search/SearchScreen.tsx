@@ -67,7 +67,7 @@ function SearchScreen() {
           {findUserLoading || profileOpenUserLoading ? (
             Array(5)
               .fill('')
-              .map(() => <UserCardThinLoading />)
+              .map(() => <UserCardThinLoading key={Math.random()} />)
           ) : (
             <>
               {findUserData?.findUsersByUsername.data?.map((findResult) => (

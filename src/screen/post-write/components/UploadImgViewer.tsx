@@ -1,7 +1,6 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect } from 'react';
-import { useState } from 'react';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
@@ -92,7 +91,7 @@ function UploadImgViewer({
     <>
       <ImgPreviewgrid>
         {imgUrls.map((imgUrl, idx) => (
-          <WrapperColumn ai={'flex-end'}>
+          <WrapperColumn ai={'flex-end'} key={Math.random()}>
             <FontAwesomeIcon
               icon={faXmark}
               onClick={() => (isEditPosting() ? removeUploadedPhotos(idx) : removeUploadedFiles(idx))}
