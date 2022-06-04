@@ -7,15 +7,7 @@ import { ApolloProvider } from '@apollo/client';
 import { client } from 'apollo-setup';
 
 if (process.env.NODE_ENV === 'production') {
-  if (!window.console) {
-    const console = {
-      log: function () {},
-      warn: function () {},
-      error: function () {},
-      time: function () {},
-      timeEnd: function () {},
-    };
-  }
+  console.log = function () {};
 }
 
 ReactDOM.render(

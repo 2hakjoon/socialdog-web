@@ -9,11 +9,8 @@ import ImageBase from 'screen/common-comp/image/ImageBase';
 import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
 import SplashImg from '../../assets/png/splash.png';
 import styled from 'styled-components';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import logoWhite from 'assets/svg/social-dog-white.svg';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
 

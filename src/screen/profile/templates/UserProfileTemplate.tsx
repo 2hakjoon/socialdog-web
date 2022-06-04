@@ -8,7 +8,6 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import ImageRound from 'screen/common-comp/image/ImageRound';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -162,7 +161,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
               <ProfilePhoto size="80px" url={user.photo} />
               <WrapperRow>
                 <TextBase text={user.username} p="0 6px" />
-                <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                {isMyProfile() && <FontAwesomeIcon icon={faPenToSquare} size="1x" />}
               </WrapperRow>
             </WrapperColumn>
             <WrapperColumn jc="space-around" h={'100%'}>
