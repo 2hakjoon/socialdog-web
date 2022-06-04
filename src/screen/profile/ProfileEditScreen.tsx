@@ -28,6 +28,7 @@ import { routes } from 'screen/routes';
 import Compressor from 'compressorjs';
 import { removeAllTokens } from 'utils/local-storage';
 import { loginState } from 'apollo-setup';
+import useUserAgent from 'hooks/useUserAgent';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -52,6 +53,7 @@ function ProfileEditScreen() {
   const [profileOpenState, setProfileOpenState] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<FileList | null>();
   const [uploadedFileUrl, setUploadedFileUrl] = useState<null | string>();
+  const userAgent = useUserAgent();
 
   const checkUsernameExsistHandler = async () => {
     const username = getValues('username');
@@ -188,7 +190,7 @@ function ProfileEditScreen() {
               />
             </WrapperColumn>
             <WrapperColumn p="20px 0px 0px 0px">
-              <ButtonSmallBlue title="로그아웃" onClick={logoutHandler} />
+              {userAgent === 'APP' && <ButtonSmallBlue title="로그아웃" onClick={logoutHandler} />}
             </WrapperColumn>
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">

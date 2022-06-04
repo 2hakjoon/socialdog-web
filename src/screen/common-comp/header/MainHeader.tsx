@@ -49,13 +49,6 @@ function MainHeader() {
   const { data: userData } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
 
-  const { userAgent } = window.navigator;
-  // console.log(userAgent);
-
-  // if (userAgent === 'SOCIALDOG_APP') {
-  //   return <></>;
-  // }
-
   return (
     <>
       <Block />
@@ -75,7 +68,7 @@ function MainHeader() {
             </Link>
             {getAccessToken() ? (
               <Link to={user?.username ? `/${user?.username}` : routes.home}>
-                <IconUser size={24} />
+                <IconUser size={22} />
               </Link>
             ) : (
               <Link to={routes.login}>

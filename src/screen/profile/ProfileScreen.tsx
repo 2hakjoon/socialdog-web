@@ -1,4 +1,4 @@
-import React, { Fragment, useState,useEffect } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
@@ -6,7 +6,7 @@ import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faUserLock } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
 import { QGetUserProfile, QGetUserProfileVariables } from '__generated__/QGetUserProfile';
 import { QMe } from '__generated__/QMe';
@@ -17,6 +17,7 @@ import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
+import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 
 export type Params = {
   username: string;
@@ -101,7 +102,10 @@ function ProfileScreen() {
                 {isSelectedPostType('LIKED') && <MyLikedPosts itemsCount={12} />}
               </>
             ) : (
-              <TextBase text={'비공개 계정입니다.'} />
+              <WrapperColumn p="50px 0" h="200px" jc={'space-between'}>
+                <FontAwesomeIcon color={theme.color.achromatic.darkGray} size="4x" icon={faUserLock} />
+                <TextBase color={theme.color.achromatic.darkGray} text={'비공계 계정입니다.'} />
+              </WrapperColumn>
             )}
           </>
         )}

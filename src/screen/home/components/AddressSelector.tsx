@@ -1,4 +1,4 @@
-import { faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faLocationCrosshairs, faMagnifyingGlass, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { theme } from 'assets/styles/theme';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
@@ -11,6 +11,7 @@ import axios from 'axios';
 import { addressTermState, geolocationState } from 'apollo-setup';
 import { useReactiveVar } from '@apollo/client';
 import { storeAddressTerms } from 'utils/local-storage';
+import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -20,6 +21,9 @@ const PlaceSearchContainer = styled.div`
   justify-content: space-around;
   padding-top: 14px;
   > :first-child {
+    flex-shrink: 0;
+  }
+  > :nth-child(3) {
     flex-shrink: 0;
   }
   > :last-child {
@@ -47,6 +51,18 @@ const TermBlock = styled.div<ITermBlock>`
   margin: 4px;
   border-radius: 20px;
   background-color: ${(p) => p.backgroundColor};
+`;
+
+const CrossHairsWrapper = styled.div`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: 'white';
+  border-radius: 5px;
+  border: 2px solid ${({ theme }) => theme.color.achromatic.black};
+  margin-right: 6px;
 `;
 
 interface ITermBlock {
@@ -100,7 +116,6 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
     const response = await axios(
       `https://maps.googleapis.com/maps/api/geocode/json?latlng=${geolocation.latitude},${geolocation.longitude}&language=ko&key=${process.env.REACT_APP_GOOGLE_API_KEY_2}`,
     );
-    console.log(response);
     const address = response.data.plus_code.compound_code.split(' ').splice(1);
     const termObj: IPlaceTerms = [];
     let offset = 0;
@@ -109,6 +124,11 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
       offset += address[i].length + 1;
     }
     modifyAllTerms(termObj);
+  };
+
+  const setAddressCurrentPositon = () => {
+    getAddressFromLatLng()
+    setSearchEnable(false);
   };
 
   useEffect(() => {
@@ -154,9 +174,10 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
           <PlaceSearchContainer>
             <TextBase text="검색" />
             <PlaceSearch searchResult={null} setSearchResult={handleResultToTerm} />
-            <button type="button" onClick={() => setSearchEnable(false)}>
-              취소
-            </button>
+            <CrossHairsWrapper onClick={setAddressCurrentPositon}>
+              <FontAwesomeIcon icon={faLocationCrosshairs} size="lg" color={theme.color.achromatic.black} />
+            </CrossHairsWrapper>
+            <ButtonSmallWhite onClick={() => setSearchEnable(false)} title="취소" />
           </PlaceSearchContainer>
         </>
       )}

@@ -74,7 +74,7 @@ function SearchScreen() {
                 <UserCardThin key={findResult.id} {...findResult} />
               ))}
               {!findUserData?.findUsersByUsername.data && (
-                <WrapperColumn w="100%">
+                <WrapperColumn w="100%" p={'10px 0'}>
                   <TextBase text={'추천친구 목록'} />
                   {profileOpenUsers?.getProfileOpenUser.data?.map((user) => (
                     <UserCardThin key={user.id} {...user} />
