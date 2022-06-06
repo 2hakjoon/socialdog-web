@@ -73,21 +73,29 @@ function CommentCard({
     navigate(`${routes.commentDetailBase}${id}`);
   };
 
+  const moveToUserProfile = (username: string) => {
+    navigate(`${routes.home}${username}`);
+  };
+
   return (
     <WrapperColumn w="100%">
       <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-        <ProfilePhoto url={user.photo} size="48px" />
-        <WrapperColumn w="100%" ai="flex-start" p="0px 8px" onClick={setParentComment}>
+        <WrapperColumn onClick={() => moveToUserProfile(user.username)}>
+          <ProfilePhoto url={user.photo} size="48px" />
+        </WrapperColumn>
+        <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+          <WrapperColumn onClick={setParentComment} ai={'flex-start'} w={'100%'}>
           <WrapperRow>
             <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
             <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 8px" />
           </WrapperRow>
-          <TextEllipsis line={3} fontSize="0.875rem" text={content} />
-          {Boolean(reCommentCounts) && (
-            <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
-              <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
-            </WrapperRow>
-          )}
+            <TextEllipsis line={3} fontSize="0.875rem" text={content} />
+            {Boolean(reCommentCounts) && (
+              <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
+                <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
+              </WrapperRow>
+            )}
+          </WrapperColumn>
         </WrapperColumn>
         {isDeletable() && (
           <>

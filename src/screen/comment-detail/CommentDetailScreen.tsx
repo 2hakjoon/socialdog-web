@@ -127,6 +127,10 @@ function CommentDetailScreen() {
     setReCommentsList([...reComments]);
   };
 
+  const moveToUserProfile = (username:string) => {
+    navigate(`${routes.home}${username}`)
+  }
+
   return (
     <>
       <MainHeader />
@@ -134,7 +138,9 @@ function CommentDetailScreen() {
         {comment && (
           <CommentWrapper>
             <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-              <ProfilePhoto url={comment.user.photo} size="48px" />
+              <WrapperColumn onClick={()=>moveToUserProfile(comment.user.username)}>
+                <ProfilePhoto url={comment.user.photo} size="48px" />
+              </WrapperColumn>
               <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
                 <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
               </WrapperColumn>
