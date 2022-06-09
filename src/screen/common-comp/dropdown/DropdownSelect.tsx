@@ -34,8 +34,8 @@ const InnerWrapper = styled.div<InnerWrpperProps>`
 
 interface IDropdownSelect {
   options: string[];
-  selectOption: string | null;
-  setSelectOption: Dispatch<SetStateAction<string>>;
+  selectOption: number | null;
+  setSelectOption: Dispatch<SetStateAction<number | null>>;
 }
 
 function DropdownSelect({ options, selectOption, setSelectOption }: IDropdownSelect) {
@@ -47,7 +47,7 @@ function DropdownSelect({ options, selectOption, setSelectOption }: IDropdownSel
     setdropdownVisible((prev) => !prev);
   };
 
-  const hideDropdownAfterOnClick = (option: string) => {
+  const hideDropdownAfterOnClick = (option: number) => {
     setSelectOption(option);
     setdropdownVisible(false);
   };
@@ -59,13 +59,20 @@ function DropdownSelect({ options, selectOption, setSelectOption }: IDropdownSel
   return (
     <Wrapper>
       <WrapperRow bc="none" onClick={toggleDropdownVisible} jc="space-between" w={'100%'} h={'30px'}>
-        <TextBase text={selectOption || "신고 유형을 선택해주세요." } />
+        <TextBase text={selectOption !== null ? options[selectOption] : '신고 유형을 선택해주세요.'} />
         <FontAwesomeIcon size="lg" icon={faCircleChevronDown} />
       </WrapperRow>
       {dropdownVisible && (
         <InnerWrapper offset={options.length * tabHeight}>
-          {options.map((option) => (
-            <WrapperRow w="100%" h={`${tabHeight}px`} jc="flex-start" p='0px 10px' onClick={() => hideDropdownAfterOnClick(option)}>
+          {options.map((option, idx) => (
+            <WrapperRow
+              key={option}
+              w="100%"
+              h={`${tabHeight}px`}
+              jc="flex-start"
+              p="0px 10px"
+              onClick={() => hideDropdownAfterOnClick(idx)}
+            >
               <TextBase text={option} />
             </WrapperRow>
           ))}

@@ -27,13 +27,13 @@ function ModalBackground({ children, closeModal }: IModalBackground) {
 
   const onBackgroundClick = (e?: BaseSyntheticEvent) => {
     if (checkBackgroundClicked(e?.target.id)) {
+      closeModal();
       closeModalAndOverflowScroll();
     }
   };
 
   const closeModalAndOverflowScroll = () => {
     document.body.style.overflow = 'scroll';
-    closeModal();
   };
 
   const checkBackgroundClicked = (id: string) => {

@@ -60,7 +60,13 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
       {dropdownVisible && (
         <InnerWrapper offset={items.length * tabHeight}>
           {items.map(({ itemName, onClick }) => (
-            <WrapperRow w="150px" h={`${tabHeight}px`} jc="center" onClick={() => hideDropdownAfterOnClick(onClick)}>
+            <WrapperRow
+              key={itemName}
+              w="150px"
+              h={`${tabHeight}px`}
+              jc="center"
+              onClick={() => hideDropdownAfterOnClick(onClick)}
+            >
               <TextBase text={itemName} fontWeight={500} />
             </WrapperRow>
           ))}

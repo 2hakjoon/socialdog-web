@@ -170,7 +170,7 @@ function PostCard({
           </WrapperColumn>
         </Contents>
       </Wrapper>
-      <>{modalOpen && <ReportModal type="POST" closeModal={closeReportModal} />}</>
+      <>{modalOpen && <ReportModal postId={id} type="POST" closeModal={closeReportModal} />}</>
     </>
   );
 }

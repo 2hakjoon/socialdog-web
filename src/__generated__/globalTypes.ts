@@ -24,6 +24,26 @@ export enum FileType {
 }
 
 /**
+ * ReportCommentsType
+ */
+export enum ReportCommentsType {
+  ADVERTISMENT = "ADVERTISMENT",
+  NEGATIVE_POST = "NEGATIVE_POST",
+  OTHER = "OTHER",
+  SEXUAL_CONTENTS = "SEXUAL_CONTENTS",
+}
+
+/**
+ * ReportPostsType
+ */
+export enum ReportPostsType {
+  ADVERTISMENT = "ADVERTISMENT",
+  NEGATIVE_POST = "NEGATIVE_POST",
+  OTHER = "OTHER",
+  SEXUAL_CONTENTS = "SEXUAL_CONTENTS",
+}
+
+/**
  * ReportUsersType
  */
 export enum ReportUsersType {
@@ -87,13 +107,13 @@ export interface CreateReportBugInputDto {
 }
 
 export interface CreateReportCommentInputDto {
-  reportType: string;
+  reportType: ReportCommentsType;
   comment: string;
   reportedCommentId: string;
 }
 
 export interface CreateReportPostInputDto {
-  reportType: string;
+  reportType: ReportPostsType;
   comment: string;
   reportedPostId: string;
 }
