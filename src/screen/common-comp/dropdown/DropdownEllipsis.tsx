@@ -31,7 +31,7 @@ const InnerWrapper = styled.div<InnerWrpperProps>`
 `;
 
 interface IDropdownEllipsis {
-  items: [{ itemName: string; onClick: () => any }];
+  items: [{ itemName: string; onClick: () => void }];
 }
 
 function DropdownEllipsis({ items }: IDropdownEllipsis) {
@@ -40,8 +40,13 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
   const tabHeight = 40;
 
   const toggleDropdownVisible = () => {
-    setdropdownVisible(prev=>!prev) 
-  }
+    setdropdownVisible((prev) => !prev);
+  };
+
+  const hideDropdownAfterOnClick = (onClick: () => void) => {
+    onClick();
+    setdropdownVisible(false);
+  };
 
   useEffect(() => {
     return () => setdropdownVisible(false);
@@ -49,13 +54,13 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
 
   return (
     <Wrapper>
-      <WrapperColumn bc='none' onClick={toggleDropdownVisible} jc='center' w={'100%'} h={'100%'}>
-        <FontAwesomeIcon size="lg" icon={faEllipsisVertical}  />
+      <WrapperColumn bc="none" onClick={toggleDropdownVisible} jc="center" w={'100%'} h={'100%'}>
+        <FontAwesomeIcon size="lg" icon={faEllipsisVertical} />
       </WrapperColumn>
       {dropdownVisible && (
         <InnerWrapper offset={items.length * tabHeight}>
           {items.map(({ itemName, onClick }) => (
-            <WrapperRow w="150px" h={`${tabHeight}px`} jc="center" onClick={onClick}>
+            <WrapperRow w="150px" h={`${tabHeight}px`} jc="center" onClick={() => hideDropdownAfterOnClick(onClick)}>
               <TextBase text={itemName} fontWeight={500} />
             </WrapperRow>
           ))}
