@@ -11,6 +11,7 @@ const TextAreaComponent = styled.textarea<ITextAreaComponent>`
   height: ${(p) => p.height};
   min-height: ${(p) => p.minHeight};
   padding: 6px;
+  resize: none;
 `;
 
 interface IFormTextArea extends ITextAreaComponent {

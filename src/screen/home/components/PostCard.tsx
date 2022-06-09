@@ -1,7 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { theme } from 'assets/styles/theme';
 import ImageBase from 'screen/common-comp/image/ImageBase';
-import ImageRound from 'screen/common-comp/image/ImageRound';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -12,7 +11,7 @@ import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { useApolloClient } from '@apollo/client';
+import { useApolloClient, useMutation } from '@apollo/client';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
@@ -20,6 +19,7 @@ import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
+import ReportModal from 'screen/common-comp/report/ReportModal';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -80,6 +80,15 @@ function PostCard({
   const client = useApolloClient();
   const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
+  const [modalOpen, setModalOpen] = useState(false);
+
+  const openReportModal = () => {
+    setModalOpen(true);
+  };
+
+  const closeReportModal = () => {
+    setModalOpen(false);
+  };
 
   const moveToPostDetail = () => {
     navigate(`${routes.postDetailBase}${id}`);
@@ -90,69 +99,79 @@ function PostCard({
   };
 
   return (
-    <Wrapper key={id}>
-      <TopBar>
-        <EmpyBox />
-        <WrapperRow onClick={moveToProfile}>
-          <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
-          <TextBase text={user.username} m="0 8px" fontSize="1rem" fontFamily="Nanum Gothic" fontWeight={600} />
-          <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
-          {createdAt !== updatedAt && (
-            <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
-          )}
-        </WrapperRow>
-        <DropdownEllipsis items={[{itemName:'신고하기', onClick:()=>{window.alert("done")}}]} />
-      </TopBar>
-      <Carousel showThumbs={false} dynamicHeight showStatus={false}>
-        {parsedPhotos.map((photo, idx) => (
-          <WrapperSquare key={photo}>
-            <ImgWrapper>
-              <ImageBase url={photo} />
-            </ImgWrapper>
-          </WrapperSquare>
-        ))}
-      </Carousel>
-      <Contents>
-        <WrapperRow jc="space-between" w="100%" p="8px 0">
-          <WrapperRow>
-            <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
-              {liked ? (
-                <FontAwesomeIcon
-                  icon={faPaw}
-                  size="2x"
-                  color={theme.color.blue.primaryBlue}
-                  style={{ marginRight: 6 }}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faPaw}
-                  size="2x"
-                  color={theme.color.achromatic.darkGray}
-                  style={{ marginRight: 6 }}
-                />
-              )}
-            </OnClickWrapper>
-            {address && (
-              <>
-                <FontAwesomeIcon
-                  icon={faLocationDot}
-                  size="lg"
-                  color={theme.color.blue.primaryBlue}
-                  style={{ marginRight: 10 }}
-                />
-                <TextBase text={address} fontSize="14px" fontWeight={500} />
-              </>
+    <>
+      <Wrapper key={id}>
+        <TopBar>
+          <EmpyBox />
+          <WrapperRow onClick={moveToProfile}>
+            <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
+            <TextBase text={user.username} m="0 8px" fontSize="1rem" fontFamily="Nanum Gothic" fontWeight={600} />
+            <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
+            {createdAt !== updatedAt && (
+              <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
             )}
           </WrapperRow>
-        </WrapperRow>
-        <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
-          <TextEllipsis line={3}>
-            <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
-          </TextEllipsis>
-          {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
-        </WrapperColumn>
-      </Contents>
-    </Wrapper>
+          <DropdownEllipsis
+            items={[
+              {
+                itemName: '신고하기',
+                onClick: openReportModal,
+              },
+            ]}
+          />
+        </TopBar>
+        <Carousel showThumbs={false} dynamicHeight showStatus={false}>
+          {parsedPhotos.map((photo, idx) => (
+            <WrapperSquare key={photo}>
+              <ImgWrapper>
+                <ImageBase url={photo} />
+              </ImgWrapper>
+            </WrapperSquare>
+          ))}
+        </Carousel>
+        <Contents>
+          <WrapperRow jc="space-between" w="100%" p="8px 0">
+            <WrapperRow>
+              <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
+                {liked ? (
+                  <FontAwesomeIcon
+                    icon={faPaw}
+                    size="2x"
+                    color={theme.color.blue.primaryBlue}
+                    style={{ marginRight: 6 }}
+                  />
+                ) : (
+                  <FontAwesomeIcon
+                    icon={faPaw}
+                    size="2x"
+                    color={theme.color.achromatic.darkGray}
+                    style={{ marginRight: 6 }}
+                  />
+                )}
+              </OnClickWrapper>
+              {address && (
+                <>
+                  <FontAwesomeIcon
+                    icon={faLocationDot}
+                    size="lg"
+                    color={theme.color.blue.primaryBlue}
+                    style={{ marginRight: 10 }}
+                  />
+                  <TextBase text={address} fontSize="14px" fontWeight={500} />
+                </>
+              )}
+            </WrapperRow>
+          </WrapperRow>
+          <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
+            <TextEllipsis line={3}>
+              <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
+            </TextEllipsis>
+            {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
+          </WrapperColumn>
+        </Contents>
+      </Wrapper>
+      <>{modalOpen && <ReportModal type="POST" closeModal={closeReportModal} />}</>
+    </>
   );
 }
 

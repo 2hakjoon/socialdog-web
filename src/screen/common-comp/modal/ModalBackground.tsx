@@ -1,5 +1,4 @@
-import React, { BaseSyntheticEvent, MouseEvent, ReactNode } from 'react';
-import { useEffect } from 'react';
+import React, { BaseSyntheticEvent, MouseEvent, ReactNode, useEffect } from 'react';
 import styled from 'styled-components';
 import { MODAL_BACKGROUND } from 'utils/constants';
 

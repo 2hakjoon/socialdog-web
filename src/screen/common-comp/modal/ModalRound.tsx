@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
+import { theme } from 'assets/styles/theme';
 
 const Wrapper = styled.div`
   width: 90vw;
@@ -16,6 +17,15 @@ const Wrapper = styled.div`
   z-index: 6;
 `;
 
+const TopBarWrapper = styled.div`
+  width: 100%;
+  justify-content: space-between;
+  padding: 10px 16px 6px 10px;
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
+`;
+
 interface IModalRound {
   children: ReactNode;
   title: string;
@@ -25,13 +35,13 @@ interface IModalRound {
 function ModalRound({ children, title, closeModal }: IModalRound) {
   return (
     <Wrapper>
-      <WrapperRow w={'100%'} jc={'space-between'} p={'10px 16px 6px 10px'}>
+      <TopBarWrapper>
         <FontAwesomeIcon icon={faXmark} size="2x" color="white" />
-        <TextBase text={title} />
+        <TextBase text={title} fontWeight={500} />
         <WrapperRow w="" h="" onClick={closeModal}>
           <FontAwesomeIcon icon={faXmark} size="2x" />
         </WrapperRow>
-      </WrapperRow>
+      </TopBarWrapper>
       {children}
     </Wrapper>
   );
