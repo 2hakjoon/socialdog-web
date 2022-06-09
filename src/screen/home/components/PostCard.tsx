@@ -19,6 +19,7 @@ import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
+import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -35,7 +36,7 @@ const TopBar = styled.div`
   height: 58px;
   border-bottom: 1px solid ${({ theme }) => theme.color.achromatic.lightGray};
   display: flex;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
 `;
 
@@ -54,6 +55,11 @@ const ImgWrapper = styled.div`
 const OnClickWrapper = styled.button`
   border: none;
   background-color: white;
+`;
+
+const EmpyBox = styled.div`
+  width: 40px;
+  height: 100%;
 `;
 
 function PostCard({
@@ -85,13 +91,17 @@ function PostCard({
 
   return (
     <Wrapper key={id}>
-      <TopBar onClick={moveToProfile}>
-        <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
-        <TextBase text={user.username} m="0 8px" fontSize='1rem' fontFamily="Nanum Gothic" fontWeight={600} />
-        <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
-        {createdAt !== updatedAt && (
-          <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
-        )}
+      <TopBar>
+        <EmpyBox />
+        <WrapperRow onClick={moveToProfile}>
+          <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
+          <TextBase text={user.username} m="0 8px" fontSize="1rem" fontFamily="Nanum Gothic" fontWeight={600} />
+          <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
+          {createdAt !== updatedAt && (
+            <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
+          )}
+        </WrapperRow>
+        <DropdownEllipsis items={[{itemName:'신고하기', onClick:()=>{window.alert("done")}}]} />
       </TopBar>
       <Carousel showThumbs={false} dynamicHeight showStatus={false}>
         {parsedPhotos.map((photo, idx) => (
