@@ -24,6 +24,16 @@ export enum FileType {
 }
 
 /**
+ * ReportUsersType
+ */
+export enum ReportUsersType {
+  ADVERTISMENT = "ADVERTISMENT",
+  INAPPROPRIATE_PROFILE = "INAPPROPRIATE_PROFILE",
+  OTHER = "OTHER",
+  VIOLATION_PATTERN = "VIOLATION_PATTERN",
+}
+
+/**
  * SubscribeRequestState
  */
 export enum SubscribeRequestState {
@@ -70,6 +80,28 @@ export interface CreateReCommentInputDto {
   content: string;
   parentCommentId: string;
   postId: string;
+}
+
+export interface CreateReportBugInputDto {
+  comment: string;
+}
+
+export interface CreateReportCommentInputDto {
+  reportType: string;
+  comment: string;
+  reportedCommentId: string;
+}
+
+export interface CreateReportPostInputDto {
+  reportType: string;
+  comment: string;
+  reportedPostId: string;
+}
+
+export interface CreateReportUserInputDto {
+  reportType: ReportUsersType;
+  comment: string;
+  reportedUserId: string;
 }
 
 export interface CursorArgs {
