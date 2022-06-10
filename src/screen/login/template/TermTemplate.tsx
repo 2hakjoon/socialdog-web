@@ -32,13 +32,19 @@ interface ITermTemplate {
 
 function TermTemplate({ closeModal, nextStep }: ITermTemplate) {
   const [termsOfPrivacy, setTermsOfPrivacy] = useState('');
+  const [termsOfService, setTermsOfService] = useState('');
   const [acceptPrivacy, setAcceptPrivacy] = useState(false);
   const [acceptService, setAcceptService] = useState(false);
 
   const getTermsOfPrivacy = async () => {
     const res = await axios.get('https://socialdog.s3.ap-northeast-2.amazonaws.com/Terms/termsofprivacy.txt');
-    console.log(res);
+    // console.log(res);
     setTermsOfPrivacy(res.data);
+  };
+  const getTermsOfService = async () => {
+    const res = await axios.get('https://socialdog.s3.ap-northeast-2.amazonaws.com/Terms/termsofservice.txt');
+    // console.log(res);
+    setTermsOfService(res.data);
   };
 
   const toggleAccectPrivacy = () => {
@@ -50,6 +56,7 @@ function TermTemplate({ closeModal, nextStep }: ITermTemplate) {
 
   useEffect(() => {
     getTermsOfPrivacy();
+    getTermsOfService();
   }, []);
 
   return (
@@ -57,7 +64,7 @@ function TermTemplate({ closeModal, nextStep }: ITermTemplate) {
       <ModalRound title="약관" closeModal={closeModal}>
         <WrapperColumn ai="flex-start" p="10px 14px" h="100%" w="100%" jc="space-between">
           <WrapperRow w={'100%'} jc="space-between" ai="flex-end">
-            <TextBase text={'개인정보 이용 약관'} fontSize={'1.3rem'} />
+            <TextBase text={'개인정보 처리 방침'} fontSize={'1.3rem'} />
             <WrapperRow onClick={toggleAccectPrivacy}>
               <TextBase text={'내용을 모두 확인하였으며, 이에 동의합니다.'} fontSize={'0.625rem'} />
               {acceptPrivacy ? <IconCheckBox size={18} /> : <IconSquare size={18} />}
@@ -72,7 +79,7 @@ function TermTemplate({ closeModal, nextStep }: ITermTemplate) {
               {acceptService ? <IconCheckBox size={18} /> : <IconSquare size={18} />}
             </WrapperRow>
           </WrapperRow>
-          <TermBox dangerouslySetInnerHTML={{ __html: termsOfPrivacy }} />
+          <TermBox dangerouslySetInnerHTML={{ __html: termsOfService }} />
 
           <ButtonSubmit enable={acceptPrivacy && acceptService} title="동의 완료" onClick={nextStep} />
         </WrapperColumn>

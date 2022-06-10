@@ -90,6 +90,7 @@ function LoginScreen() {
     const kakaoLoginResult = res.data?.kakaoLogin;
     if (kakaoLoginResult?.ok) {
       if (kakaoLoginResult.acceptTerms === false) {
+        window.alert('변경된 약관에 동의 해 주세요.')
         setModalOpen('TERM');
       } else if (kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
         setAccessToken(kakaoLoginResult.accessToken);
@@ -102,7 +103,7 @@ function LoginScreen() {
   };
 
   const kakaoLogin = async ({ accecptTerms = false }) => {
-    console.log('acceptTermState : ', accecptTerms);
+    // console.log('acceptTermState : ', accecptTerms);
     try {
       window.Kakao.Auth.login({
         success: async (authObj: IkakaoLoginSuccess) => {
