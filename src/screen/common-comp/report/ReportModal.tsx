@@ -54,7 +54,7 @@ function ReportModal({ type, userId, postId, commentId, closeModal }: IReportMod
 
   const checkBeforCloseModal = () => {
     const confirm = window.confirm('작성중인 내용을 취소하고 창을 닫으시겠습니까?');
-    if (confirm) closeModal(); 
+    if (confirm) closeModal();
   };
 
   const createReportHandler = async () => {
@@ -114,7 +114,7 @@ function ReportModal({ type, userId, postId, commentId, closeModal }: IReportMod
       window.alert(res.data?.createReportPost.error);
     } else {
       window.alert('신고가 정상적으로 접수되었습니다.');
-      evictCache(postId, 'Posts')
+      evictCache(postId, 'Posts');
     }
   };
 

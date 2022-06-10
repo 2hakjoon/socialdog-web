@@ -13,6 +13,8 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
+import ModalRound from 'screen/common-comp/modal/ModalRound';
+import TermTemplate from './template/TermTemplate';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -40,7 +42,6 @@ const ButtonWrapper = styled.div`
   padding: 32px;
   width: 100%;
   max-width: 500px;
-
 `;
 
 interface IkakaoLoginSuccess {
@@ -53,8 +54,9 @@ interface IkakaoLoginSuccess {
 
 function LoginScreen() {
   const navigate = useNavigate();
-  const [modalOpen, setModalOpen] = useState(false);
-  const [kakaoLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
+  const [modalOpen, setModalOpen] = useState<'LOADING' | 'TERM' | null>(null);
+  const [acceptTermState, setAccecptTermState] = useState(false);
+  const [kakaoAuthLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
 
   useEffect(() => {
     if (getAccessToken()) {
@@ -64,11 +66,16 @@ function LoginScreen() {
   }, []);
 
   const closeModal = () => {
-    setModalOpen(false);
+    setModalOpen(null);
   };
 
-  const kakaoAuthHandler = async (authObj: IkakaoLoginSuccess) => {
-    const res = await kakaoLogin({
+  const closeModalBeforeCheck = () => {
+    const confirm = window.confirm('창을 떠나시겠습니까?');
+    if (confirm) setModalOpen(null);
+  };
+
+  const kakaoAuthHandler = async ({ authObj, acceptTerms }: { authObj: IkakaoLoginSuccess; acceptTerms: boolean }) => {
+    const res = await kakaoAuthLogin({
       variables: {
         args: {
           accessToken: authObj.access_token,
@@ -76,29 +83,31 @@ function LoginScreen() {
           refreshToken: authObj.refresh_token,
           refreshTokenExpiresAt: dayjs().add(authObj.refresh_token_expires_in, 's').toISOString(),
           scopes: authObj.token_type,
+          acceptTerms: acceptTerms,
         },
       },
     });
     const kakaoLoginResult = res.data?.kakaoLogin;
-    if (kakaoLoginResult?.ok && kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
-      setAccessToken(kakaoLoginResult.accessToken);
-      setRefreshToken(kakaoLoginResult.refreshToken);
-      loginState(true);
-      if (kakaoLoginResult.isJoin) {
-        window.alert('가입을 환영합니다. 프로필 작성을 진행해주세요.');
-        navigate(routes.profileEdit);
+    if (kakaoLoginResult?.ok) {
+      if (kakaoLoginResult.acceptTerms === false) {
+        setModalOpen('TERM');
+      } else if (kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
+        setAccessToken(kakaoLoginResult.accessToken);
+        setRefreshToken(kakaoLoginResult.refreshToken);
+        loginState(true);
       }
     } else {
       alert(kakaoLoginResult?.error);
     }
   };
 
-  const kakaoLoginApi = async () => {
+  const kakaoLogin = async ({ accecptTerms = false }) => {
+    console.log('acceptTermState : ', accecptTerms);
     try {
       window.Kakao.Auth.login({
         success: async (authObj: IkakaoLoginSuccess) => {
-          setModalOpen(true);
-          kakaoAuthHandler(authObj);
+          setModalOpen(null);
+          kakaoAuthHandler({ authObj, acceptTerms: accecptTerms });
         },
         fail: () => {
           alert('카카오 로그인에 실패하였습니다.');
@@ -109,19 +118,24 @@ function LoginScreen() {
     }
   };
 
+  const loginWithAcceptTerm = () => {
+    kakaoLogin({ accecptTerms: true });
+  };
+
   return (
     <Wrapper>
       <InnerWrapper>
         <ImageBase url={SplashImg} />
-        <ButtonWrapper onClick={kakaoLoginApi}>
+        <ButtonWrapper onClick={() => kakaoLogin({ accecptTerms: false })}>
           <ImageBase url={KakaoImg} />
         </ButtonWrapper>
       </InnerWrapper>
-      {modalOpen && (
+      {modalOpen === 'LOADING' && (
         <ModalBackground closeModal={closeModal}>
           <LoadingSpinner />
         </ModalBackground>
       )}
+      {modalOpen === 'TERM' && <TermTemplate nextStep={loginWithAcceptTerm} closeModal={closeModalBeforeCheck} />}
     </Wrapper>
   );
 }

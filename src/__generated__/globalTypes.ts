@@ -197,6 +197,7 @@ export interface KakaoLoginInputDto {
   refreshToken?: string | null;
   refreshTokenExpiresAt?: string | null;
   scopes?: string | null;
+  acceptTerms: boolean;
 }
 
 export interface ReissueAccessTokenInputDto {
@@ -215,6 +216,14 @@ export interface ResponseSubscribeInputDto {
 
 export interface ToggleLikePostInputDto {
   postId: string;
+}
+
+export interface UpdateAuthKakaoAcceptTermInputDto {
+  acceptTerms: boolean;
+}
+
+export interface UpdateAuthLocalAcceptTermInputDto {
+  acceptTerms: boolean;
 }
 
 //==============================================================

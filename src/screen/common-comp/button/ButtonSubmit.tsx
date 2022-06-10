@@ -1,10 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 
+interface IButtonProps {
+  disabled: boolean;
+}
+
 const Button = styled.button`
   width: 100%;
   padding: 10px 20px;
-  background-color: ${({ theme }) => theme.color.blue.primaryBlue};
+  background-color: ${(p) => (p.disabled ? p.theme.color.achromatic.darkGray : p.theme.color.blue.primaryBlue)};
   color: ${({ theme }) => theme.color.achromatic.primaryWhite};
   border: none;
   border-radius: 100px;
