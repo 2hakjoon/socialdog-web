@@ -7,16 +7,16 @@ import TextBase from '../texts/TextBase';
 import { theme } from 'assets/styles/theme';
 
 const Wrapper = styled.div`
-  width: 90vw;
+  width: 90%;
   max-width: 600px;
-  height: 80vh;
+  height: 80%;
   background-color: white;
   border-radius: 20px;
   -webkit-box-shadow: 0px 0px 22px 5px rgba(0, 0, 0, 0.5);
   box-shadow: 0px 0px 22px 5px rgba(0, 0, 0, 0.5);
   z-index: 6;
-  overflow: scroll;
   position: relative;
+  overflow: hidden;
   padding-top: 50px;
 `;
 
@@ -26,11 +26,18 @@ const TopBarWrapper = styled.div`
   left: 0;
   width: 100%;
   justify-content: space-between;
+  background-color: white;
   height: 50px;
   padding: 0 16px;
   display: flex;
   align-items: center;
   border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
+`;
+
+const ContentsWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
 `;
 
 interface IModalRound {
@@ -49,7 +56,9 @@ function ModalRound({ children, title, closeModal }: IModalRound) {
           <FontAwesomeIcon icon={faXmark} size="2x" />
         </WrapperRow>
       </TopBarWrapper>
-      {children}
+      <ContentsWrapper>
+        {children}
+      </ContentsWrapper>
     </Wrapper>
   );
 }

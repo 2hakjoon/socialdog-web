@@ -149,8 +149,8 @@ function ReportModal({ type, userId, postId, commentId, closeModal }: IReportMod
   return (
     <ModalBackground closeModal={checkBeforCloseModal}>
       <ModalRound title="신고하기" closeModal={checkBeforCloseModal}>
-        <WrapperColumn h="100%" w="100%" jc="space-around" p="10px 16px">
-          <WrapperColumn ai="flex-start" jc="space-around" w="100%">
+        <WrapperColumn w="100%" jc="space-around" p="5px 16px 20px 16px">
+          <WrapperColumn ai="flex-start" jc="space-around" w="100%" p={'0px 0px 20px 0px'}>
             {optionsObj[type].length > 0 && (
               <>
                 <TextBase text={'신고 유형'} p={'10px 0'} />
