@@ -8,13 +8,15 @@ import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
+import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import ReportModal from 'screen/common-comp/report/ReportModal';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
-import { BLOCKANDREJECT, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
+import { BLOCKANDREJECT, REPORT_USER, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
@@ -152,10 +154,23 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
     return userProfileState?.subscribeRequested === SubscribeRequestState.NONE;
   };
 
+  const openReportUserModal = () => {
+    setModalType(REPORT_USER);
+  };
+
+  const closeReportUserModal = () => {
+    setModalType(null);
+  };
+
   return (
     <>
       {user && username && (
         <>
+          {!isMyProfile() && (
+            <WrapperRow w="100%" jc="flex-end" p="10px" ai="center">
+              <DropdownEllipsis items={[{ itemName: '신고하기', onClick: openReportUserModal }]} />
+            </WrapperRow>
+          )}
           <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
             <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
               <ProfilePhoto size="80px" url={user.photo} />
@@ -201,6 +216,9 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                 {modalType === SUBSCRIBING && <SubscribingAndRequests closeModal={closeModal} />}
                 {modalType === SUBSCRIBER && <SubscriberAndRequests closeModal={closeModal} />}
                 {modalType === BLOCKANDREJECT && <BlockAndRejected closeModal={closeModal} />}
+                {modalType === REPORT_USER && (
+                  <ReportModal type="USER" userId={user.id} closeModal={closeReportUserModal} />
+                )}
               </ModalBackground>
             )}
           </>

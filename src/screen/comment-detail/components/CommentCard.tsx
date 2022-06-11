@@ -5,7 +5,7 @@ import { DELETE_COMMENT } from 'apllo-gqls/comments';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useEvictCache from 'hooks/useEvictCache';
-import React, { Dispatch, SetStateAction, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -19,6 +19,8 @@ import { QMe } from '__generated__/QMe';
 import { QGetComments_getComments_data } from '__generated__/QGetComments';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import { QGetReComments_getReComments_data } from '__generated__/QGetReComments';
+import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
+import ReportModal from 'screen/common-comp/report/ReportModal';
 
 interface ICommentCard extends QGetComments_getComments_data {
   authorId?: string;
@@ -42,6 +44,7 @@ function CommentCard({
 }: ICommentCard) {
   const evictCache = useEvictCache();
   const navigate = useNavigate();
+  const [modalOpen, setModalOpen] = useState(false);
   const { data: meData } = useQuery<QMe>(MYPROFILE);
   const authUser = meData?.me.data;
 
@@ -77,40 +80,51 @@ function CommentCard({
     navigate(`${routes.home}${username}`);
   };
 
+  const openReportCommentModal = () => {
+    setModalOpen(true);
+  };
+  const closeReportCommentModal = () => {
+    setModalOpen(false);
+  };
+
   return (
-    <WrapperColumn w="100%">
-      <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-        <WrapperColumn onClick={() => moveToUserProfile(user.username)}>
-          <ProfilePhoto url={user.photo} size="48px" />
-        </WrapperColumn>
-        <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
-          <WrapperColumn onClick={setParentComment} ai={'flex-start'} w={'100%'}>
-          <WrapperRow>
-            <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
-            <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 8px" />
-          </WrapperRow>
-            <TextEllipsis line={3} fontSize="0.875rem" text={content} />
-            {Boolean(reCommentCounts) && (
-              <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
-                <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
-              </WrapperRow>
-            )}
+    <>
+      <WrapperColumn w="100%">
+        <WrapperRow w="100%" p="8px 0px" ai="flex-start">
+          <WrapperColumn onClick={() => moveToUserProfile(user.username)}>
+            <ProfilePhoto url={user.photo} size="48px" />
           </WrapperColumn>
-        </WrapperColumn>
-        {isDeletable() && (
-          <>
+          <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
+            <WrapperColumn onClick={setParentComment} ai={'flex-start'} w={'100%'}>
+              <WrapperRow>
+                <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
+                <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 8px" />
+              </WrapperRow>
+              <TextEllipsis line={3} fontSize="0.875rem" text={content} />
+              {Boolean(reCommentCounts) && (
+                <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
+                  <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
+                </WrapperRow>
+              )}
+            </WrapperColumn>
+          </WrapperColumn>
+          {isDeletable() ? (
             <FontAwesomeIcon
               icon={faXmark}
               size="lg"
               color={theme.color.achromatic.black}
+              style={{ width: '40px' }}
               onClick={() => {
                 deleteCommentHandler(id);
               }}
             />
-          </>
-        )}
-      </WrapperRow>
-    </WrapperColumn>
+          ) : (
+            <DropdownEllipsis items={[{ itemName: '신고하기', onClick: openReportCommentModal }]} />
+          )}
+        </WrapperRow>
+      </WrapperColumn>
+      {modalOpen && <ReportModal type='COMMENT' closeModal={closeReportCommentModal} commentId={id}/>}
+    </>
   );
 }
 

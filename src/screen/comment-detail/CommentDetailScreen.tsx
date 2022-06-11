@@ -79,6 +79,7 @@ function CommentDetailScreen() {
         },
       },
     });
+    console.log(res);
     if (!res.data?.getReComments.ok) {
       window.alert(res.data?.getReComments.error);
       return;
@@ -127,9 +128,9 @@ function CommentDetailScreen() {
     setReCommentsList([...reComments]);
   };
 
-  const moveToUserProfile = (username:string) => {
-    navigate(`${routes.home}${username}`)
-  }
+  const moveToUserProfile = (username: string) => {
+    navigate(`${routes.home}${username}`);
+  };
 
   return (
     <>
@@ -138,13 +139,19 @@ function CommentDetailScreen() {
         {comment && (
           <CommentWrapper>
             <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-              <WrapperColumn onClick={()=>moveToUserProfile(comment.user.username)}>
+              <WrapperColumn onClick={() => moveToUserProfile(comment.user.username)}>
                 <ProfilePhoto url={comment.user.photo} size="48px" />
               </WrapperColumn>
               <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
                 <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
               </WrapperColumn>
-              <FontAwesomeIcon icon={faTrashCan} size="lg" onClick={() => deleteCommentHandler(comment.id)} />
+
+              <FontAwesomeIcon
+                style={{ width: '40px' }}
+                icon={faTrashCan}
+                size="lg"
+                onClick={() => deleteCommentHandler(comment.id)}
+              />
             </WrapperRow>
             <TextParagraph>
               <TextBase fontSize="0.875rem" text={comment.content} />
