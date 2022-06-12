@@ -26,7 +26,7 @@ const Wrapper = styled.div`
   button {
     margin-left: 10px;
   }
-  >div{
+  > div {
     max-width: 612px;
   }
 `;
@@ -110,14 +110,15 @@ function CommentInput({ postId, refrechComment, parentComment, setParentComment,
     <>
       <Block />
       <Wrapper>
-        <WrapperColumn m='0 auto'>
-          <WrapperRow w="100%">
+        <WrapperColumn m="0 auto">
+          <WrapperRow w="100%" bc={theme.color.achromatic.primaryWhite} p={'0 0 4px 0'} ai={'center'}>
             {parentComment?.user.username && (
               <>
                 <TextBase text={`${parentComment.user.username}에게 답글쓰는중`} />
                 <FontAwesomeIcon
                   icon={faXmark}
                   size="lg"
+                  style={{ padding: '0 0 0 10px' }}
                   color={theme.color.achromatic.black}
                   onClick={() => {
                     resetParentComment();
