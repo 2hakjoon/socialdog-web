@@ -88,7 +88,7 @@ function ProfileEditScreen() {
     let newPhoto: string | undefined = '';
     if (uploadedFile) {
       const resPresigned = await createPresignedUrl({
-        variables: { args: { files: [{ filename: uploadedFile[0].name, fileType: FileType.IMAGE }] } },
+        variables: { args: { files: [{ filename: `userPhoto/${uploadedFile[0].name}`, fileType: FileType.IMAGE }] } },
       });
       if (!resPresigned.data?.createPreSignedUrls.ok) {
         window.alert('preSignedUrl발급 실패');
