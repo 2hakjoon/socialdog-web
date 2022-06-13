@@ -1,5 +1,6 @@
 import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { theme } from 'assets/styles/theme';
 import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
@@ -55,7 +56,7 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
   return (
     <Wrapper>
       <WrapperColumn bc="none" onClick={toggleDropdownVisible} jc="center" w={'100%'} h={'100%'}>
-        <FontAwesomeIcon size="lg" icon={faEllipsisVertical} />
+        <FontAwesomeIcon size="lg" icon={faEllipsisVertical} color={theme.color.achromatic.darkGray} />
       </WrapperColumn>
       {dropdownVisible && (
         <InnerWrapper offset={items.length * tabHeight}>
