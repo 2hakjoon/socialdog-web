@@ -29,6 +29,8 @@ import Compressor from 'compressorjs';
 import { removeAllTokens } from 'utils/local-storage';
 import { loginState } from 'apollo-setup';
 import useUserAgent from 'hooks/useUserAgent';
+import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import LoadingSpinner from 'assets/svg/LoadingSpinner';
 
 const FormWrapper = styled.form`
   display: flex;
@@ -46,9 +48,17 @@ function ProfileEditScreen() {
   const { data: userData, loading: userDataLoading } = useQuery<QMe>(MYPROFILE);
   const user = userData?.me.data;
   // console.log(user);
-  const [editProfile, { data }] = useMutation<MEditProfile, MEditProfileVariables>(EDIT_PROFILE);
-  const [createPresignedUrl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
-  const [checkUsernameExist] = useLazyQuery<QCheckUsernameExist, QCheckUsernameExistVariables>(CHECK_USERNAME_EXIST);
+  const [editProfile, { data, loading: editProfileLoading }] = useMutation<MEditProfile, MEditProfileVariables>(
+    EDIT_PROFILE,
+  );
+  const [createPresignedUrl, { loading: createdPresignedUrlLoading }] = useMutation<
+    MCreatePreSignedUrls,
+    MCreatePreSignedUrlsVariables
+  >(CREATE_PRESIGNED_URL);
+  const [checkUsernameExist, { loading: checkUserNAmeExistLoading }] = useLazyQuery<
+    QCheckUsernameExist,
+    QCheckUsernameExistVariables
+  >(CHECK_USERNAME_EXIST);
   const { register, handleSubmit, setValue, getValues, watch } = useForm<EditProfileInputDto>();
   const [profileOpenState, setProfileOpenState] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<FileList | null>();
@@ -219,6 +229,11 @@ function ProfileEditScreen() {
           </WrapperColumn>
         )}
       </BaseWrapper>
+      {(editProfileLoading || createdPresignedUrlLoading || checkUserNAmeExistLoading) && (
+        <ModalBackground closeModal={() => {}}>
+          <LoadingSpinner />
+        </ModalBackground>
+      )}
     </>
   );
 }
