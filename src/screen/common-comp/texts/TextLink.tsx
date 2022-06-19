@@ -1,18 +1,9 @@
 import { theme } from 'assets/styles/theme';
 import React from 'react';
 import styled from 'styled-components';
+import { ITextProps } from './TextBase';
 
-export interface ITextProps {
-  m?: string;
-  p?: string;
-  fontFamily?: 'Nanum Gothic' | 'Noto Sans KR';
-  fontWeight?: number;
-  fontSize?: string;
-  color?: string;
-  lineHight?: number;
-}
-
-export const Text = styled.span<ITextProps>`
+export const Text = styled.a<ITextProps>`
   margin: ${(p) => p.m};
   padding: ${(p) => p.p};
   font-family: ${(p) => p.fontFamily}, sans-serif;
@@ -22,13 +13,15 @@ export const Text = styled.span<ITextProps>`
   line-height: ${(p) => p.lineHight};
 `;
 
-export interface ITextBase extends ITextProps {
+export interface ITextLink extends ITextProps {
   text?: string | null | number;
+  href: string;
 }
 
-function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight }: ITextBase) {
+function TextLink({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight, href }: ITextLink) {
   return (
     <Text
+      href={href}
       m={m}
       p={p}
       color={color}
@@ -42,7 +35,7 @@ function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHig
   );
 }
 
-TextBase.defaultProps = {
+TextLink.defaultProps = {
   text: '',
   p: '0',
   m: '0',
@@ -53,4 +46,4 @@ TextBase.defaultProps = {
   lineHight: 1.2,
 };
 
-export default TextBase;
+export default TextLink;

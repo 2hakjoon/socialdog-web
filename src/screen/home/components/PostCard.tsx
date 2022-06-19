@@ -12,7 +12,7 @@ import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGe
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { useApolloClient, useMutation } from '@apollo/client';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
@@ -20,6 +20,7 @@ import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
 import ReportModal from 'screen/common-comp/report/ReportModal';
+import TextLink from 'screen/common-comp/texts/TextLink';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -94,18 +95,23 @@ function PostCard({
     navigate(`${routes.postDetailBase}${id}`);
   };
 
-  const moveToProfile = () => {
-    navigate(`${routes.home}${user.username}`);
-  };
-
   return (
     <>
       <Wrapper key={id}>
         <TopBar>
           <EmpyBox />
-          <WrapperRow onClick={moveToProfile}>
-            <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
-            <TextBase text={user.username} m="0 8px" fontSize="1rem" fontFamily="Nanum Gothic" fontWeight={600} />
+          <WrapperRow>
+            <Link to={`${routes.home}${user.username}`}>
+              <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
+            </Link>
+            <TextLink
+              href={`${routes.home}${user.username}`}
+              text={user.username}
+              m="0 8px"
+              fontSize="1rem"
+              fontFamily="Nanum Gothic"
+              fontWeight={600}
+            />
             <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
             {createdAt !== updatedAt && (
               <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
