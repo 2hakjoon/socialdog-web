@@ -1,7 +1,7 @@
 import React from 'react';
 import styled from 'styled-components';
 
-const Wrapper = styled.div<IWrapperButton>`
+const Wrapper = styled.button<IWrapperButton>`
   display: flex;
   flex-direction: column;
   align-items: ${(p) => p.ai};
@@ -11,6 +11,7 @@ const Wrapper = styled.div<IWrapperButton>`
   height: ${(p) => p.h};
   margin: ${(p) => p.m};
   background-color: ${(p) => p.bc};
+  border: 0px;
   cursor: pointer;
 `;
 

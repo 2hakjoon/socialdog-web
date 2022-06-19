@@ -31,6 +31,7 @@ const Wrapper = styled.article`
   -webkit-box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.2);
   box-shadow: 0px 0px 15px 2px rgba(0, 0, 0, 0.2);
   border-radius: 10px;
+  overflow: hidden;
 `;
 
 const TopBar = styled.div`
@@ -53,7 +54,6 @@ const ImgWrapper = styled.div`
   height: 100%;
   overflow: hidden;
 `;
-
 
 const EmpyBox = styled.div`
   width: 40px;
@@ -86,10 +86,6 @@ function PostCard({
 
   const closeReportModal = () => {
     setModalOpen(false);
-  };
-
-  const moveToPostDetail = () => {
-    navigate(`${routes.postDetailBase}${id}`);
   };
 
   return (
@@ -133,7 +129,7 @@ function PostCard({
           ))}
         </Carousel>
         <Contents>
-          <WrapperRow jc="space-between" w="100%" p="8px 0">
+          <WrapperRow jc="space-between" w="100%" p="8px 8px 8px 0">
             <WrapperRow>
               <WrapperButton onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
                 {liked ? (
@@ -165,12 +161,14 @@ function PostCard({
               )}
             </WrapperRow>
           </WrapperRow>
-          <WrapperColumn onClick={moveToPostDetail} ai="flex-start" p="0 0 20px 0">
-            <TextEllipsis line={3}>
-              <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
-            </TextEllipsis>
-            {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
-          </WrapperColumn>
+          <Link to={`${routes.postDetailBase}${id}`}>
+            <WrapperColumn ai="flex-start" p="0 0 20px 0">
+              <TextEllipsis line={3}>
+                <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
+              </TextEllipsis>
+              {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
+            </WrapperColumn>
+          </Link>
         </Contents>
       </Wrapper>
       <>{modalOpen && <ReportModal postId={id} type="POST" closeModal={closeReportModal} />}</>

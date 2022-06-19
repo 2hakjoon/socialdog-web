@@ -5,13 +5,12 @@ import React, { ReactNode, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
 import WrapperButton from '../wrappers/WrapperButton';
-import WrapperColumn from '../wrappers/WrapperColumn';
-import WrapperRow from '../wrappers/WrapperRow';
 
 const Wrapper = styled.div`
   position: relative;
   width: 40px;
   height: 100%;
+  background-color: white;
   border-radius: 40px;
 `;
 
@@ -55,13 +54,13 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
 
   return (
     <Wrapper>
-      <WrapperButton bc="none" onClick={toggleDropdownVisible} jc="center" w={'100%'} h={'100%'}>
+      <WrapperButton onClick={toggleDropdownVisible} jc="center" w={'100%'} h={'100%'}>
         <FontAwesomeIcon size="lg" icon={faEllipsisVertical} color={theme.color.achromatic.darkGray} />
       </WrapperButton>
       {dropdownVisible && (
         <InnerWrapper offset={items.length * tabHeight}>
           {items.map(({ itemName, onClick }) => (
-            <WrapperRow
+            <WrapperButton
               key={itemName}
               w="150px"
               h={`${tabHeight}px`}
@@ -69,7 +68,7 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
               onClick={() => hideDropdownAfterOnClick(onClick)}
             >
               <TextBase text={itemName} fontWeight={500} />
-            </WrapperRow>
+            </WrapperButton>
           ))}
         </InnerWrapper>
       )}

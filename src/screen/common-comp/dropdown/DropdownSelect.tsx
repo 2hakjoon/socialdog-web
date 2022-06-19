@@ -3,7 +3,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
-import WrapperColumn from '../wrappers/WrapperColumn';
 import WrapperRow from '../wrappers/WrapperRow';
 
 const Wrapper = styled.div`

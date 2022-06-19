@@ -13,6 +13,7 @@ import ImageBase from 'screen/common-comp/image/ImageBase';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import TextExpandEllipsis from 'screen/common-comp/texts/TextExpandEllipsis';
 import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -132,7 +133,7 @@ function PostDetailScreen() {
             <WrapperColumn ai="flex-start" w="100%" p="10px 16px 16px 16px">
               <WrapperRow jc="space-between" w="100%" p="8px 0">
                 <WrapperRow>
-                  <WrapperRow onClick={(e) => toggleLikeState()}>
+                  <WrapperButton onClick={(e) => toggleLikeState()}>
                     {post.liked ? (
                       <FontAwesomeIcon
                         icon={faPaw}
@@ -148,10 +149,10 @@ function PostDetailScreen() {
                         style={{ marginRight: 10 }}
                       />
                     )}
-                  </WrapperRow>
+                  </WrapperButton>
                   <FontAwesomeIcon
                     icon={faLocationDot}
-                    size="2x"
+                    size="lg"
                     color={theme.color.blue.primaryBlue}
                     style={{ marginRight: 10 }}
                   />
@@ -159,18 +160,22 @@ function PostDetailScreen() {
                 </WrapperRow>
                 {authUser?.id === post.user.id && (
                   <WrapperRow w="40px" jc="space-between">
-                    <FontAwesomeIcon
-                      icon={faPenToSquare}
-                      size="lg"
-                      color={theme.color.achromatic.black}
-                      onClick={() => moveToPostEdit(post.id)}
-                    />
-                    <FontAwesomeIcon
-                      icon={faXmark}
-                      size="lg"
-                      color={theme.color.achromatic.black}
-                      onClick={() => deletePostHandler(post.id)}
-                    />
+                    <WrapperButton>
+                      <FontAwesomeIcon
+                        icon={faPenToSquare}
+                        size="lg"
+                        color={theme.color.achromatic.black}
+                        onClick={() => moveToPostEdit(post.id)}
+                      />
+                    </WrapperButton>
+                    <WrapperButton>
+                      <FontAwesomeIcon
+                        icon={faXmark}
+                        size="lg"
+                        color={theme.color.achromatic.black}
+                        onClick={() => deletePostHandler(post.id)}
+                      />
+                    </WrapperButton>
                   </WrapperRow>
                 )}
               </WrapperRow>

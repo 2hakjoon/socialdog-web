@@ -6,7 +6,7 @@ import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useEvictCache from 'hooks/useEvictCache';
 import React, { Dispatch, SetStateAction, useRef, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -21,6 +21,8 @@ import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
 import { QGetReComments_getReComments_data } from '__generated__/QGetReComments';
 import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
 import ReportModal from 'screen/common-comp/report/ReportModal';
+import TextLink from 'screen/common-comp/texts/TextLink';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 
 interface ICommentCard extends QGetComments_getComments_data {
   authorId?: string;
@@ -91,39 +93,44 @@ function CommentCard({
     <>
       <WrapperColumn w="100%">
         <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-          <WrapperColumn onClick={() => moveToUserProfile(user.username)}>
+          <Link to={`${routes.home}${user.username}`}>
             <ProfilePhoto url={user.photo} size="48px" />
-          </WrapperColumn>
+          </Link>
           <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
             <WrapperColumn onClick={setParentComment} ai={'flex-start'} w={'100%'}>
               <WrapperRow>
-                <TextBase fontWeight={700} text={user.username} m={'4px 0px'} />
+                <TextLink href={`${routes.home}${user.username}`} fontWeight={700} text={user.username} m={'4px 0px'} />
                 <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 8px" />
               </WrapperRow>
               <TextEllipsis line={3} fontSize="0.875rem" text={content} />
               {Boolean(reCommentCounts) && (
                 <WrapperRow onClick={moveToCommentDetail} jc="center" w="100%" p="4px 0px">
-                  <TextBase fontSize="0.75rem" text={`댓글 ${reCommentCounts}개 전체보기`} />
+                  <TextLink
+                    href={`${routes.commentDetailBase}${id}`}
+                    fontSize="0.75rem"
+                    text={`댓글 ${reCommentCounts}개 전체보기`}
+                  />
                 </WrapperRow>
               )}
             </WrapperColumn>
           </WrapperColumn>
           {isDeletable() ? (
-            <FontAwesomeIcon
-              icon={faXmark}
-              size="lg"
-              color={theme.color.achromatic.black}
-              style={{ width: '40px' }}
-              onClick={() => {
-                deleteCommentHandler(id);
-              }}
-            />
+            <WrapperButton m={'0 12px'}>
+              <FontAwesomeIcon
+                icon={faXmark}
+                size="lg"
+                color={theme.color.achromatic.black}
+                onClick={() => {
+                  deleteCommentHandler(id);
+                }}
+              />
+            </WrapperButton>
           ) : (
             <DropdownEllipsis items={[{ itemName: '신고하기', onClick: openReportCommentModal }]} />
           )}
         </WrapperRow>
       </WrapperColumn>
-      {modalOpen && <ReportModal type='COMMENT' closeModal={closeReportCommentModal} commentId={id}/>}
+      {modalOpen && <ReportModal type="COMMENT" closeModal={closeReportCommentModal} commentId={id} />}
     </>
   );
 }

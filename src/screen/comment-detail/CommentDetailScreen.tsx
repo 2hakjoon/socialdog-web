@@ -3,7 +3,7 @@ import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments
 import dayjs from 'dayjs';
 import useEvictCache from 'hooks/useEvictCache';
 import React, { useRef, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import TextBase from 'screen/common-comp/texts/TextBase';
@@ -27,6 +27,8 @@ import TextParagraph from 'screen/common-comp/texts/TextParagraph';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import TextLink from 'screen/common-comp/texts/TextLink';
 
 const CommentWrapper = styled.div`
   max-width: ${({ theme }) => theme.layout.screenMaxWidth};
@@ -139,19 +141,24 @@ function CommentDetailScreen() {
         {comment && (
           <CommentWrapper>
             <WrapperRow w="100%" p="8px 0px" ai="flex-start">
-              <WrapperColumn onClick={() => moveToUserProfile(comment.user.username)}>
+              <Link to={`${routes.home}${comment.user.username}`}>
                 <ProfilePhoto url={comment.user.photo} size="48px" />
-              </WrapperColumn>
+              </Link>
               <WrapperColumn w="100%" ai="flex-start" p="0px 8px">
-                <TextBase fontWeight={700} text={comment.user.username} m={'4px 0px'} />
+                <TextLink
+                  href={`${routes.home}${comment.user.username}`}
+                  fontWeight={700}
+                  text={comment.user.username}
+                  m={'4px 0px'}
+                />
               </WrapperColumn>
-
-              <FontAwesomeIcon
-                style={{ width: '40px' }}
-                icon={faTrashCan}
-                size="lg"
-                onClick={() => deleteCommentHandler(comment.id)}
-              />
+              <WrapperButton m={'0 12px'}>
+                <FontAwesomeIcon
+                  icon={faTrashCan}
+                  size="lg"
+                  onClick={() => deleteCommentHandler(comment.id)}
+                />
+              </WrapperButton>
             </WrapperRow>
             <TextParagraph>
               <TextBase fontSize="0.875rem" text={comment.content} />
