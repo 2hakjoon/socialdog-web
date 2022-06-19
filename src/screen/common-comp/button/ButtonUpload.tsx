@@ -8,6 +8,7 @@ const SLabel = styled.label`
   background-color: ${({ theme }) => theme.color.blue.primaryBlue};
   border-radius: 5px;
   color: ${({ theme }) => theme.color.achromatic.primaryWhite};
+  cursor: pointer;
 `;
 
 interface IButtonUpload {

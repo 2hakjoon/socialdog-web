@@ -12,6 +12,7 @@ const Button = styled.button`
   color: ${({ theme }) => theme.color.achromatic.primaryWhite};
   border: none;
   border-radius: 100px;
+  cursor: pointer;
 `;
 
 interface IButtonSubmit {

@@ -8,6 +8,7 @@ const Button = styled.button<IButtonProps>`
   border-radius: 5px;
   border: 2px solid ${(p) => (p.enable ? p.theme.color.achromatic.black : p.theme.color.achromatic.lightGray)};
   flex-shrink: 0;
+  cursor: pointer;
 `;
 
 interface IButtonProps {

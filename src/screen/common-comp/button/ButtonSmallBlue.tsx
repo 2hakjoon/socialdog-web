@@ -8,6 +8,7 @@ const Button = styled.button<IButtonProps>`
   border-radius: 5px;
   border: none;
   flex-shrink: 0;
+  cursor: pointer;
 `;
 
 interface IButtonProps {
