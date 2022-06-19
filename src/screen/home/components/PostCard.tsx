@@ -101,7 +101,7 @@ function PostCard({
         <TopBar>
           <EmpyBox />
           <WrapperRow>
-            <Link to={`${routes.home}${user.username}`}>
+            <Link to={`${routes.home}${user.username}`} style={{ textDecoration: 'none' }}>
               <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
             </Link>
             <TextLink

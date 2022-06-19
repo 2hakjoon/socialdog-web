@@ -11,6 +11,7 @@ export const Text = styled.a<ITextProps>`
   color: ${(p) => p.color};
   font-size: ${(p) => p.fontSize};
   line-height: ${(p) => p.lineHight};
+  text-decoration: none;
 `;
 
 export interface ITextLink extends ITextProps {
