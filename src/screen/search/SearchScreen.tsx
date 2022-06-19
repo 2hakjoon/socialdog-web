@@ -25,18 +25,11 @@ const FormWrapper = styled.div`
   align-items: center;
 `;
 
-const SInput = styled.input`
-  width: 100%;
-  height: 100%;
-  border-radius: 10px;
-  padding: 0px 12px;
-  border: 2px solid ${({ theme }) => theme.color.achromatic.darkGray};
-`;
-
 const SButton = styled.button`
   height: 100%;
   width: 50px;
   margin-left: 14px;
+  cursor: pointer;
 `;
 
 function SearchScreen() {

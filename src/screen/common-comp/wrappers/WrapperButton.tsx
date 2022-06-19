@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.button<IWrapperButton>`
   display: flex;
-  flex-direction: row;
+  flex-direction: ${(p) => p.fd};
   align-items: ${(p) => p.ai};
   padding: ${(p) => p.p};
   justify-content: ${(p) => p.jc};
@@ -24,12 +24,13 @@ interface IWrapperButton {
   bc?: string;
   h?: string;
   ai?: 'space-between' | 'flex-start' | 'flex-end' | 'space-around';
+  fd?: 'row' | 'column';
   onClick?: (e: any) => void;
 }
 
-function WrapperButton({ children, jc, p, w, h, ai, m, bc, onClick }: IWrapperButton) {
+function WrapperButton({ children, jc, p, w, h, ai, m, bc, fd, onClick }: IWrapperButton) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} bc={bc} onClick={onClick}>
+    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} bc={bc} fd={fd} onClick={onClick}>
       {children}
     </Wrapper>
   );
@@ -43,6 +44,7 @@ WrapperButton.defaultProps = {
   m: '0',
   ai: 'center',
   bc: 'white',
+  fd: 'row',
   onClick: (e: any) => {},
 };
 

@@ -1,8 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import styled from 'styled-components';
 import ProfilePhoto from '../image/ProfilePhoto';
-import TextBase from '../texts/TextBase';
+import TextLink from '../texts/TextLink';
 import WrapperColumn from '../wrappers/WrapperColumn';
 
 const Wrapper = styled.div`
@@ -20,18 +20,14 @@ interface IUserCardThin {
 }
 
 function UserCardThin({ id, username, photo, onClick = () => {} }: IUserCardThin) {
-  const navigate = useNavigate();
 
   return (
-    <Wrapper
-      onClick={() => {
-        onClick();
-        navigate(`/${username}`);
-      }}
-    >
-      <ProfilePhoto url={photo} size="48px" />
+    <Wrapper>
+      <Link to={`/${username}`}>
+        <ProfilePhoto url={photo} size="48px" />
+      </Link>
       <WrapperColumn m={'0 16px'} jc="space-around" ai="flex-start">
-        <TextBase text={username} />
+        <TextLink href={`/${username}`} text={username} />
       </WrapperColumn>
     </Wrapper>
   );

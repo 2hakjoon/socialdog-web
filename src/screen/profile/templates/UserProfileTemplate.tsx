@@ -182,11 +182,21 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
             </WrapperColumn>
             <WrapperColumn jc="space-around" h={'100%'}>
               <WrapperRow jc="space-around" w="160px" h={'100%'} p={'0 0 20px 0'}>
-                <WrapperButton h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
+                <WrapperButton
+                  fd="column"
+                  h="50px"
+                  jc="space-around"
+                  onClick={isMyProfile() ? openSubscribingModal : () => {}}
+                >
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />
                 </WrapperButton>
-                <WrapperButton h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
+                <WrapperButton
+                  fd="column"
+                  h="50px"
+                  jc="space-around"
+                  onClick={isMyProfile() ? openSubscriberModal : () => {}}
+                >
                   <TextBase text={'구독자'} />
                   <TextBase text={user.subscribers || 0} />
                 </WrapperButton>
