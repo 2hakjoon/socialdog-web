@@ -21,6 +21,7 @@ import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
 import ReportModal from 'screen/common-comp/report/ReportModal';
 import TextLink from 'screen/common-comp/texts/TextLink';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 
 const Wrapper = styled.article`
   margin: 16px 0;
@@ -53,10 +54,6 @@ const ImgWrapper = styled.div`
   overflow: hidden;
 `;
 
-const OnClickWrapper = styled.button`
-  border: none;
-  background-color: white;
-`;
 
 const EmpyBox = styled.div`
   width: 40px;
@@ -138,7 +135,7 @@ function PostCard({
         <Contents>
           <WrapperRow jc="space-between" w="100%" p="8px 0">
             <WrapperRow>
-              <OnClickWrapper onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
+              <WrapperButton onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
                 {liked ? (
                   <FontAwesomeIcon
                     icon={faPaw}
@@ -154,7 +151,7 @@ function PostCard({
                     style={{ marginRight: 6 }}
                   />
                 )}
-              </OnClickWrapper>
+              </WrapperButton>
               {address && (
                 <>
                   <FontAwesomeIcon
