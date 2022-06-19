@@ -22,6 +22,7 @@ const TabBox = styled.div<ITabBox>`
   justify-content: center;
   padding: 10px;
   width: 100%;
+  cursor: pointer;
   border-bottom: 2px solid ${(p) => (p.selected ? p.theme.color.blue.primaryBlue : p.theme.color.achromatic.lightGray)};
 `;
 

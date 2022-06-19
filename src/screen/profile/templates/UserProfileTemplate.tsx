@@ -5,7 +5,7 @@ import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gq
 import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'hooks/useEvictCache';
 import React, { useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
@@ -13,6 +13,7 @@ import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import ReportModal from 'screen/common-comp/report/ReportModal';
 import TextBase from 'screen/common-comp/texts/TextBase';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
@@ -124,10 +125,6 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
     setModalType(null);
   };
 
-  const moveToProfileEdit = () => {
-    navigate(routes.profileEdit);
-  };
-
   const openSubscribingModal = () => {
     setModalType(SUBSCRIBING);
   };
@@ -172,23 +169,27 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
             </WrapperRow>
           )}
           <WrapperRow w="100%" jc="space-around" p={'20px 20px 30px 20px'} bc={'white'}>
-            <WrapperColumn h="140px" jc="space-around" onClick={isMyProfile() ? moveToProfileEdit : () => {}}>
+            <WrapperColumn h="140px" jc="space-around">
               <ProfilePhoto size="80px" url={user.photo} />
               <WrapperRow>
                 <TextBase text={user.username} p="0 6px" />
-                {isMyProfile() && <FontAwesomeIcon icon={faPenToSquare} size="1x" />}
+                {isMyProfile() && (
+                  <Link to={routes.profileEdit}>
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                  </Link>
+                )}
               </WrapperRow>
             </WrapperColumn>
             <WrapperColumn jc="space-around" h={'100%'}>
               <WrapperRow jc="space-around" w="160px" h={'100%'} p={'0 0 20px 0'}>
-                <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
+                <WrapperButton h="50px" jc="space-around" onClick={isMyProfile() ? openSubscribingModal : () => {}}>
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />
-                </WrapperColumn>
-                <WrapperColumn h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
+                </WrapperButton>
+                <WrapperButton h="50px" jc="space-around" onClick={isMyProfile() ? openSubscriberModal : () => {}}>
                   <TextBase text={'구독자'} />
                   <TextBase text={user.subscribers || 0} />
-                </WrapperColumn>
+                </WrapperButton>
               </WrapperRow>
               {isMyProfile() ? (
                 <ButtonSmallBlue title={'차단-거절 관리'} onClick={() => openBlockAndRejected()} />

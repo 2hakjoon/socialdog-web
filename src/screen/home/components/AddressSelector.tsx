@@ -12,6 +12,7 @@ import { addressTermState, geolocationState } from 'apollo-setup';
 import { useReactiveVar } from '@apollo/client';
 import { storeAddressTerms } from 'utils/local-storage';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;
@@ -63,6 +64,7 @@ const CrossHairsWrapper = styled.div`
   border-radius: 5px;
   border: 2px solid ${({ theme }) => theme.color.achromatic.black};
   margin-right: 6px;
+  cursor: pointer;
 `;
 
 interface ITermBlock {
@@ -127,7 +129,7 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
   };
 
   const setAddressCurrentPositon = () => {
-    getAddressFromLatLng()
+    getAddressFromLatLng();
     setSearchEnable(false);
   };
 
@@ -149,25 +151,26 @@ function AddressSelector({ addressTerms, setAddressTerms }: IAddressSelector) {
                   isLastAddressBlock(idx) ? theme.color.blue.primaryBlue : theme.color.achromatic.lightGray
                 }
               >
-                <WrapperRow onClick={isLastAddressBlock(idx) ? removeLastTerm : () => {}}>
-                  <TextBase
-                    text={term.value}
-                    color={isLastAddressBlock(idx) ? theme.color.achromatic.primaryWhite : theme.color.achromatic.black}
-                  />
-                  {isLastAddressBlock(idx) && (
+                {isLastAddressBlock(idx) ? (
+                  <WrapperButton bc={theme.color.blue.primaryBlue} onClick={removeLastTerm}>
+                    <TextBase text={term.value} color={theme.color.achromatic.primaryWhite} />
                     <FontAwesomeIcon
                       icon={faXmark}
                       color={theme.color.achromatic.primaryWhite}
                       style={{ margin: '0px 0px 0px 6px' }}
                     />
-                  )}
-                </WrapperRow>
+                  </WrapperButton>
+                ) : (
+                  <WrapperRow>
+                    <TextBase text={term.value} color={theme.color.achromatic.primaryWhite} />
+                  </WrapperRow>
+                )}
               </TermBlock>
             ))}
           </TermWrapper>
-          <WrapperRow p="10px" h="100%">
+          <WrapperButton p="8px" h="100%">
             <FontAwesomeIcon icon={faMagnifyingGlass} size="lg" onClick={() => setSearchEnable(true)} />
-          </WrapperRow>
+          </WrapperButton>
         </WrapperRow>
       ) : (
         <>

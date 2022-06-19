@@ -22,6 +22,7 @@ const BorderWrapper = styled.div<BorderWrapperProps>`
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
   border-bottom: ${(p) => p.color} 4px solid;
 `;
 

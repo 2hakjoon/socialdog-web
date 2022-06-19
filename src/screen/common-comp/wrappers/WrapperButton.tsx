@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 const Wrapper = styled.button<IWrapperButton>`
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   align-items: ${(p) => p.ai};
   padding: ${(p) => p.p};
   justify-content: ${(p) => p.jc};
@@ -36,11 +36,11 @@ function WrapperButton({ children, jc, p, w, h, ai, m, bc, onClick }: IWrapperBu
 }
 
 WrapperButton.defaultProps = {
-  jc: 'flex-start',
+  jc: 'center',
   p: '0',
   w: '',
   h: '',
-  m: '',
+  m: '0',
   ai: 'center',
   bc: 'white',
   onClick: (e: any) => {},

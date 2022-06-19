@@ -179,7 +179,6 @@ function ProfileEditScreen() {
         {user && (
           <WrapperColumn jc={'space-around'}>
             <TextBase text={'프로필 수정'} m={'16px 0'} />
-
             <WrapperColumn>
               {uploadedFileUrl ? (
                 <ImageRound url={uploadedFileUrl} size="80px" />
@@ -213,9 +212,6 @@ function ProfileEditScreen() {
                     enable: user.username !== watch('username'),
                   }}
                 />
-              </WrapperColumn>
-              <WrapperColumn w={'100%'} ai="flex-start">
-                <TextBase text={'강아지 이름'} m={'16px 0'} />
               </WrapperColumn>
               <WrapperRow w={'100%'}>
                 <TextBase

@@ -18,6 +18,7 @@ import MyLikedPosts from './templates/MyLikedPosts';
 import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 
 export type Params = {
   username: string;
@@ -78,18 +79,20 @@ function ProfileScreen() {
         {!userDataLoading && userData ? <UserProfileTemplate userData={userData} /> : <UserProfileLoading />}
         {isMyProfile() && (
           <WrapperRow h="60px" w="100%" jc="space-around" bc={'white'}>
-            <FontAwesomeIcon
-              icon={faIdBadge}
-              size="2x"
-              color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-              onClick={() => setPostType('MY')}
-            />
-            <FontAwesomeIcon
-              icon={faPaw}
-              size="2x"
-              color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
-              onClick={() => setPostType('LIKED')}
-            />
+            <WrapperButton onClick={() => setPostType('MY')}>
+              <FontAwesomeIcon
+                icon={faIdBadge}
+                size="2x"
+                color={isSelectedPostType('MY') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              />
+            </WrapperButton>
+            <WrapperButton onClick={() => setPostType('LIKED')}>
+              <FontAwesomeIcon
+                icon={faPaw}
+                size="2x"
+                color={isSelectedPostType('LIKED') ? theme.color.blue.primaryBlue : theme.color.achromatic.darkGray}
+              />
+            </WrapperButton>
           </WrapperRow>
         )}
         {isBlokingPerson() ? (

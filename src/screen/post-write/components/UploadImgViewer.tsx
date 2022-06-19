@@ -5,6 +5,7 @@ import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
 import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
 import ImageBase from 'screen/common-comp/image/ImageBase';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
@@ -92,21 +93,24 @@ function UploadImgViewer({
       <ImgPreviewgrid>
         {imgUrls.map((imgUrl, idx) => (
           <WrapperColumn ai={'flex-end'} key={Math.random()}>
-            <FontAwesomeIcon
-              icon={faXmark}
-              onClick={() => (isEditPosting() ? removeUploadedPhotos(idx) : removeUploadedFiles(idx))}
-            />
+            <WrapperButton>
+              <FontAwesomeIcon
+                size="lg"
+                icon={faXmark}
+                onClick={() => (isEditPosting() ? removeUploadedPhotos(idx) : removeUploadedFiles(idx))}
+              />
+            </WrapperButton>
             <WrapperSquare>
               <ImageBase key={Date.now()} url={imgUrl} />
             </WrapperSquare>
             {idx > 0 && (
-              <>
+              <WrapperRow w="100%" jc="center" p="4px 0 0 0">
                 {isEditPosting() ? (
                   <ButtonSmallWhite title="<-" onClick={() => shiftUploadedPhoto(idx)} />
                 ) : (
                   <ButtonSmallWhite title="<-" onClick={() => shiftUploadedFile(idx)} />
                 )}
-              </>
+              </WrapperRow>
             )}
           </WrapperColumn>
         ))}

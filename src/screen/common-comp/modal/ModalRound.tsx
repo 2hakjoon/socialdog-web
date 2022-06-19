@@ -5,6 +5,7 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
 import { theme } from 'assets/styles/theme';
+import WrapperButton from '../wrappers/WrapperButton';
 
 const Wrapper = styled.div`
   width: 90%;
@@ -52,13 +53,11 @@ function ModalRound({ children, title, closeModal }: IModalRound) {
       <TopBarWrapper>
         <FontAwesomeIcon icon={faXmark} size="2x" color="white" />
         <TextBase text={title} fontWeight={500} />
-        <WrapperRow w="" h="" onClick={closeModal}>
+        <WrapperButton w="" h="" onClick={closeModal}>
           <FontAwesomeIcon icon={faXmark} size="2x" />
-        </WrapperRow>
+        </WrapperButton>
       </TopBarWrapper>
-      <ContentsWrapper>
-        {children}
-      </ContentsWrapper>
+      <ContentsWrapper>{children}</ContentsWrapper>
     </Wrapper>
   );
 }
