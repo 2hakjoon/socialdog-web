@@ -77,6 +77,7 @@ function LoginScreen() {
   };
 
   const kakaoAuthHandler = async ({ authObj, acceptTerms }: { authObj: IkakaoLoginSuccess; acceptTerms: boolean }) => {
+    setModalOpen('LOADING');
     const res = await kakaoAuthLogin({
       variables: {
         args: {
@@ -99,6 +100,8 @@ function LoginScreen() {
         setRefreshToken(kakaoLoginResult.refreshToken);
         loginState(true);
       }
+      setModalOpen(null);
+
     } else {
       alert(kakaoLoginResult?.error);
     }
