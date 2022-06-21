@@ -99,11 +99,11 @@ function LoginScreen() {
         setAccessToken(kakaoLoginResult.accessToken);
         setRefreshToken(kakaoLoginResult.refreshToken);
         loginState(true);
+        setModalOpen(null);
       }
-      setModalOpen(null);
-
     } else {
       alert(kakaoLoginResult?.error);
+      setModalOpen(null);
     }
   };
 
