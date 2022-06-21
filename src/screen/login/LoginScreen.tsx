@@ -15,6 +15,8 @@ import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
 import ModalRound from 'screen/common-comp/modal/ModalRound';
 import TermTemplate from './template/TermTemplate';
+import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import { theme } from 'assets/styles/theme';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -35,7 +37,7 @@ const InnerWrapper = styled.div`
   justify-content: space-around;
 `;
 
-const ButtonWrapper = styled.div`
+const KakaoLoginWrapper = styled.div`
   position: fixed;
   bottom: 30px;
   margin: 0 auto;
@@ -90,7 +92,7 @@ function LoginScreen() {
     const kakaoLoginResult = res.data?.kakaoLogin;
     if (kakaoLoginResult?.ok) {
       if (kakaoLoginResult.acceptTerms === false) {
-        window.alert('변경된 약관에 동의 해 주세요.')
+        window.alert('서비스 이용을 위해 약관에 동의 해 주세요.');
         setModalOpen('TERM');
       } else if (kakaoLoginResult.accessToken && kakaoLoginResult.refreshToken) {
         setAccessToken(kakaoLoginResult.accessToken);
@@ -127,9 +129,11 @@ function LoginScreen() {
     <Wrapper>
       <InnerWrapper>
         <ImageBase url={SplashImg} />
-        <ButtonWrapper onClick={() => kakaoLogin({ accecptTerms: false })}>
-          <ImageBase url={KakaoImg} />
-        </ButtonWrapper>
+        <KakaoLoginWrapper onClick={() => kakaoLogin({ accecptTerms: false })}>
+          <WrapperButton bc={theme.color.blue.primaryBlue} w={'100%'}>
+            <ImageBase url={KakaoImg} />
+          </WrapperButton>
+        </KakaoLoginWrapper>
       </InnerWrapper>
       {modalOpen === 'LOADING' && (
         <ModalBackground closeModal={closeModal}>
