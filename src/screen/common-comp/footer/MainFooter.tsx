@@ -5,7 +5,6 @@ import styled from 'styled-components';
 import ModalBackground from '../modal/ModalBackground';
 import ModalRound from '../modal/ModalRound';
 import TextBase from '../texts/TextBase';
-import TextLink from '../texts/TextLink';
 import WrapperButton from '../wrappers/WrapperButton';
 
 const Wrapper = styled.footer`

@@ -7,6 +7,7 @@ const Wrapper = styled.div<IBaseWrapper>`
   margin: 0 auto;
   width: 100%;
   height: 100%;
+  min-height: calc(100vh - 60px);
   padding: ${(p) => p.p};
 `;
 

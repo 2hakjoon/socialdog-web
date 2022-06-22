@@ -14,6 +14,7 @@ import { FindUserByUsernameInputDto } from '__generated__/globalTypes';
 import { QFindUserByUsername, QFindUserByUsernameVariables } from '__generated__/QFindUserByUsername';
 import { QGetProfileOpenUser } from '__generated__/QGetProfileOpenUser';
 import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
+import MainFooter from 'screen/common-comp/footer/MainFooter';
 
 const FormWrapper = styled.div`
   width: 100%;
@@ -48,7 +49,7 @@ function SearchScreen() {
   return (
     <>
       <MainHeader />
-      <BaseWrapper p={''}>
+      <BaseWrapper  p={''}>
         <WrapperRow w="100%" jc="center" h="30px">
           <TextBase text={'친구 찾기'} />
         </WrapperRow>
@@ -78,6 +79,7 @@ function SearchScreen() {
           )}
         </WrapperColumn>
       </BaseWrapper>
+      <MainFooter />
     </>
   );
 }
