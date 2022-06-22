@@ -13,11 +13,9 @@ import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import ModalBackground from 'screen/common-comp/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
-import ModalRound from 'screen/common-comp/modal/ModalRound';
 import TermTemplate from './template/TermTemplate';
 import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 import { theme } from 'assets/styles/theme';
-import MainFooter from 'screen/common-comp/footer/MainFooter';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -139,7 +137,6 @@ function LoginScreen() {
           </WrapperButton>
         </KakaoLoginWrapper>
       </InnerWrapper>
-      <MainFooter />
       {modalOpen === 'LOADING' && (
         <ModalBackground closeModal={closeModal}>
           <LoadingSpinner />

@@ -7,6 +7,7 @@ import AddressPostsTemplate from './templates/AddressPostsTemplate';
 import SubscribingsTemplate from './templates/SubscribingsTemplate';
 import TextBase, { Text } from 'screen/common-comp/texts/TextBase';
 import styled from 'styled-components';
+import MainFooter from 'screen/common-comp/footer/MainFooter';
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';
@@ -50,6 +51,7 @@ function HomeScreen() {
         {selectedTab === ADDRESS && <AddressPostsTemplate />}
         {selectedTab === SUBSCRIBING && <SubscribingsTemplate />}
       </BaseWrapper>
+      <MainFooter />
     </>
   );
 }
