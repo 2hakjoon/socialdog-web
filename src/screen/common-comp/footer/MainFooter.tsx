@@ -59,11 +59,11 @@ function MainFooter() {
       <Wrapper>
         <InnerWrapper>
           <WrapperButton onClick={openTermsOfService} bc={theme.color.achromatic.lightGray}>
-            <TextBase text={'서비스 이용약관'} color={theme.color.achromatic.darkGray} />
+            <TextBase fontSize='0.75rem' text={'서비스 이용약관'} color={theme.color.achromatic.darkGray} />
           </WrapperButton>
-          <TextBase text={'|'} p={'0px 10px'} color={theme.color.achromatic.darkGray} />
+          <TextBase fontSize='0.75rem'  text={'|'} p={'0px 10px'} color={theme.color.achromatic.darkGray} />
           <WrapperButton onClick={openTermsOfPrivacy} bc={theme.color.achromatic.lightGray}>
-            <TextBase text={'개인정보 처리방침'} color={theme.color.achromatic.darkGray} />
+            <TextBase fontSize='0.75rem' text={'개인정보 처리방침'} color={theme.color.achromatic.darkGray} />
           </WrapperButton>
         </InnerWrapper>
       </Wrapper>
