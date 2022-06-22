@@ -38,7 +38,6 @@ function TermTemplate({ closeModal, nextStep }: ITermTemplate) {
 
   const getTermsOfPrivacy = async () => {
     const res = await axios.get('https://socialdog.s3.ap-northeast-2.amazonaws.com/Terms/termsofprivacy.txt');
-    // console.log(res);
     setTermsOfPrivacy(res.data);
   };
   const getTermsOfService = async () => {
