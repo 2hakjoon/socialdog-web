@@ -2,9 +2,7 @@ import { useQuery } from '@apollo/client';
 import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import React, { useEffect, useState } from 'react';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
@@ -16,6 +14,12 @@ const PostsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 4px;
   padding: 0px 4px;
+`;
+
+const ImgWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 interface IMyPosts {
@@ -43,9 +47,9 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
         <PostsGrid>
           {posts?.map((post) => (
             <WrapperSquare key={post.id}>
-              <WrapperRow p={''}>
-                <PostSmallBox {...post} />
-              </WrapperRow>
+              <ImgWrapper>
+                  <PostSmallBox {...post} />
+              </ImgWrapper>
             </WrapperSquare>
           ))}
           {userPosts.loading &&
@@ -53,9 +57,9 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
               .fill('')
               .map(() => (
                 <WrapperSquare key={Math.random()}>
-                  <WrapperRow p={''}>
+                  <ImgWrapper>
                     <PostSmallBox photos="" __typename="Posts" id="" />
-                  </WrapperRow>
+                  </ImgWrapper>
                 </WrapperSquare>
               ))}
         </PostsGrid>

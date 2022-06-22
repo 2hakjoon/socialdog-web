@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_MY_LIKED_POSTS } from 'apllo-gqls/posts';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import PostSmallBox from '../components/PostSmallBox';
@@ -15,6 +14,12 @@ const PostsGrid = styled.div`
   grid-template-columns: repeat(3, 1fr);
   gap: 4px;
   padding: 0px 4px;
+`;
+
+const ImgWrapper = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
 `;
 
 interface IMyLikedPosts {
@@ -41,9 +46,9 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
         <PostsGrid>
           {posts?.map((post) => (
             <WrapperSquare key={post.id}>
-              <BaseWrapper p={''}>
+              <ImgWrapper>
                 <PostSmallBox __typename={post.__typename} id={post.id} photos={post.photos} />
-              </BaseWrapper>
+              </ImgWrapper>
             </WrapperSquare>
           ))}
           {myLikedPosts.loading &&
@@ -51,9 +56,9 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
               .fill('')
               .map(() => (
                 <WrapperSquare key={Math.random()}>
-                  <BaseWrapper p={''}>
+                  <ImgWrapper>
                     <PostSmallBox photos="" __typename="Posts" id="" />
-                  </BaseWrapper>
+                  </ImgWrapper>
                 </WrapperSquare>
               ))}
         </PostsGrid>
