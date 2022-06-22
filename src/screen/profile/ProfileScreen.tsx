@@ -19,6 +19,7 @@ import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import MainFooter from 'screen/common-comp/footer/MainFooter';
 
 export type Params = {
   username: string;
@@ -113,6 +114,7 @@ function ProfileScreen() {
           </>
         )}
       </BaseWrapper>
+      <MainFooter />
     </Fragment>
   );
 }
