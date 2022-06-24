@@ -21,4 +21,6 @@ export const theme = {
   color,
   layout
 }
-export type Theme = typeof theme
+
+export type CustomColorTypes = typeof color ;
+export type CustomLayoutTypes = typeof layout;

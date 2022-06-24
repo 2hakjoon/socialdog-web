@@ -153,11 +153,7 @@ function CommentDetailScreen() {
                 />
               </WrapperColumn>
               <WrapperButton m={'0 12px'}>
-                <FontAwesomeIcon
-                  icon={faTrashCan}
-                  size="lg"
-                  onClick={() => deleteCommentHandler(comment.id)}
-                />
+                <FontAwesomeIcon icon={faTrashCan} size="lg" onClick={() => deleteCommentHandler(comment.id)} />
               </WrapperButton>
             </WrapperRow>
             <TextParagraph>
