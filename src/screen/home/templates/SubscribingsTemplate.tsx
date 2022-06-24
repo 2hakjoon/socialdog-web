@@ -40,7 +40,7 @@ function SubscribingsTemplate() {
             .fill('')
             .map(() => <PostCardLoading key={Math.random()} />)}
       </WrapperInfinityQueryScroll>
-      {!getSubscribingPosts.loading && !posts?.length && <NoContents />}
+      {!getSubscribingPosts.loading && !posts?.length && <NoContents text={`아직 구독중인 계정이 없거나, \n 작성된 게시물이 없어요.`}/>}
     </WrapperColumn>
   );
 }
