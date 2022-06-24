@@ -28,7 +28,7 @@ const BorderWrapper = styled.div<BorderWrapperProps>`
 `;
 
 function HomeScreen() {
-  const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(SUBSCRIBING);
+  const [selectedTab, setSelectedTab] = useState<'ADDRESS' | 'SUBSCRIBING'>(ADDRESS);
   const tabIconColor = (tabName: string) => {
     if (selectedTab === tabName) {
       return theme.color.blue.primaryBlue;
