@@ -92,7 +92,7 @@ function UploadImgViewer({
     <>
       <ImgPreviewgrid>
         {imgUrls.map((imgUrl, idx) => (
-          <WrapperColumn ai={'flex-end'} key={Math.random()}>
+          <WrapperColumn ai={'flex-end'} key={imgUrl}>
             <WrapperButton>
               <FontAwesomeIcon
                 size="lg"
