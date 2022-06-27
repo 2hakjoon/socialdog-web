@@ -175,7 +175,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                 <TextBase text={user.username} p="0 6px" />
                 {isMyProfile() && (
                   <Link to={routes.profileEdit}>
-                    <FontAwesomeIcon icon={faPenToSquare} size="1x" />
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color='black'/>
                   </Link>
                 )}
               </WrapperRow>
