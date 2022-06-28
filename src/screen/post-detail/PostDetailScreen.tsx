@@ -17,6 +17,7 @@ import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import PostSmallBox from 'screen/profile/components/PostSmallBox';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
@@ -154,7 +155,7 @@ function PostDetailScreen() {
                       />
                     )}
                   </WrapperButton>
-                  <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />
+                  {post.likes > 0 && <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />}
                   {post.address && (
                     <>
                       <FontAwesomeIcon

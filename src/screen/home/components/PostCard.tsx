@@ -149,7 +149,7 @@ function PostCard({
                   />
                 )}
               </WrapperButton>
-              <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />
+              {likes > 0 && <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />}
               {address && (
                 <>
                   <FontAwesomeIcon
