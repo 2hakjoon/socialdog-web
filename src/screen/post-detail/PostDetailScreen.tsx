@@ -155,13 +155,17 @@ function PostDetailScreen() {
                     )}
                   </WrapperButton>
                   <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />
-                  <FontAwesomeIcon
-                    icon={faLocationDot}
-                    size="lg"
-                    color={theme.color.blue.primaryBlue}
-                    style={{ marginRight: 10 }}
-                  />
-                  <TextBase text={post.address} />
+                  {post.address && (
+                    <>
+                      <FontAwesomeIcon
+                        icon={faLocationDot}
+                        size="lg"
+                        color={theme.color.blue.primaryBlue}
+                        style={{ marginRight: 10 }}
+                      />
+                      <TextBase text={post.address} />
+                    </>
+                  )}
                 </WrapperRow>
                 {authUser?.id === post.user.id && (
                   <WrapperRow w="40px" jc="space-between">
