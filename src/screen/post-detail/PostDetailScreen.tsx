@@ -98,8 +98,12 @@ function PostDetailScreen() {
     if (!post) {
       return;
     }
-    setPost({ ...post, liked: !post.liked });
-    toggleLikeHandler({ id: post.id, __typename: post.__typename, liked: post.liked });
+    if (post.liked) {
+      setPost({ ...post, liked: !post.liked, likes: post.likes - 1 });
+    } else if (!post.liked) {
+      setPost({ ...post, liked: !post.liked, likes: post.likes + 1 });
+    }
+    toggleLikeHandler({ id: post.id, __typename: post.__typename, liked: post.liked, likes: post.likes });
   };
 
   useEffect(() => {
@@ -149,8 +153,8 @@ function PostDetailScreen() {
                         style={{ marginRight: 10 }}
                       />
                     )}
-                    <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />
                   </WrapperButton>
+                  <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />
                   <FontAwesomeIcon
                     icon={faLocationDot}
                     size="lg"

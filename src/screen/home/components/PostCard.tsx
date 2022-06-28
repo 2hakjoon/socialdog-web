@@ -132,7 +132,7 @@ function PostCard({
         <Contents>
           <WrapperRow jc="space-between" w="100%" p="8px 8px 8px 0">
             <WrapperRow>
-              <WrapperButton onClick={(e) => toggleLikeHandler({ id, __typename, liked })}>
+              <WrapperButton onClick={(e) => toggleLikeHandler({ id, __typename, liked, likes })}>
                 {liked ? (
                   <FontAwesomeIcon
                     icon={faPaw}
@@ -148,8 +148,8 @@ function PostCard({
                     style={{ marginRight: 6 }}
                   />
                 )}
-                <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />
               </WrapperButton>
+              <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />
               {address && (
                 <>
                   <FontAwesomeIcon

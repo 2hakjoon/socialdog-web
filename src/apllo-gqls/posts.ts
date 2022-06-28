@@ -72,7 +72,6 @@ export const GET_MYPOSTS = gql`
         createdAt
         photos
         id
-        likes
       }
       length
     }
