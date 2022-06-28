@@ -25,6 +25,7 @@ export const GET_SUBSCRIBING_POSTS = gql`
       error
       data {
       commentCounts
+      likes
       ...PostData
       }
       length
@@ -100,6 +101,7 @@ export const GET_POSTS_BY_ADDRESS = gql`
       error
       data {
         commentCounts
+        likes
         ...PostData
       }
       length
@@ -146,6 +148,7 @@ export const GET_POST_DETAIL = gql`
       ok
       error
       data {
+        likes
         commentCounts
         ...PostData
       }

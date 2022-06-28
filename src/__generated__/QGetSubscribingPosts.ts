@@ -19,6 +19,7 @@ export interface QGetSubscribingPosts_getSubscribingPosts_data_user {
 export interface QGetSubscribingPosts_getSubscribingPosts_data {
   __typename: "Posts";
   commentCounts: number;
+  likes: number;
   id: string;
   photos: string;
   placeId: string | null;

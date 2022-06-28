@@ -19,6 +19,7 @@ export interface QGetPostsByAddress_getPostsByAddress_data_user {
 export interface QGetPostsByAddress_getPostsByAddress_data {
   __typename: "Posts";
   commentCounts: number;
+  likes: number;
   id: string;
   photos: string;
   placeId: string | null;

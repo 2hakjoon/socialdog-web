@@ -149,6 +149,7 @@ function PostDetailScreen() {
                         style={{ marginRight: 10 }}
                       />
                     )}
+                    <TextBase text={post.likes} fontWeight={500} m={'auto 8px 1px 0'} />
                   </WrapperButton>
                   <FontAwesomeIcon
                     icon={faLocationDot}

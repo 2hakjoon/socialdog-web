@@ -67,6 +67,7 @@ function PostCard({
   photos,
   contents,
   liked,
+  likes,
   commentCounts,
   placeId,
   createdAt,
@@ -147,6 +148,7 @@ function PostCard({
                     style={{ marginRight: 6 }}
                   />
                 )}
+                <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />
               </WrapperButton>
               {address && (
                 <>

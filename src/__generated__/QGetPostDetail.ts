@@ -18,6 +18,7 @@ export interface QGetPostDetail_getPostDetail_data_user {
 
 export interface QGetPostDetail_getPostDetail_data {
   __typename: "Posts";
+  likes: number;
   commentCounts: number;
   id: string;
   photos: string;

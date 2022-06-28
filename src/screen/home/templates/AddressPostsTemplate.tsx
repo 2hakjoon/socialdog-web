@@ -26,6 +26,7 @@ function AddressPostsTemplate() {
     notifyOnNetworkStatusChange: true,
   });
   const posts = getPostsByAddress.data?.getPostsByAddress.data;
+  console.log([posts]);
 
   useEffect(() => {
     setItemLimit(pageItemCount);
@@ -49,7 +50,9 @@ function AddressPostsTemplate() {
               .fill('')
               .map(() => <PostCardLoading key={Math.random()} />)}
         </WrapperInfinityQueryScroll>
-        {!getPostsByAddress.loading && !posts?.length && <NoContents text= {`이 지역의 게시물은 아직 없어요. \n 다른 지역을 둘러보세요.`} />}
+        {!getPostsByAddress.loading && !posts?.length && (
+          <NoContents text={`이 지역의 게시물은 아직 없어요. \n 다른 지역을 둘러보세요.`} />
+        )}
       </WrapperColumn>
     </WrapperColumn>
   );
