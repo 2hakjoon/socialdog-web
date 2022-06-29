@@ -126,7 +126,7 @@ function PostDetailScreen() {
       <BaseWrapper p="">
         {post && (
           <Wrapper>
-            <Carousel showThumbs={false} dynamicHeight showStatus={false}>
+            <Carousel showArrows={false} showThumbs={false} dynamicHeight showStatus={false}>
               {JSON.parse(post.photos).map((photo: string) => (
                 <WrapperSquare key={`${photo}`}>
                   <ImgWrapper>

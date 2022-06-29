@@ -120,7 +120,7 @@ function PostCard({
             ]}
           />
         </TopBar>
-        <Carousel showThumbs={false} dynamicHeight showStatus={false}>
+        <Carousel showArrows={false} showThumbs={false} dynamicHeight showStatus={false}>
           {parsedPhotos.map((photo, idx) => (
             <WrapperSquare key={photo}>
               <ImgWrapper>
