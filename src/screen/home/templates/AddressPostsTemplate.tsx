@@ -1,6 +1,7 @@
 import { useQuery } from '@apollo/client';
 import { GET_POSTS_BY_ADDRESS } from 'apllo-gqls/posts';
 import { addressTermState } from 'apollo-setup';
+import useScroll from 'hooks/useScroll';
 import React, { useEffect, useState } from 'react';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
@@ -14,6 +15,8 @@ import PostCardLoading from '../components/PostCardLoading';
 function AddressPostsTemplate() {
   const pageItemCount = 6;
   const [itemLimit, setItemLimit] = useState(pageItemCount);
+  const scrollState = useScroll();
+  console.log(scrollState)
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>(addressTermState());
   const address = searchAddressTerms?.map((term) => term.value).join(' ') || '대한민국';
   const getPostsByAddress = useQuery<QGetPostsByAddress, QGetPostsByAddressVariables>(GET_POSTS_BY_ADDRESS, {
@@ -26,7 +29,6 @@ function AddressPostsTemplate() {
     notifyOnNetworkStatusChange: true,
   });
   const posts = getPostsByAddress.data?.getPostsByAddress.data;
-  console.log([posts]);
 
   useEffect(() => {
     setItemLimit(pageItemCount);
