@@ -10,6 +10,7 @@ import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/Q
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
+import RefreshButton from '../components/RefreshButton';
 
 function AddressPostsTemplate() {
   const pageItemCount = 6;
@@ -35,6 +36,7 @@ function AddressPostsTemplate() {
     <WrapperColumn>
       <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
       <WrapperColumn p={'0 8px'} w={'100%'}>
+        <RefreshButton />
         <WrapperInfinityQueryScroll
           query={getPostsByAddress}
           pageItemCount={pageItemCount}

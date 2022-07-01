@@ -1,40 +1,12 @@
 import { QueryResult } from '@apollo/client';
-import useScroll from 'hooks/useScroll';
 import React, { Dispatch, ReactNode, SetStateAction, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
-import TextBase from '../texts/TextBase';
-
-const Wrapper = styled.div`
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  position: relative;
-`;
 
 const InViewWrapper = styled.div`
   height: 4px;
   width: 100%;
-`;
-
-interface IRefreshBtnWrapper {
-  display: 'block' | 'none';
-}
-
-const RefreshBtnWrapper = styled.button<IRefreshBtnWrapper>`
-  position: fixed;
-  top: 90px;
-  z-index: 2;
-  border: none;
-  background-color: white;
-  padding: 10px 20px;
-  border-radius: 20px;
-  -webkit-box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
-  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
-  display: ${(p) => p.display};
 `;
 
 interface IQueryResult {
@@ -65,7 +37,6 @@ function WrapperInfinityQueryScroll({
   setItemLimit,
 }: IWrapperInfinityQueryScroll) {
   const [isLastPage, setIsLastPage] = useState(false);
-  const scrollState = useScroll();
 
   const { ref, inView, entry } = useInView({
     // rootMargin: '-100px',
@@ -109,14 +80,6 @@ function WrapperInfinityQueryScroll({
     });
   };
 
-  const willdisplayRefreshButton = () => {
-    console.log(window.scrollY)
-    if (scrollState === 'UP' && window.scrollY > 300) {
-      return true;
-    }
-    return false;
-  };
-
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -124,13 +87,10 @@ function WrapperInfinityQueryScroll({
   }, [inView, data]);
 
   return (
-    <Wrapper>
-      <RefreshBtnWrapper display={willdisplayRefreshButton() ? 'block' : 'none'}>
-        <TextBase text={'새로운 게시물 확인'} />
-      </RefreshBtnWrapper>
+    <>
       {children}
       <InViewWrapper ref={ref} />
-    </Wrapper>
+    </>
   );
 }
 
