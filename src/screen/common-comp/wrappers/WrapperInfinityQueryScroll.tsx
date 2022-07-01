@@ -1,13 +1,31 @@
 import { QueryResult } from '@apollo/client';
-import React, { Dispatch, ReactNode, SetStateAction, useState } from 'react';
-import { useEffect } from 'react';
+import useScroll from 'hooks/useScroll';
+import React, { Dispatch, ReactNode, SetStateAction, useState, useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
 
 const Wrapper = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+
+const InViewWrapper = styled.div`
   height: 4px;
   width: 100%;
+  position: relative;
+`;
+
+const RefreshBtnWrapper = styled.button`
+  border: none;
+  background-color: white;
+  padding: 6px 12px;
+  border-radius: 20px;
+  -webkit-box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
 `;
 
 interface IQueryResult {
@@ -38,6 +56,8 @@ function WrapperInfinityQueryScroll({
   setItemLimit,
 }: IWrapperInfinityQueryScroll) {
   const [isLastPage, setIsLastPage] = useState(false);
+  const scrollState = useScroll();
+
   const { ref, inView, entry } = useInView({
     // rootMargin: '-100px',
     threshold: 0,
@@ -87,10 +107,11 @@ function WrapperInfinityQueryScroll({
   }, [inView, data]);
 
   return (
-    <>
+    <Wrapper>
+      <RefreshBtnWrapper>새로고침</RefreshBtnWrapper>
       {children}
-      <Wrapper ref={ref} />
-    </>
+      <InViewWrapper ref={ref} />
+    </Wrapper>
   );
 }
 
