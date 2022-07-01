@@ -28,6 +28,7 @@ interface IMyLikedPosts {
 
 function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
   const [itemLimit, setItemLimit] = useState<number>(itemsCount);
+  const [isLastPage, setIsLastPage] = useState(false);
 
   const myLikedPosts = useQuery<QGetMyLikedPosts, QGetMyLikedPostsVariables>(GET_MY_LIKED_POSTS, {
     variables: { page: { take: itemLimit } },
@@ -42,6 +43,8 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
         pageItemCount={itemsCount}
         setItemLimit={setItemLimit}
         itemLimit={itemLimit}
+        isLastPage={isLastPage}
+        setIsLastPage={setIsLastPage}
       >
         <PostsGrid>
           {posts?.map((post) => (
