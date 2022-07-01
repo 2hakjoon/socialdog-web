@@ -15,6 +15,7 @@ import RefreshButton from '../components/RefreshButton';
 function AddressPostsTemplate() {
   const pageItemCount = 6;
   const [itemLimit, setItemLimit] = useState(pageItemCount);
+  const [isLastPage, setIsLastPage] = useState(false);
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>(addressTermState());
   const address = searchAddressTerms?.map((term) => term.value).join(' ') || '대한민국';
   const getPostsByAddress = useQuery<QGetPostsByAddress, QGetPostsByAddressVariables>(GET_POSTS_BY_ADDRESS, {
@@ -28,6 +29,10 @@ function AddressPostsTemplate() {
   });
   const posts = getPostsByAddress.data?.getPostsByAddress.data;
 
+  const refreshPosts = () => {
+    console.log('asdf');
+  };
+
   useEffect(() => {
     setItemLimit(pageItemCount);
   }, [searchAddressTerms]);
@@ -36,12 +41,14 @@ function AddressPostsTemplate() {
     <WrapperColumn>
       <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
       <WrapperColumn p={'0 8px'} w={'100%'}>
-        <RefreshButton />
+        <RefreshButton onClick={refreshPosts} />
         <WrapperInfinityQueryScroll
           query={getPostsByAddress}
           pageItemCount={pageItemCount}
           setItemLimit={setItemLimit}
           itemLimit={itemLimit}
+          isLastPage={isLastPage}
+          setIsLastPage={setIsLastPage}
         >
           {posts?.map((post) => (
             <PostCard key={post.id} {...post} />

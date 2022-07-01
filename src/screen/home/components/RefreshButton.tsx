@@ -21,7 +21,11 @@ const Wrapper = styled.button<IRefreshBtnWrapper>`
   cursor: pointer;
 `;
 
-function RefreshButton() {
+interface RefreshButtonProps {
+  onClick: () => void;
+}
+
+function RefreshButton({ onClick }: RefreshButtonProps) {
   const scrollState = useScroll();
   const willdisplayRefreshButton = () => {
     if (scrollState === 'UP' && window.scrollY > 300) {
@@ -30,10 +34,10 @@ function RefreshButton() {
     return false;
   };
   return (
-    <Wrapper display={willdisplayRefreshButton() ? 'block' : 'none'}>
+    <Wrapper onClick={onClick} display={willdisplayRefreshButton() ? 'block' : 'none'}>
       <TextBase text={'새로운 게시물 확인'} />
     </Wrapper>
   );
 }
 
-export default RefreshButton
+export default RefreshButton;

@@ -27,6 +27,8 @@ interface IWrapperInfinityQueryScroll {
   pageItemCount?: number;
   itemLimit: number;
   setItemLimit: Dispatch<SetStateAction<number>>;
+  isLastPage: boolean;
+  setIsLastPage: Dispatch<SetStateAction<boolean>>;
 }
 
 function WrapperInfinityQueryScroll({
@@ -35,9 +37,9 @@ function WrapperInfinityQueryScroll({
   pageItemCount = 6,
   itemLimit,
   setItemLimit,
+  isLastPage,
+  setIsLastPage,
 }: IWrapperInfinityQueryScroll) {
-  const [isLastPage, setIsLastPage] = useState(false);
-
   const { ref, inView, entry } = useInView({
     // rootMargin: '-100px',
     threshold: 0,

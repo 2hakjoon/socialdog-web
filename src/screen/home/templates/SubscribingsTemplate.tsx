@@ -11,6 +11,7 @@ import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfin
 function SubscribingsTemplate() {
   const pageItemCount = 6;
   const [itemLimit, setItemLimit] = useState(pageItemCount);
+  const [isLastPage, setIsLastPage] = useState(false);
   const getSubscribingPosts = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
     variables: {
       page: {
@@ -31,6 +32,8 @@ function SubscribingsTemplate() {
         pageItemCount={pageItemCount}
         setItemLimit={setItemLimit}
         itemLimit={itemLimit}
+        isLastPage={isLastPage}
+        setIsLastPage={setIsLastPage}
       >
         {posts?.map((post, idx) => (
           <PostCard key={post.id} {...post} />
@@ -40,7 +43,9 @@ function SubscribingsTemplate() {
             .fill('')
             .map(() => <PostCardLoading key={Math.random()} />)}
       </WrapperInfinityQueryScroll>
-      {!getSubscribingPosts.loading && !posts?.length && <NoContents text={`아직 구독중인 계정이 없거나, \n 작성된 게시물이 없어요.`}/>}
+      {!getSubscribingPosts.loading && !posts?.length && (
+        <NoContents text={`아직 구독중인 계정이 없거나, \n 작성된 게시물이 없어요.`} />
+      )}
     </WrapperColumn>
   );
 }

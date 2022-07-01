@@ -29,6 +29,8 @@ interface IMyPosts {
 
 function MyPosts({ username, itemsCount }: IMyPosts) {
   const [itemLimit, setItemLimit] = useState<number>(itemsCount);
+  const [isLastPage, setIsLastPage] = useState(false);
+
   // console.log(itemLimit);
   const userPosts = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
     variables: { username, page: { take: itemLimit } },
@@ -43,6 +45,8 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
         pageItemCount={itemsCount}
         setItemLimit={setItemLimit}
         itemLimit={itemLimit}
+        isLastPage={false}
+        setIsLastPage={setIsLastPage}
       >
         <PostsGrid>
           {posts?.map((post) => (
