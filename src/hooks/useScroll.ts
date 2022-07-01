@@ -11,9 +11,9 @@ function useScroll () {
 
     const checkScrollDirection = ()=>{
       const nowPos = window.pageYOffset;
-      if(prevPos > nowPos){
+      if(prevPos < nowPos){
         setState('DOWN')
-      }else if(prevPos < nowPos){
+      }else if(prevPos > nowPos){
         setState('UP')
       }
       prevPos = nowPos
