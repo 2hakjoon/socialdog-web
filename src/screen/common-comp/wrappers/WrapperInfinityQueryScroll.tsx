@@ -4,6 +4,7 @@ import React, { Dispatch, ReactNode, SetStateAction, useState, useEffect } from 
 import { useInView } from 'react-intersection-observer';
 import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
+import TextBase from '../texts/TextBase';
 
 const Wrapper = styled.div`
   height: 100%;
@@ -11,21 +12,29 @@ const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative;
 `;
 
 const InViewWrapper = styled.div`
   height: 4px;
   width: 100%;
-  position: relative;
 `;
 
-const RefreshBtnWrapper = styled.button`
+interface IRefreshBtnWrapper {
+  display: 'block' | 'none';
+}
+
+const RefreshBtnWrapper = styled.button<IRefreshBtnWrapper>`
+  position: fixed;
+  top: 90px;
+  z-index: 2;
   border: none;
   background-color: white;
-  padding: 6px 12px;
+  padding: 10px 20px;
   border-radius: 20px;
   -webkit-box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
   box-shadow: 0px 2px 10px 3px rgba(0, 0, 0, 0.3);
+  display: ${(p) => p.display};
 `;
 
 interface IQueryResult {
@@ -100,6 +109,14 @@ function WrapperInfinityQueryScroll({
     });
   };
 
+  const willdisplayRefreshButton = () => {
+    console.log(window.scrollY)
+    if (scrollState === 'UP' && window.scrollY > 300) {
+      return true;
+    }
+    return false;
+  };
+
   useEffect(() => {
     if (inView) {
       fetchNextPage();
@@ -108,7 +125,9 @@ function WrapperInfinityQueryScroll({
 
   return (
     <Wrapper>
-      <RefreshBtnWrapper>새로고침</RefreshBtnWrapper>
+      <RefreshBtnWrapper display={willdisplayRefreshButton() ? 'block' : 'none'}>
+        <TextBase text={'새로운 게시물 확인'} />
+      </RefreshBtnWrapper>
       {children}
       <InViewWrapper ref={ref} />
     </Wrapper>
