@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client';
+import { makeReference, useApolloClient, useQuery } from '@apollo/client';
 import { GET_POSTS_BY_ADDRESS } from 'apllo-gqls/posts';
 import { addressTermState } from 'apollo-setup';
 import React, { useEffect, useState } from 'react';
@@ -16,6 +16,7 @@ function AddressPostsTemplate() {
   const pageItemCount = 6;
   const [itemLimit, setItemLimit] = useState(pageItemCount);
   const [isLastPage, setIsLastPage] = useState(false);
+  const client = useApolloClient();
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>(addressTermState());
   const address = searchAddressTerms?.map((term) => term.value).join(' ') || '대한민국';
   const getPostsByAddress = useQuery<QGetPostsByAddress, QGetPostsByAddressVariables>(GET_POSTS_BY_ADDRESS, {
@@ -29,8 +30,16 @@ function AddressPostsTemplate() {
   });
   const posts = getPostsByAddress.data?.getPostsByAddress.data;
 
-  const refreshPosts = () => {
-    console.log('asdf');
+  const removeAddressPosts = () => {
+    client.cache.modify({
+      id: client.cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getPostsByAddress() {
+          return undefined;
+        },
+      },
+    });
+    setIsLastPage(false);
   };
 
   useEffect(() => {
@@ -41,7 +50,7 @@ function AddressPostsTemplate() {
     <WrapperColumn>
       <AddressSelector addressTerms={searchAddressTerms} setAddressTerms={setSearchAddressTerms} />
       <WrapperColumn p={'0 8px'} w={'100%'}>
-        <RefreshButton onClick={refreshPosts} />
+        <RefreshButton onClick={removeAddressPosts} />
         <WrapperInfinityQueryScroll
           query={getPostsByAddress}
           pageItemCount={pageItemCount}
