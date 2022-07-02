@@ -1,4 +1,4 @@
-import { gql, useQuery } from '@apollo/client';
+import { gql, makeReference, useApolloClient, useQuery } from '@apollo/client';
 import React, { useEffect, useState } from 'react';
 import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
 import { GET_SUBSCRIBING_POSTS } from 'apllo-gqls/posts';
@@ -7,11 +7,13 @@ import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
 import NoContents from 'screen/common-comp/no-contents/NoContents';
 import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
+import RefreshButton from '../components/RefreshButton';
 
 function SubscribingsTemplate() {
   const pageItemCount = 6;
   const [itemLimit, setItemLimit] = useState(pageItemCount);
   const [isLastPage, setIsLastPage] = useState(false);
+  const client = useApolloClient();
   const getSubscribingPosts = useQuery<QGetSubscribingPosts>(GET_SUBSCRIBING_POSTS, {
     variables: {
       page: {
@@ -25,8 +27,21 @@ function SubscribingsTemplate() {
 
   const posts = getSubscribingPosts.data?.getSubscribingPosts.data;
 
+  const removeSubscribingPosts = () => {
+    client.cache.modify({
+      id: client.cache.identify(makeReference('ROOT_QUERY')),
+      fields: {
+        getSubscribingPosts() {
+          return undefined;
+        },
+      },
+    });
+    setIsLastPage(false);
+  };
+
   return (
     <WrapperColumn p={'0 8px'}>
+      <RefreshButton onClick={removeSubscribingPosts} />
       <WrapperInfinityQueryScroll
         query={getSubscribingPosts}
         pageItemCount={pageItemCount}
