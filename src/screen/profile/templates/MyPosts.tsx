@@ -45,14 +45,14 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
         pageItemCount={itemsCount}
         setItemLimit={setItemLimit}
         itemLimit={itemLimit}
-        isLastPage={false}
+        isLastPage={isLastPage}
         setIsLastPage={setIsLastPage}
       >
         <PostsGrid>
           {posts?.map((post) => (
             <WrapperSquare key={post.id}>
               <ImgWrapper>
-                  <PostSmallBox {...post} />
+                <PostSmallBox {...post} />
               </ImgWrapper>
             </WrapperSquare>
           ))}
