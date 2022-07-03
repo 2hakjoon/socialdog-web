@@ -36,6 +36,7 @@ function SubscribingsTemplate() {
         },
       },
     });
+    window.scrollTo({top: 0, behavior: 'smooth'});
     setIsLastPage(false);
   };
 
