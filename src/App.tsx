@@ -25,27 +25,39 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Suspense fallback={<></>}>
-          <ScrollToTop />
-          <GeolocationComp />
-          <Routes>
-            {isLoggedIn ? (
-              <>
+        <ScrollToTop />
+        <GeolocationComp />
+        <Routes>
+          {isLoggedIn ? (
+            <>
+              <Suspense fallback={<>HomeScreen</>}>
                 <Route path={routes.home} element={<HomeScreen />} />
+              </Suspense>
+              <Suspense fallback={<>PostDetailScreen</>}>
                 <Route path={routes.postDetail} element={<PostDetailScreen />} />
+              </Suspense>
+              <Suspense fallback={<>PostWriteScreen</>}>
                 <Route path={routes.postWrite} element={<PostWriteScreen />} />
+              </Suspense>
+              <Suspense fallback={<>ProfileScreen</>}>
                 <Route path={routes.profile} element={<ProfileScreen />} />
+              </Suspense>
+              <Suspense fallback={<>ProfileEditScreen</>}>
                 <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
+              </Suspense>
+              <Suspense fallback={<>SearchScreen</>}>
                 <Route path={routes.search} element={<SearchScreen />} />
+              </Suspense>
+              <Suspense fallback={<>CommentDetailScreen</>}>
                 <Route path={routes.commentDetail} element={<CommentDetailScreen />} />
-              </>
-            ) : (
-              <>
-                <Route path="*" element={<LoginScreen />} />
-              </>
-            )}
-          </Routes>
-        </Suspense>
+              </Suspense>
+            </>
+          ) : (
+            <Suspense fallback={<>LoginScreen</>}>
+              <Route path="*" element={<LoginScreen />} />
+            </Suspense>
+          )}
+        </Routes>
       </Router>
     </ThemeProvider>
   );
