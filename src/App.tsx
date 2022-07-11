@@ -7,6 +7,7 @@ import ProfileScreen from 'screen/profile/ProfileScreen';
 import HomeScreen from 'screen/home/HomeScreen';
 import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
+import ErrorBoundary from 'screen/common-comp/error-boundary/ErrorBoundary';
 
 const ProfileEditScreen = lazy(() => import('screen/profile/ProfileEditScreen'));
 const SearchScreen = lazy(() => import('screen/search/SearchScreen'));
@@ -25,27 +26,29 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <Suspense fallback={<></>}>
-          <ScrollToTop />
-          <GeolocationComp />
-          <Routes>
-            {isLoggedIn ? (
-              <>
-                <Route path={routes.home} element={<HomeScreen />} />
-                <Route path={routes.postDetail} element={<PostDetailScreen />} />
-                <Route path={routes.postWrite} element={<PostWriteScreen />} />
-                <Route path={routes.profile} element={<ProfileScreen />} />
-                <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
-                <Route path={routes.search} element={<SearchScreen />} />
-                <Route path={routes.commentDetail} element={<CommentDetailScreen />} />
-              </>
-            ) : (
-              <>
-                <Route path="*" element={<LoginScreen />} />
-              </>
-            )}
-          </Routes>
-        </Suspense>
+        <ErrorBoundary>
+          <Suspense fallback={<></>}>
+            <ScrollToTop />
+            <GeolocationComp />
+            <Routes>
+              {isLoggedIn ? (
+                <>
+                  <Route path={routes.home} element={<HomeScreen />} />
+                  <Route path={routes.postDetail} element={<PostDetailScreen />} />
+                  <Route path={routes.postWrite} element={<PostWriteScreen />} />
+                  <Route path={routes.profile} element={<ProfileScreen />} />
+                  <Route path={routes.profileEdit} element={<ProfileEditScreen />} />
+                  <Route path={routes.search} element={<SearchScreen />} />
+                  <Route path={routes.commentDetail} element={<CommentDetailScreen />} />
+                </>
+              ) : (
+                <>
+                  <Route path="*" element={<LoginScreen />} />
+                </>
+              )}
+            </Routes>
+          </Suspense>
+        </ErrorBoundary>
       </Router>
     </ThemeProvider>
   );
