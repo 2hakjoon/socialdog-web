@@ -8,8 +8,6 @@
     "@fortawesome/free-regular-svg-icons": "^6.0.0",
     "@fortawesome/free-solid-svg-icons": "^6.0.0",
     "@fortawesome/react-fontawesome": "^0.1.17",
-    "@testing-library/jest-dom": "^5.16.2",
-    "@testing-library/user-event": "^13.5.0",
     "axios": "^0.26.0",
     "compressorjs": "^1.1.1",
     "dayjs": "^1.10.7",
@@ -54,7 +52,9 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
     "@testing-library/react": "^12.1.5",
+    "@testing-library/user-event": "^13.5.0",
     "@types/graphql": "^14.5.0",
     "@types/jest": "^27.5.2",
     "@types/node": "^16.11.43",
@@ -64,6 +64,7 @@
     "@typescript-eslint/eslint-plugin": "^5.12.0",
     "@typescript-eslint/parser": "^5.12.0",
     "apollo": "^2.33.9",
+    "cypress": "^10.3.1",
     "eslint": "^8.9.0",
     "eslint-config-airbnb": "^19.0.4",
     "eslint-config-prettier": "^8.4.0",
