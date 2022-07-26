@@ -32,7 +32,8 @@
     "lint": "eslint './src/**/*.{ts,tsx}'",
     "lint:fix": "eslint --fix './src/**/*.{ts,tsx}'",
     "codegen": "sudo apollo client:codegen src/__generated__ --target=typescript --outputFlat",
-    "cypress": "node_modules/.bin/cypress open"
+    "cypress": "node_modules/.bin/cypress open",
+    "cypress:e2e" : "npx cypress run --record --key"
   },
   "eslintConfig": {
     "extends": [
