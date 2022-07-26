@@ -11,12 +11,13 @@ import { QMe } from '__generated__/QMe';
 import IconSearch from 'assets/svg/IconSearch';
 import IconPlus from 'assets/svg/IconPlus';
 import IconUser from 'assets/svg/IconUser';
+import { theme } from 'assets/styles/theme';
 
 const Wrapper = styled.header`
   width: 100%;
   height: 60px;
   background-color: white;
-  border-bottom: 2px solid ${({ theme }) => theme.color.achromatic.lightGray};
+  border-bottom: 2px solid ${theme.color.achromatic.lightGray};
   padding: 0 8px;
   position: fixed;
   top: 0;
@@ -30,7 +31,7 @@ const Block = styled.div`
 `;
 
 const InnerWrapper = styled.div`
-  max-width: ${({ theme }) => theme.layout.screenMaxWidth};
+  max-width: ${theme.layout.screenMaxWidth};
   width: 100%;
   height: 100%;
   display: flex;
@@ -66,15 +67,9 @@ function MainHeader() {
             <Link to={routes.postWrite}>
               <IconPlus size={24} />
             </Link>
-            {getAccessToken() ? (
-              <Link to={user?.username ? `/${user?.username}` : routes.home}>
-                <IconUser size={22} />
-              </Link>
-            ) : (
-              <Link to={routes.login}>
-                <div>로그인</div>
-              </Link>
-            )}
+            <Link to={user?.username ? `/${user?.username}` : routes.home}>
+              <IconUser size={22} />
+            </Link>
           </WrapperRow>
         </InnerWrapper>
       </Wrapper>
