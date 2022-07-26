@@ -55,19 +55,19 @@ function MainHeader() {
       <Block />
       <Wrapper>
         <InnerWrapper>
-          <Link to={routes.home}>
+          <Link data-cy="link-home"  to={routes.home}>
             <LogoWrapper>
               <img alt="asdf" src={socialDogLogoBlack} />
             </LogoWrapper>
           </Link>
           <WrapperRow w="100px" jc={'space-between'}>
-            <Link to={routes.search}>
+            <Link data-cy="link-search" to={routes.search}>
               <IconSearch size={24} />
             </Link>
-            <Link to={routes.postWrite}>
+            <Link data-cy="link-plus" to={routes.postWrite}>
               <IconPlus size={24} />
             </Link>
-            <Link to={user?.username ? `/${user?.username}` : routes.home}>
+            <Link data-cy="link-user" to={user?.username ? `/${user?.username}` : routes.home}>
               <IconUser size={22} />
             </Link>
           </WrapperRow>
