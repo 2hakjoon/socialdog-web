@@ -16,10 +16,10 @@ describe('show login page', () => {
     cy.get(btnKakaoLogin)
   })
 
-  it('should login', () => {
+  it('should login successfully', () => {
     cy.visit('/')
 
     cy.get(btnKakaoLogin).click()
-    cy.get(userProfileLink)
+    cy.get(userProfileLink, { timeout: 1000000 })
   })
 })
