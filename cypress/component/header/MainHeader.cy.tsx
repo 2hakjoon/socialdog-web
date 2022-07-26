@@ -1,5 +1,5 @@
 import React from 'react';
-import MainHeader from '../../src/screen/common-comp/header/MainHeader';
+import MainHeader from '../../../src/screen/common-comp/header/MainHeader';
 import { MockedProvider } from '@apollo/client/testing';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
