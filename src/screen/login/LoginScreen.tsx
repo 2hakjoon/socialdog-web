@@ -130,8 +130,8 @@ function LoginScreen() {
   return (
     <Wrapper>
       <InnerWrapper>
-        <ImageBase url={SplashImg} />
-        <KakaoLoginWrapper onClick={() => kakaoLogin({ accecptTerms: false })}>
+        <img data-cy="img-splash" alt='소셜독 아이콘' src={SplashImg} />
+        <KakaoLoginWrapper data-cy="btn-kakaologin" onClick={() => kakaoLogin({ accecptTerms: false })}>
           <WrapperButton bc={theme.color.blue.primaryBlue} w={'100%'}>
             <ImageBase url={KakaoImg} />
           </WrapperButton>
