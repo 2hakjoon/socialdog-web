@@ -40,7 +40,7 @@ function RefreshButton({ onClick }: RefreshButtonProps) {
   return (
     <>
       {visible && (
-        <Wrapper onClick={refreshHandler}>
+        <Wrapper onClick={refreshHandler} data-cy="btn-refresh-feed">
           <TextBase text={'새로운 게시물 확인'} />
         </Wrapper>
       )}
