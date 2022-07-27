@@ -22,7 +22,7 @@ import './commands'
 
 import { mount } from 'cypress/react'
 
-import './index.css'
+import '../../src/index.css'
 
 // Augment the Cypress namespace to include type definitions for
 // your custom command.
