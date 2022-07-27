@@ -52,10 +52,10 @@ describe('MainHeader.cy.ts', () => {
   it('should render icons', () => {
     cy.mount(MainHeaderComponent);
 
-    cy.get(mainLogo);
-    cy.get(iconSearch);
-    cy.get(iconPlus);
-    cy.get(iconUser);
+    cy.get(mainLogo).should('exist');
+    cy.get(iconSearch).should('exist');
+    cy.get(iconPlus).should('exist');
+    cy.get(iconUser).should('exist');
   });
 
   it('should has link', () => {
