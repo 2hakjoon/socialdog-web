@@ -12,14 +12,14 @@ describe('show login page', () => {
   it('should display items', () => {
     cy.visit('/')
 
-    cy.get(imgSplash)
-    cy.get(btnKakaoLogin)
+    cy.get(imgSplash).should('exist')
+    cy.get(btnKakaoLogin).should('exist')
   })
 
   it('should login successfully', () => {
     cy.visit('/')
 
     cy.get(btnKakaoLogin).click()
-    cy.get(userProfileLink, { timeout: 1000000 })
+    cy.get(userProfileLink, { timeout: 1000000 }).should('exist')
   })
 })
