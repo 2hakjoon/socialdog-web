@@ -6,13 +6,12 @@ import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
 import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPaw, faLocationDot, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
-import { useApolloClient, useMutation } from '@apollo/client';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
 import useToggleLike from 'hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
@@ -76,8 +75,6 @@ function PostCard({
 }: QGetSubscribingPosts_getSubscribingPosts_data) {
   // const [toggleLike] = useMutation<MToggleLikePost, MToggleLikePostVariables>(TOGGLE_LIKE_POST);
   const toggleLikeHandler = useToggleLike();
-  const client = useApolloClient();
-  const navigate = useNavigate();
   const parsedPhotos: string[] = JSON.parse(photos);
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -95,7 +92,7 @@ function PostCard({
         <TopBar>
           <EmpyBox />
           <WrapperRow>
-            <Link to={`${routes.home}${user.username}`} style={{ textDecoration: 'none' }}>
+            <Link to={`${routes.home}${user.username}`} style={{ textDecoration: 'none' }} data-cy="link-user-photo">
               <ProfilePhoto size="32px" url={user.photo ? user.photo : ''} />
             </Link>
             <TextLink
@@ -105,10 +102,16 @@ function PostCard({
               fontSize="1rem"
               fontFamily="Nanum Gothic"
               fontWeight={600}
+              data-cy="link-user-name"
             />
-            <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" />
+            <TextBase text={aFewTimeAgo(createdAt)} fontSize={'12px'} m="0 4px 0 0" data-cy="text-time-ago" />
             {createdAt !== updatedAt && (
-              <TextBase text={'(수정됨)'} fontSize={'12px'} color={theme.color.achromatic.darkGray} />
+              <TextBase
+                text={'(수정됨)'}
+                fontSize={'12px'}
+                color={theme.color.achromatic.darkGray}
+                data-cy="text-updated"
+              />
             )}
           </WrapperRow>
           <DropdownEllipsis
@@ -120,11 +123,11 @@ function PostCard({
             ]}
           />
         </TopBar>
-        <Carousel showArrows={false} showThumbs={false} dynamicHeight showStatus={false}>
+        <Carousel showArrows={false} showThumbs={false} dynamicHeight showStatus={false} data-cy="carousel-photo">
           {parsedPhotos.map((photo, idx) => (
             <WrapperSquare key={photo}>
               <ImgWrapper>
-                <ImageBase url={photo} />
+                <ImageBase url={photo} data-cy={`carousel-photo-${idx}`} />
               </ImgWrapper>
             </WrapperSquare>
           ))}
@@ -139,6 +142,7 @@ function PostCard({
                     size="2x"
                     color={theme.color.blue.primaryBlue}
                     style={{ marginRight: 6 }}
+                    data-cy="button-like"
                   />
                 ) : (
                   <FontAwesomeIcon
@@ -146,10 +150,11 @@ function PostCard({
                     size="2x"
                     color={theme.color.achromatic.darkGray}
                     style={{ marginRight: 6 }}
+                    data-cy="button-like"
                   />
                 )}
               </WrapperButton>
-              {likes > 0 && <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} />}
+              {likes > 0 && <TextBase text={likes} fontWeight={500} m={'auto 8px 1px 0'} data-cy="text-count-likes" />}
               {address && (
                 <>
                   <FontAwesomeIcon
@@ -157,18 +162,21 @@ function PostCard({
                     size="lg"
                     color={theme.color.blue.primaryBlue}
                     style={{ marginRight: 10 }}
+                    data-cy="icon-location-dot"
                   />
-                  <TextBase text={address} fontSize="14px" fontWeight={500} />
+                  <TextBase text={address} fontSize="14px" fontWeight={500} data-cy="text-address" />
                 </>
               )}
             </WrapperRow>
           </WrapperRow>
-          <Link to={`${routes.postDetailBase}${id}`}>
+          <Link to={`${routes.postDetailBase}${id}`} data-cy="link-post-detail">
             <WrapperColumn ai="flex-start" p="0 0 20px 0">
               <TextEllipsis line={3}>
-                <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} />
+                <TextBase text={contents} fontSize={'0.875rem'} p={'0'} m={'0'} data-cy="text-content" />
               </TextEllipsis>
-              {Boolean(commentCounts) && <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} />}
+              {Boolean(commentCounts) && (
+                <TextBase text={`댓글 수 : ${commentCounts}개`} m={'20px 0 0 0'} data-cy="text-count-comment" />
+              )}
             </WrapperColumn>
           </Link>
         </Contents>

@@ -26,7 +26,7 @@ export interface ITextBase extends ITextProps {
   text?: string | null | number;
 }
 
-function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight }: ITextBase) {
+function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight, ...rest }: ITextBase) {
   return (
     <Text
       m={m}
@@ -36,6 +36,7 @@ function TextBase({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHig
       fontWeight={fontWeight}
       fontSize={fontSize}
       lineHight={lineHight}
+      {...rest}
     >
       {text}
     </Text>

@@ -12,8 +12,8 @@ interface ImageBase {
   url: string;
 }
 
-function ImageBase({ url }: ImageBase) {
-  return <Image src={url} />;
+function ImageBase({ url, ...rest }: ImageBase) {
+  return <Image src={url} {...rest} />;
 }
 
 export default ImageBase;

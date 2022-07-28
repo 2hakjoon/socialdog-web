@@ -53,7 +53,7 @@ function DropdownEllipsis({ items }: IDropdownEllipsis) {
   }, []);
 
   return (
-    <Wrapper>
+    <Wrapper data-cy="btn-dropdown-report">
       <WrapperButton onClick={toggleDropdownVisible} jc="center" w={'100%'} h={'100%'}>
         <FontAwesomeIcon size="lg" icon={faEllipsisVertical} color={theme.color.achromatic.darkGray} />
       </WrapperButton>

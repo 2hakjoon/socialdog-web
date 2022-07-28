@@ -19,7 +19,7 @@ export interface ITextLink extends ITextProps {
   href: string;
 }
 
-function TextLink({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight, href }: ITextLink) {
+function TextLink({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHight, href, ...rest }: ITextLink) {
   return (
     <Text
       href={href}
@@ -30,6 +30,7 @@ function TextLink({ text, p, m, fontFamily, fontWeight, color, fontSize, lineHig
       fontWeight={fontWeight}
       fontSize={fontSize}
       lineHight={lineHight}
+      {...rest}
     >
       {text}
     </Text>
