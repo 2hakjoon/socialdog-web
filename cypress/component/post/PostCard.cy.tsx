@@ -113,3 +113,14 @@ describe('postCardComponentDefault', () => {
     cy.get(textContent).should('have.text', contents);
   });
 });
+
+describe('postCardComponentLiked', () => {
+  it('should be rendered', ()=>{
+    cy.mount(postCardComponentLiked)
+  })
+  it('should be blue color', ()=>{
+    cy.mount(postCardComponentLiked)
+
+    cy.get(buttonLike).should('have.css', 'color', hexToRgb(theme.color.blue.primaryBlue));
+  })
+})
