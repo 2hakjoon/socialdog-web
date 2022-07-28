@@ -23,7 +23,6 @@ const createdAt = '1656837002465';
 const contents = '테스트';
 const commentCount = 1;
 
-
 const postDataDefault: QGetSubscribingPosts_getSubscribingPosts_data = {
   __typename: 'Posts',
   likes: 0,
@@ -74,6 +73,18 @@ const postCardComponentCommented = (
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="*" element={<PostCard {...postDataDefault} commentCounts={commentCount} />} />
+        </Routes>
+      </ThemeProvider>
+    </MockedProvider>
+  </Router>
+);
+
+const postCardComponentUpdated = (
+  <Router>
+    <MockedProvider>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="*" element={<PostCard {...postDataDefault} updatedAt={`${+createdAt + 1}`} />} />
         </Routes>
       </ThemeProvider>
     </MockedProvider>
@@ -146,11 +157,27 @@ describe('postCardComponentCommented', () => {
   it('should render comment count', () => {
     cy.mount(postCardComponentCommented);
 
-    cy.get(textCountComment).should('exist')
+    cy.get(textCountComment).should('exist');
   });
   it('should render comment count correctly', () => {
     cy.mount(postCardComponentCommented);
 
-    cy.get(textCountComment).should('have.text', `댓글 수 : ${commentCount}개`)
+    cy.get(textCountComment).should('have.text', `댓글 수 : ${commentCount}개`);
   });
+});
+
+describe('postCardComponentUpdated', () => {
+    it('should be rendered', () => {
+      cy.mount(postCardComponentUpdated);
+    });
+    it('should render comment count', () => {
+      cy.mount(postCardComponentUpdated);
+  
+      cy.get(textUpdate).should('exist');
+    });
+    it('should render updated count correctly', () => {
+      cy.mount(postCardComponentUpdated);
+  
+      cy.get(textUpdate).should('have.text', `(수정됨)`);
+    });
 })
