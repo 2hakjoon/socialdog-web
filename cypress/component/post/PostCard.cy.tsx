@@ -7,6 +7,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { aFewTimeAgo } from '../../../src/utils/timeformat/aFewTimeAgo';
 import { hexToRgb } from '../../support/utils';
 import { routes } from '../../../src/screen/routes';
+import { QGetSubscribingPosts_getSubscribingPosts_data } from '../../../src/__generated__/QGetSubscribingPosts';
 
 const id = '32cdda30-c042-4f58-9d6a-adaba1125e58';
 const photos =
@@ -20,8 +21,10 @@ const userPhoto =
 const address = '대한민국';
 const createdAt = '1656837002465';
 const contents = '테스트';
+const commentCount = 1;
 
-const postDataDefault = {
+
+const postDataDefault: QGetSubscribingPosts_getSubscribingPosts_data = {
   __typename: 'Posts',
   likes: 0,
   commentCounts: 0,
@@ -38,7 +41,6 @@ const postDataDefault = {
     id: 'c78618f9-ed0e-4b51-b4ae-a84037adc6c5',
     username,
     photo: userPhoto,
-    profileOpen: false,
   },
 };
 
@@ -60,6 +62,18 @@ const postCardComponentLiked = (
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="*" element={<PostCard {...postDataDefault} liked />} />
+        </Routes>
+      </ThemeProvider>
+    </MockedProvider>
+  </Router>
+);
+
+const postCardComponentCommented = (
+  <Router>
+    <MockedProvider>
+      <ThemeProvider theme={theme}>
+        <Routes>
+          <Route path="*" element={<PostCard {...postDataDefault} commentCounts={commentCount} />} />
         </Routes>
       </ThemeProvider>
     </MockedProvider>
@@ -115,12 +129,28 @@ describe('postCardComponentDefault', () => {
 });
 
 describe('postCardComponentLiked', () => {
-  it('should be rendered', ()=>{
-    cy.mount(postCardComponentLiked)
-  })
-  it('should be blue color', ()=>{
-    cy.mount(postCardComponentLiked)
+  it('should be rendered', () => {
+    cy.mount(postCardComponentLiked);
+  });
+  it('should be blue color', () => {
+    cy.mount(postCardComponentLiked);
 
     cy.get(buttonLike).should('have.css', 'color', hexToRgb(theme.color.blue.primaryBlue));
-  })
+  });
+});
+
+describe('postCardComponentCommented', () => {
+  it('should be rendered', () => {
+    cy.mount(postCardComponentCommented);
+  });
+  it('should render comment count', () => {
+    cy.mount(postCardComponentCommented);
+
+    cy.get(textCountComment).should('exist')
+  });
+  it('should render comment count correctly', () => {
+    cy.mount(postCardComponentCommented);
+
+    cy.get(textCountComment).should('have.text', `댓글 수 : ${commentCount}개`)
+  });
 })
