@@ -68,10 +68,10 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   return (
     <ModalRound closeModal={closeModal} title="구독 및 신청">
       <WrapperRow jc="space-around">
-        <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)}>
+        <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)} data-cy='tab-subscribing'>
           <TextBase text={'구독 중'} />
         </TabBox>
-        <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)}>
+        <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)} data-cy='tab-request'>
           <TextBase text={'구독 신청'} />
         </TabBox>
       </WrapperRow>
@@ -81,7 +81,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             <>
               {subscribingUsers?.map((subscribingUser) => (
                 <WrapperRow key={subscribingUser.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} />
+                  <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} data-cy="wrapper-usercard"/>
                 </WrapperRow>
               ))}
             </>
@@ -90,8 +90,9 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             <>
               {subscribingRequests?.map((subscribingRequest) => (
                 <WrapperRow key={subscribingRequest.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...subscribingRequest} />
+                  <UserCardThin onClick={closeModal} {...subscribingRequest} data-cy="wrapper-usercard"/>
                   <ButtonSmallWhite
+                  data-cy="btn-cancle-request"
                     title="취소"
                     onClick={() => cancleSubscribingRequestHandler(subscribingRequest.id)}
                   />

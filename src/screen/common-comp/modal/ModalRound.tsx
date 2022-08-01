@@ -54,7 +54,7 @@ function ModalRound({ children, title, closeModal }: IModalRound) {
         <FontAwesomeIcon icon={faXmark} size="2x" color="white" />
         <TextBase text={title} fontWeight={500} />
         <WrapperButton w="" h="" onClick={closeModal}>
-          <FontAwesomeIcon icon={faXmark} size="2x" />
+          <FontAwesomeIcon icon={faXmark} size="2x" data-cy="btn-close-modal"/>
         </WrapperButton>
       </TopBarWrapper>
       <ContentsWrapper>{children}</ContentsWrapper>

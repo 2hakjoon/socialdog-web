@@ -90,8 +90,8 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
             <>
               {rejectedUsers?.map((rejectedUser) => (
                 <WrapperRow key={rejectedUser.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...rejectedUser} />
-                  <ButtonSmallBlue title="수락" onClick={() => onConfirmRequest(rejectedUser.id)} />
+                  <UserCardThin onClick={closeModal} {...rejectedUser} data-cy="wrapper-usercard"/>
+                  <ButtonSmallBlue title="수락" onClick={() => onConfirmRequest(rejectedUser.id)} data-cy="btn-accecpt-request"/>
                 </WrapperRow>
               ))}
             </>

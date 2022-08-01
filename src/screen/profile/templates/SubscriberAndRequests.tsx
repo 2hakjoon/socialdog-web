@@ -129,10 +129,10 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
     <ModalRound closeModal={closeModal} title="구독자 및 신청">
       <WrapperRow jc="space-around">
         <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)}>
-          <TextBase text={'구독자'} />
+          <TextBase text={'구독자'} data-cy='tab-subscriber'/>
         </TabBox>
         <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)}>
-          <TextBase text={'구독 신청'} />
+          <TextBase text={'구독 신청'} data-cy='tab-requested'/>
         </TabBox>
       </WrapperRow>
       <WrapperColumn>
@@ -141,8 +141,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribers?.map((subscriber) => (
                 <WrapperRow key={subscriber.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...subscriber} />
+                  <UserCardThin onClick={closeModal} {...subscriber} data-cy="wrapper-usercard"/>
                   <ButtonSmallBlue
+                    data-cy='btn-hold-request'
                     title="보류"
                     onClick={() => onResponseSubscribe(subscriber.id, SubscribeRequestState.REQUESTED)}
                   />
@@ -154,13 +155,15 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribeRequests?.map((user) => (
                 <WrapperRow key={user.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...user} />
+                  <UserCardThin onClick={closeModal} {...user} data-cy="wrapper-usercard"/>
                   <ButtonSmallBlue
+                    data-cy='btn-accecpt-request'
                     title="수락"
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}
                   />
 
                   <ButtonSmallWhite
+                    data-cy='btn-reject-request'
                     title="거절"
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.REJECTED)}
                   />

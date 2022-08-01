@@ -187,6 +187,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                   h="50px"
                   jc="space-around"
                   onClick={isMyProfile() ? openSubscribingModal : () => {}}
+                  data-cy="btn-subscribings-modal"
                 >
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />
@@ -196,6 +197,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                   h="50px"
                   jc="space-around"
                   onClick={isMyProfile() ? openSubscriberModal : () => {}}
+                  data-cy="btn-subscribers-modal"
                 >
                   <TextBase text={'구독자'} />
                   <TextBase text={user.subscribers || 0} />
@@ -216,7 +218,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                       data-cy="btn-cancel-subscribe"
                     />
                   )}
-                  {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
+                  {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} data-cy="text-subscribe-requested" />}
                   {isNotSubscribeReqested() && (
                     <ButtonSmallBlue
                       title="구독신청"
