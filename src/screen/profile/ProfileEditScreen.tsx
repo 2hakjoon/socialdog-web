@@ -199,7 +199,7 @@ function ProfileEditScreen() {
               />
             </WrapperColumn>
             <WrapperColumn p="20px 0px 0px 0px">
-              {userAgent !== 'APP' && <ButtonSmallBlue title="로그아웃" onClick={logoutHandler} />}
+              {userAgent !== 'APP' && <ButtonSmallBlue title="로그아웃" onClick={logoutHandler} data-cy='btn-logout'/>}
             </WrapperColumn>
             <FormWrapper>
               <WrapperColumn w={'100%'} ai="flex-start">

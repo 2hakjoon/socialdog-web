@@ -174,7 +174,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
               <WrapperRow>
                 <TextBase text={user.username} p="0 6px" />
                 {isMyProfile() && (
-                  <Link to={routes.profileEdit}>
+                  <Link to={routes.profileEdit} data-cy='link-edit-profile'>
                     <FontAwesomeIcon icon={faPenToSquare} size="1x" color='black'/>
                   </Link>
                 )}

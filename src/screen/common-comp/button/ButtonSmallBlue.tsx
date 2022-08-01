@@ -21,9 +21,9 @@ export interface IButtonSmallBlue extends IButtonProps {
   onClick: () => void;
 }
 
-function ButtonSmallBlue({ title, enable, onClick, style }: IButtonSmallBlue) {
+function ButtonSmallBlue({ title, enable, onClick, style, ...rest }: IButtonSmallBlue) {
   return (
-    <Button type="button" onClick={onClick} disabled={!enable} enable={enable} style={style}>
+    <Button type="button" onClick={onClick} disabled={!enable} enable={enable} style={style} {...rest}>
       {title}
     </Button>
   );
