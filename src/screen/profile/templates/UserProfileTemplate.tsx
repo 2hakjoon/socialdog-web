@@ -172,10 +172,10 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
             <WrapperColumn h="140px" jc="space-around">
               <ProfilePhoto size="80px" url={user.photo} />
               <WrapperRow>
-                <TextBase text={user.username} p="0 6px" />
+                <TextBase text={user.username} p="0 6px" data-cy="text-username" />
                 {isMyProfile() && (
-                  <Link to={routes.profileEdit} data-cy='link-edit-profile'>
-                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color='black'/>
+                  <Link to={routes.profileEdit} data-cy="link-edit-profile">
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color="black" />
                   </Link>
                 )}
               </WrapperRow>
@@ -202,20 +202,40 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                 </WrapperButton>
               </WrapperRow>
               {isMyProfile() ? (
-                <ButtonSmallBlue title={'차단-거절 관리'} onClick={() => openBlockAndRejected()} />
+                <ButtonSmallBlue
+                  title={'차단-거절 관리'}
+                  onClick={() => openBlockAndRejected()}
+                  data-cy="btn-block-reject-modal"
+                />
               ) : (
                 <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                   {isSubscribeConfrimed() && (
-                    <ButtonSmallWhite title="구독취소" onClick={() => oncancelSubscribing(user.id)} />
+                    <ButtonSmallWhite
+                      title="구독취소"
+                      onClick={() => oncancelSubscribing(user.id)}
+                      data-cy="btn-cancel-subscribe"
+                    />
                   )}
                   {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
                   {isNotSubscribeReqested() && (
-                    <ButtonSmallBlue title="구독신청" onClick={() => onRequestSubscribe(user.id)} />
+                    <ButtonSmallBlue
+                      title="구독신청"
+                      onClick={() => onRequestSubscribe(user.id)}
+                      data-cy="btn-request-subscribe"
+                    />
                   )}
                   {isBlokingPerson() ? (
-                    <ButtonSmallBlue title="차단해제" onClick={() => changeUserBlock(username, false)} />
+                    <ButtonSmallBlue
+                      title="차단해제"
+                      onClick={() => changeUserBlock(username, false)}
+                      data-cy="btn-unblock"
+                    />
                   ) : (
-                    <ButtonSmallWhite title="차단" onClick={() => changeUserBlock(username, true)} />
+                    <ButtonSmallWhite
+                      title="차단"
+                      onClick={() => changeUserBlock(username, true)}
+                      data-cy="btn-block"
+                    />
                   )}
                 </WrapperRow>
               )}
