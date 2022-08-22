@@ -1,5 +1,6 @@
 # 소셜독 프론트엔드
-![KakaoTalk_Photo_2022-02-26-18-39-16 001 (1)](https://user-images.githubusercontent.com/61589338/177762295-fccfefd1-f17e-4c54-b9a9-12c6162b7228.png)   
+![KakaoTalk_Photo_2022-02-26-18-39-16 001 (1)](https://user-images.githubusercontent.com/61589338/177762295-fccfefd1-f17e-4c54-b9a9-12c6162b7228.png)
+서비스 주소 : https://www.oursocialdog.com/
 지역기반의 반려동물 커뮤니티 소셜독의 프론트엔드입니다.  
 React를 사용하였으며, 상태관리는 Apollo Client를 사용하였습니다.
 
@@ -7,10 +8,29 @@ React를 사용하였으며, 상태관리는 Apollo Client를 사용하였습니
  * Typescript
  * React
  * Apollo Client
+ * Styled Component
+ * Axios
+ * Cypress
+
+
+## 데모영상
+### 서비스 전체
+[screen-recording.webm](https://user-images.githubusercontent.com/61589338/185916606-16530304-7b6e-4723-ba3c-1211fc587f8f.webm)
+
+### 게시글 CRUD
+[screen-recording (3).webm](https://user-images.githubusercontent.com/61589338/185916601-07a75162-70af-47b9-9844-dc53410fd644.webm)
+
+### 지역별 게시물 보기
+[screen-recording (5).webm](https://user-images.githubusercontent.com/61589338/185916610-2815c400-84ba-4102-85fb-61a4e5eb31dc.webm)
+
+### 구독신청, 수락, 거절
+[screen-recording (6).webm](https://user-images.githubusercontent.com/61589338/185916618-c841afd7-ae3c-491e-ae82-b7229a3de0a8.webm)
+
+
 
 ## 기능 구현
  - 로그인 관련  
- JWT방식 Token사용.  
+ JWT Token사용.  
  Kakao Login Api사용.
  Apollo Client의 Error Handling을 활용하여 만료된 Token자동 갱신.
 
@@ -31,3 +51,68 @@ React를 사용하였으며, 상태관리는 Apollo Client를 사용하였습니
 
  - 클라이언트 사이드 캐싱
  게시물 및 유저정보 캐싱. 데이터 변경시 캐시 수정.
+
+
+ ## 폴더 구조
+ ```
+ └── src
+    ├── cypress
+    │   ├── e2e
+    │   ├── component
+    ├── __generated__
+    ├── apllo-gqls
+    ├── assets
+    │   ├── png
+    │   ├── styles
+    │   └── svg
+    ├── hooks
+    ├── screen
+    │   ├── comment-detail
+    │   │   └── components
+    │   ├── common-comp
+    │   │   ├── button
+    │   │   ├── dropdown
+    │   │   ├── error-boundary
+    │   │   ├── footer
+    │   │   ├── geolocation
+    │   │   ├── header
+    │   │   ├── image
+    │   │   ├── input
+    │   │   ├── modal
+    │   │   ├── no-contents
+    │   │   ├── place-search
+    │   │   ├── report
+    │   │   ├── scroll
+    │   │   ├── skeleton
+    │   │   ├── texts
+    │   │   ├── user-card
+    │   │   └── wrappers
+    │   ├── home
+    │   │   ├── components
+    │   │   └── templates
+    │   ├── login
+    │   │   └── template
+    │   ├── post-detail
+    │   │   ├── components
+    │   │   └── template
+    │   ├── post-write
+    │   │   ├── components
+    │   │   └── template
+    │   ├── profile
+    │   │   ├── components
+    │   │   └── templates
+    │   └── search
+    ├── types
+    └── utils
+        └── timeformat
+ ```
+
+| 폴더           | 용도                                                                                 |
+| -------------- | -----------------------------------------------------------------------------------|
+| **cypress**    | 테스트 자동화를 위한 cypress코드 작성                                                     |
+| **__generated__**| Apollo Tools로 자동생성된 스키마 types                                                |
+| **apllo-gqls** | Apollo Client로 서버에 요청할때 필요한 Graphql 쿼리 스트링 작성                              |
+| **assets**     | svg, png등 정적 파일 및 theme객체 작성                                                  |
+| **common**     | 공용으로 사용하는 hook 및 컴포넌트 작성                                                    |
+| **screen**     | 각 라우트 별로 component, template, hooks를 작성                                        |
+| **utils**      | 공용으로 사용하는 함수들 작성                                                             |
