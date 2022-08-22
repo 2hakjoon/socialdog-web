@@ -4,7 +4,7 @@ import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
 import { FileInputDto, FileType } from '../../__generated__/globalTypes';
 import axios, { AxiosResponse } from 'axios';
-import { USER_PHOTO } from 'utils/constants';
+import { POST_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
 import MainHeader from 'screen/common-comp/header/MainHeader';
 import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
@@ -64,7 +64,7 @@ function PostWriteScreen() {
     const filesDto: FileInputDto[] = [];
     if (uploadedFiles) {
       for (let i = 0; i < Object.keys(uploadedFiles).length; i++) {
-        filesDto.push({ filename: `${USER_PHOTO}${dayjs()}_${uploadedFiles[i].name}`, fileType: FileType.IMAGE });
+        filesDto.push({ filename: `${POST_PHOTO}/${dayjs()}_${uploadedFiles[i].name}`, fileType: FileType.IMAGE });
       }
     }
     return createPreSignedURl({
