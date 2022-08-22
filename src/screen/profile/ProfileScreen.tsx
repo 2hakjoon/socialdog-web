@@ -1,10 +1,10 @@
 import React, { Fragment, useState, useEffect } from 'react';
-import MainHeader from 'screen/common-comp/header/MainHeader';
+import MainHeader from 'common/components/header/MainHeader';
 import { useQuery } from '@apollo/client';
 import { GET_USER_PROFILE, MYPROFILE } from 'apllo-gqls/users';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faUserLock } from '@fortawesome/free-solid-svg-icons';
 import { useParams } from 'react-router-dom';
@@ -17,9 +17,9 @@ import MyPosts from './templates/MyPosts';
 import MyLikedPosts from './templates/MyLikedPosts';
 import UserProfileTemplate from './templates/UserProfileTemplate';
 import UserProfileLoading from './templates/UserProfileLoading';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
-import MainFooter from 'screen/common-comp/footer/MainFooter';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
+import MainFooter from 'common/components/footer/MainFooter';
 
 export type Params = {
   username: string;

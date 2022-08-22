@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
 import { theme } from 'assets/styles/theme';
-import ImageBase from 'screen/common-comp/image/ImageBase';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import ImageBase from 'common/components/image/ImageBase';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPaw, faLocationDot } from '@fortawesome/free-solid-svg-icons';
-import TextEllipsis from 'screen/common-comp/texts/TextEllipsis';
+import TextEllipsis from 'common/components/texts/TextEllipsis';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import 'react-responsive-carousel/lib/styles/carousel.min.css'; // requires a loader
 import { Carousel } from 'react-responsive-carousel';
 import { Link } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import useToggleLike from 'hooks/useToggleLike';
+import useToggleLike from 'common/hooks/useToggleLike';
 import { aFewTimeAgo } from 'utils/timeformat/aFewTimeAgo';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
-import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
-import ReportModal from 'screen/common-comp/report/ReportModal';
-import TextLink from 'screen/common-comp/texts/TextLink';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import ProfilePhoto from 'common/components/image/ProfilePhoto';
+import DropdownEllipsis from 'common/components/dropdown/DropdownEllipsis';
+import ReportModal from 'common/components/report/ReportModal';
+import TextLink from 'common/components/texts/TextLink';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
 
 const Wrapper = styled.article`
   margin: 16px 0;

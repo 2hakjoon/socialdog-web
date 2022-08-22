@@ -5,16 +5,16 @@ import dayjs from 'dayjs';
 import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
 import { KAKAO_LOGIN } from 'apllo-gqls/auth';
-import ImageBase from 'screen/common-comp/image/ImageBase';
+import ImageBase from 'common/components/image/ImageBase';
 import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
 import SplashImg from '../../assets/png/splash.png';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import ModalBackground from 'common/components/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
 import TermTemplate from './template/TermTemplate';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
 import { theme } from 'assets/styles/theme';
 
 const Wrapper = styled.div`

@@ -5,12 +5,12 @@ import IconCheckBox from 'assets/svg/IconCheckBox';
 import IconSquare from 'assets/svg/IconSquare';
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
-import ModalBackground from 'screen/common-comp/modal/ModalBackground';
-import ModalRound from 'screen/common-comp/modal/ModalRound';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import ButtonSubmit from 'common/components/button/ButtonSubmit';
+import ModalBackground from 'common/components/modal/ModalBackground';
+import ModalRound from 'common/components/modal/ModalRound';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 
 const TermBox = styled.div`

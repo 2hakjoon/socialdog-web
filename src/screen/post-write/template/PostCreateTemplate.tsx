@@ -2,11 +2,11 @@ import React from 'react';
 import { useMutation } from '@apollo/client';
 import { CREATE_POST } from 'apllo-gqls/posts';
 import { useForm } from 'react-hook-form';
-import FormTextArea from 'screen/common-comp/input/FormTextArea';
-import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import FormTextArea from 'common/components/input/FormTextArea';
+import PlaceSearch from 'common/components/place-search/PlaceSearch';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { alretError } from 'utils/alret';
 import { CreatePostInputDto } from '__generated__/globalTypes';
 import { MCreatePost, MCreatePostVariables } from '__generated__/MCreatePost';
@@ -14,7 +14,7 @@ import UploadImgViewer from '../components/UploadImgViewer';
 import { IPostWriteTemplate } from '../PostWriteScreen';
 import { useNavigate } from 'react-router-dom';
 import { routes } from 'screen/routes';
-import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
+import ButtonSubmit from 'common/components/button/ButtonSubmit';
 
 function PostCreateTemplate({
   requestSignedUrl,

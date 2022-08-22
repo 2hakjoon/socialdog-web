@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import ModalRound from 'screen/common-comp/modal/ModalRound';
+import TextBase from 'common/components/texts/TextBase';
+import ModalRound from 'common/components/modal/ModalRound';
 import { useApolloClient, useMutation, useQuery } from '@apollo/client';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import UserCardThin from 'common/components/user-card/UserCardThin';
 import { CANCEL_SUBSCRIBE_REQUEST, GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/subscribes';
 import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
 import { MCancelSubscribingRequest, MCancelSubscribingRequestVariables } from '__generated__/MCancelSubscribingRequest';
-import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import useEvictCache from 'hooks/useEvictCache';
-import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
+import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
+import useEvictCache from 'common/hooks/useEvictCache';
+import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
 
 interface ITabBox {
   selected: boolean;

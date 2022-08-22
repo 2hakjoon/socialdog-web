@@ -2,17 +2,17 @@ import { faLocationCrosshairs, faMagnifyingGlass, faXmark } from '@fortawesome/f
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { theme } from 'assets/styles/theme';
 import React, { Dispatch, SetStateAction, useEffect, useState } from 'react';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { IPlaceSerchResult, IPlaceTerms } from 'types/GooglePlace';
-import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
+import PlaceSearch from 'common/components/place-search/PlaceSearch';
 import axios from 'axios';
 import { addressTermState, geolocationState } from 'apollo-setup';
 import { useReactiveVar } from '@apollo/client';
 import { storeAddressTerms } from 'utils/local-storage';
-import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
 
 const PlaceSearchContainer = styled.div`
   width: 100%;

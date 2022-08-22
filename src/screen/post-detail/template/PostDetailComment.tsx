@@ -1,10 +1,10 @@
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { GET_COMMENTS } from 'apllo-gqls/comments';
-import { useMeQuery } from 'hooks/useMeQuery';
+import { useMeQuery } from 'common/hooks/useMeQuery';
 import React, { useEffect, useState } from 'react';
 import CommentCardLoading from 'screen/comment-detail/components/CommentCardLoading';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperInfinityScroll from 'common/components/wrappers/WrapperInfinityScroll';
 import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
 import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';

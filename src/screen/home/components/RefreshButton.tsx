@@ -1,7 +1,7 @@
-import useScroll from 'hooks/useScroll';
+import useScroll from 'common/hooks/useScroll';
 import styled from 'styled-components';
 import React, { useEffect, useState } from 'react';
-import TextBase from 'screen/common-comp/texts/TextBase';
+import TextBase from 'common/components/texts/TextBase';
 
 const Wrapper = styled.button`
   position: fixed;

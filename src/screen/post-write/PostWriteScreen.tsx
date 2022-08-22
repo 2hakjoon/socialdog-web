@@ -1,21 +1,21 @@
 import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { FetchResult, makeReference, useApolloClient, useMutation } from '@apollo/client';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
 import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
 import { FileInputDto, FileType } from '../../__generated__/globalTypes';
 import axios, { AxiosResponse } from 'axios';
 import { POST_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
-import MainHeader from 'screen/common-comp/header/MainHeader';
+import MainHeader from 'common/components/header/MainHeader';
 import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
 import { useLocation } from 'react-router-dom';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import PostCreateTemplate from './template/PostCreateTemplate';
 import PostEditTemplate from './template/PostEditTemplate';
 import Compressor from 'compressorjs';
-import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import ModalBackground from 'common/components/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
 
 export interface IPlaceSerchResult {
   value: {

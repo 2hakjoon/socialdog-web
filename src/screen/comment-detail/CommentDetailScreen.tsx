@@ -1,16 +1,16 @@
 import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
 import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
 import dayjs from 'dayjs';
-import useEvictCache from 'hooks/useEvictCache';
+import useEvictCache from 'common/hooks/useEvictCache';
 import React, { useRef, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import MainHeader from 'screen/common-comp/header/MainHeader';
-import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import MainHeader from 'common/components/header/MainHeader';
+import ProfilePhoto from 'common/components/image/ProfilePhoto';
+import TextBase from 'common/components/texts/TextBase';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperInfinityScroll from 'common/components/wrappers/WrapperInfinityScroll';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
@@ -23,12 +23,12 @@ import {
 import CommentCard from './components/CommentCard';
 import CommentCardLoading from './components/CommentCardLoading';
 import ReCommentInput from './components/ReCommentInput';
-import TextParagraph from 'screen/common-comp/texts/TextParagraph';
+import TextParagraph from 'common/components/texts/TextParagraph';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
-import TextLink from 'screen/common-comp/texts/TextLink';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
+import TextLink from 'common/components/texts/TextLink';
 
 const CommentWrapper = styled.div`
   max-width: ${({ theme }) => theme.layout.screenMaxWidth};

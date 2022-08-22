@@ -1,13 +1,13 @@
 import React, { useState } from 'react';
-import MainHeader from 'screen/common-comp/header/MainHeader';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import MainHeader from 'common/components/header/MainHeader';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { theme } from 'assets/styles/theme';
 import AddressPostsTemplate from './templates/AddressPostsTemplate';
 import SubscribingsTemplate from './templates/SubscribingsTemplate';
-import TextBase, { Text } from 'screen/common-comp/texts/TextBase';
+import TextBase, { Text } from 'common/components/texts/TextBase';
 import styled from 'styled-components';
-import MainFooter from 'screen/common-comp/footer/MainFooter';
+import MainFooter from 'common/components/footer/MainFooter';
 
 const ADDRESS = 'ADDRESS';
 const SUBSCRIBING = 'SUBSCRIBING';

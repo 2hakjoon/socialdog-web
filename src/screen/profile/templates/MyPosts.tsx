@@ -1,9 +1,9 @@
 import { useQuery } from '@apollo/client';
 import { GET_USER_POSTS } from 'apllo-gqls/posts';
 import React, { useEffect, useState } from 'react';
-import NoContents from 'screen/common-comp/no-contents/NoContents';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import NoContents from 'common/components/no-contents/NoContents';
+import WrapperInfinityQueryScroll from 'common/components/wrappers/WrapperInfinityQueryScroll';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';

@@ -2,19 +2,19 @@ import React from 'react';
 import { useLazyQuery, useQuery } from '@apollo/client';
 import { FIND_USER_BY_USERNAME, GET_PROFILE_OPEN_USER } from 'apllo-gqls/users';
 import { useForm } from 'react-hook-form';
-import MainHeader from 'screen/common-comp/header/MainHeader';
-import FormInput from 'screen/common-comp/input/FormInput';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import MainHeader from 'common/components/header/MainHeader';
+import FormInput from 'common/components/input/FormInput';
+import TextBase from 'common/components/texts/TextBase';
+import UserCardThin from 'common/components/user-card/UserCardThin';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { FindUserByUsernameInputDto } from '__generated__/globalTypes';
 import { QFindUserByUsername, QFindUserByUsernameVariables } from '__generated__/QFindUserByUsername';
 import { QGetProfileOpenUser } from '__generated__/QGetProfileOpenUser';
-import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
-import MainFooter from 'screen/common-comp/footer/MainFooter';
+import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
+import MainFooter from 'common/components/footer/MainFooter';
 
 const FormWrapper = styled.div`
   width: 100%;

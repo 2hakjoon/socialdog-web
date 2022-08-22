@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_MY_LIKED_POSTS } from 'apllo-gqls/posts';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import PostSmallBox from '../components/PostSmallBox';
 import { QGetMyLikedPosts, QGetMyLikedPostsVariables } from '__generated__/QGetMyLikedPosts';
-import NoContents from 'screen/common-comp/no-contents/NoContents';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
+import NoContents from 'common/components/no-contents/NoContents';
+import WrapperInfinityQueryScroll from 'common/components/wrappers/WrapperInfinityQueryScroll';
 
 const PostsGrid = styled.div`
   width: 100%;
