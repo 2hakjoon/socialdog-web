@@ -1,27 +1,32 @@
 # 소셜독 프론트엔드
-![KakaoTalk_Photo_2022-02-26-18-39-16 001 (1)](https://user-images.githubusercontent.com/61589338/177762295-fccfefd1-f17e-4c54-b9a9-12c6162b7228.png)
-서비스 주소 : https://www.oursocialdog.com/
+![KakaoTalk_Photo_2022-02-26-18-39-16 001 (1)](https://user-images.githubusercontent.com/61589338/177762295-fccfefd1-f17e-4c54-b9a9-12c6162b7228.png)  
+서비스 주소 : https://www.oursocialdog.com/  
 지역기반의 반려동물 커뮤니티 소셜독의 프론트엔드입니다.  
-React를 사용하였으며, 상태관리는 Apollo Client를 사용하였습니다.
+주변의 반려동물 보호자들과 커뮤니티를 만들고 싶어서 만든 서비스입니다.  
+현재 배포되어 운영중이지만, 활성화는 이루어지지 않았습니다. 
+
+소셜독 App의 커뮤니티 탭에 웹앱으로도 만나볼 수 있습니다. 
+App 다운로드(안드로이드) : https://play.google.com/store/apps/details?id=com.socialdog  
+서비스를 만들면서 구현한 기능, 해결한 문제는 블로그에 기록하였습니다.  
+블로그 주소 : https://2hakjoon-mindmap.tistory.com/category/%EC%86%8C%EC%85%9C%EB%8F%85  
+
 
 ## 기술 스택
  * Typescript
  * React
  * Apollo Client
- * Styled Component
- * Axios
  * Cypress
 
 
 ## 데모영상
 ### 서비스 전체
-[screen-recording.webm](https://user-images.githubusercontent.com/61589338/185916606-16530304-7b6e-4723-ba3c-1211fc587f8f.webm)
+[screen-recording (5).webm](https://user-images.githubusercontent.com/61589338/185916610-2815c400-84ba-4102-85fb-61a4e5eb31dc.webm)
 
 ### 게시글 CRUD
 [screen-recording (3).webm](https://user-images.githubusercontent.com/61589338/185916601-07a75162-70af-47b9-9844-dc53410fd644.webm)
 
 ### 지역별 게시물 보기
-[screen-recording (5).webm](https://user-images.githubusercontent.com/61589338/185916610-2815c400-84ba-4102-85fb-61a4e5eb31dc.webm)
+[screen-recording.webm](https://user-images.githubusercontent.com/61589338/185916606-16530304-7b6e-4723-ba3c-1211fc587f8f.webm)
 
 ### 구독신청, 수락, 거절
 [screen-recording (6).webm](https://user-images.githubusercontent.com/61589338/185916618-c841afd7-ae3c-491e-ae82-b7229a3de0a8.webm)
