@@ -5,8 +5,8 @@
 주변의 반려동물 보호자들과 커뮤니티를 만들고 싶어서 만든 서비스입니다.  
 현재 배포되어 운영중이지만, 활성화는 이루어지지 않았습니다. 
 
-소셜독 App의 커뮤니티 탭에 웹앱으로도 만나볼 수 있습니다. 
-App 다운로드(안드로이드) : https://play.google.com/store/apps/details?id=com.socialdog  
+소셜독 App의 커뮤니티 탭에 웹앱으로도 만나볼 수 있습니다.   
+App 다운로드(안드로이드) : https://play.google.com/store/apps/details?id=com.socialdog   
 서비스를 만들면서 구현한 기능, 해결한 문제는 블로그에 기록하였습니다.  
 블로그 주소 : https://2hakjoon-mindmap.tistory.com/category/%EC%86%8C%EC%85%9C%EB%8F%85  
 
