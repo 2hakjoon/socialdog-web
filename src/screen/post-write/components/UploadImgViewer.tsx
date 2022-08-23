@@ -1,14 +1,14 @@
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
-import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import ButtonUpload from 'screen/common-comp/button/ButtonUpload';
-import ImageBase from 'screen/common-comp/image/ImageBase';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
+import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
+import ButtonUpload from 'common/components/button/ButtonUpload';
+import ImageBase from 'common/components/image/ImageBase';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
 
 const ImgPreviewgrid = styled.div`

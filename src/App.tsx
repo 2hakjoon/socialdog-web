@@ -7,7 +7,7 @@ import ProfileScreen from 'screen/profile/ProfileScreen';
 import HomeScreen from 'screen/home/HomeScreen';
 import { useReactiveVar } from '@apollo/client';
 import { loginState } from './apollo-setup';
-import ErrorBoundary from 'screen/common-comp/error-boundary/ErrorBoundary';
+import ErrorBoundary from 'common/components/error-boundary/ErrorBoundary';
 
 const ProfileEditScreen = lazy(() => import('screen/profile/ProfileEditScreen'));
 const SearchScreen = lazy(() => import('screen/search/SearchScreen'));
@@ -15,8 +15,8 @@ const PostWriteScreen = lazy(() => import('screen/post-write/PostWriteScreen'));
 const PostDetailScreen = lazy(() => import('screen/post-detail/PostDetailScreen'));
 const CommentDetailScreen = lazy(() => import('screen/comment-detail/CommentDetailScreen'));
 const LoginScreen = lazy(() => import('screen/login/LoginScreen'));
-const ScrollToTop = lazy(() => import('screen/common-comp/scroll/ScrollToTop'));
-const GeolocationComp = lazy(() => import('screen/common-comp/geolocation/GeolocationComp'));
+const ScrollToTop = lazy(() => import('common/components/scroll/ScrollToTop'));
+const GeolocationComp = lazy(() => import('common/components/geolocation/GeolocationComp'));
 
 window.Kakao.init(process.env.REACT_APP_KAKAO_LOGIN_API_KEY);
 window.Kakao.isInitialized();

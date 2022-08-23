@@ -8,6 +8,7 @@ import { aFewTimeAgo } from '../../../src/utils/timeformat/aFewTimeAgo';
 import { hexToRgb } from '../../support/utils';
 import { routes } from '../../../src/screen/routes';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '../../../src/__generated__/QGetSubscribingPosts';
+import { TOGGLE_LIKE_POST } from '../../../src/apllo-gqls/posts';
 
 const id = '32cdda30-c042-4f58-9d6a-adaba1125e58';
 const photos =
@@ -43,9 +44,26 @@ const postDataDefault: QGetSubscribingPosts_getSubscribingPosts_data = {
   },
 };
 
+const mock = [
+  {
+    request: {
+      query: TOGGLE_LIKE_POST,
+      variables: { args: { postId: id } },
+    },
+    result: {
+      data: {
+        toggleLikePost: {
+          ...postDataDefault,
+          liked: true,
+        },
+        ok: true,
+      },
+    },
+  },
+];
 const postCardComponentDefault = (
   <Router>
-    <MockedProvider>
+    <MockedProvider mocks={mock}>
       <ThemeProvider theme={theme}>
         <Routes>
           <Route path="*" element={<PostCard {...postDataDefault} />} />
@@ -150,6 +168,20 @@ describe('postCardComponentLiked', () => {
   });
 });
 
+
+// Todo : make this pass, coupling issue
+// describe('postCardComponentClickLike', () => {
+//   it('should be rendered', () => {
+//     cy.mount(postCardComponentDefault);
+//   });
+//   it('should be blue color', () => {
+//     cy.mount(postCardComponentDefault);
+
+//     cy.get(buttonLike).click();
+//     cy.get(buttonLike).should('have.css', 'color', hexToRgb(theme.color.blue.primaryBlue));
+//   });
+// });
+
 describe('postCardComponentCommented', () => {
   it('should be rendered', () => {
     cy.mount(postCardComponentCommented);
@@ -167,17 +199,17 @@ describe('postCardComponentCommented', () => {
 });
 
 describe('postCardComponentUpdated', () => {
-    it('should be rendered', () => {
-      cy.mount(postCardComponentUpdated);
-    });
-    it('should render comment count', () => {
-      cy.mount(postCardComponentUpdated);
-  
-      cy.get(textUpdate).should('exist');
-    });
-    it('should render updated count correctly', () => {
-      cy.mount(postCardComponentUpdated);
-  
-      cy.get(textUpdate).should('have.text', `(수정됨)`);
-    });
-})
+  it('should be rendered', () => {
+    cy.mount(postCardComponentUpdated);
+  });
+  it('should render comment count', () => {
+    cy.mount(postCardComponentUpdated);
+
+    cy.get(textUpdate).should('exist');
+  });
+  it('should render updated count correctly', () => {
+    cy.mount(postCardComponentUpdated);
+
+    cy.get(textUpdate).should('have.text', `(수정됨)`);
+  });
+});

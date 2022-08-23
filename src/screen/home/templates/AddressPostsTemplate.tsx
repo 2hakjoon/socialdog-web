@@ -1,16 +1,15 @@
-import { makeReference, useApolloClient, useQuery } from '@apollo/client';
-import { GET_POSTS_BY_ADDRESS } from 'apllo-gqls/posts';
+import { makeReference, useApolloClient } from '@apollo/client';
 import { addressTermState } from 'apollo-setup';
 import React, { useEffect, useState } from 'react';
-import NoContents from 'screen/common-comp/no-contents/NoContents';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
+import NoContents from 'common/components/no-contents/NoContents';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperInfinityQueryScroll from 'common/components/wrappers/WrapperInfinityQueryScroll';
 import { IPlaceTerms } from 'types/GooglePlace';
-import { QGetPostsByAddress, QGetPostsByAddressVariables } from '__generated__/QGetPostsByAddress';
 import AddressSelector from '../components/AddressSelector';
 import PostCard from '../components/PostCard';
 import PostCardLoading from '../components/PostCardLoading';
 import RefreshButton from '../components/RefreshButton';
+import useGetPostsByAddress from '../hooks/useGetPostsByAddress';
 
 function AddressPostsTemplate() {
   const pageItemCount = 6;
@@ -19,15 +18,7 @@ function AddressPostsTemplate() {
   const client = useApolloClient();
   const [searchAddressTerms, setSearchAddressTerms] = useState<IPlaceTerms | null | undefined>(addressTermState());
   const address = searchAddressTerms?.map((term) => term.value).join(' ') || '대한민국';
-  const getPostsByAddress = useQuery<QGetPostsByAddress, QGetPostsByAddressVariables>(GET_POSTS_BY_ADDRESS, {
-    variables: {
-      address,
-      page: {
-        take: itemLimit,
-      },
-    },
-    notifyOnNetworkStatusChange: true,
-  });
+  const getPostsByAddress = useGetPostsByAddress({ address, itemLimit });
   const posts = getPostsByAddress.data?.getPostsByAddress.data;
 
   const removeAddressPosts = () => {
@@ -39,7 +30,7 @@ function AddressPostsTemplate() {
         },
       },
     });
-    window.scrollTo({top: 0, behavior: 'smooth'});
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     setIsLastPage(false);
   };
 

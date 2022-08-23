@@ -16,7 +16,7 @@ import ButtonSubmit from '../button/ButtonSubmit';
 import { ReportCommentsType, ReportPostsType, ReportUsersType } from '__generated__/globalTypes';
 import { QMe } from '__generated__/QMe';
 import { MYPROFILE } from 'apllo-gqls/users';
-import useEvictCache from 'hooks/useEvictCache';
+import useEvictCache from 'common/hooks/useEvictCache';
 
 interface IReportModal {
   type: 'USER' | 'POST' | 'COMMENT' | 'BUG';

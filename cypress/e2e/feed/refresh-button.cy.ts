@@ -29,4 +29,23 @@ describe('refresh button test', () => {
     cy.get(btnRefresh).should('exist')
     cy.clearLocalStorage()
   })
+
+  it('should be disappered when scroll down', () => {
+    injectTokensToLocalStorage()
+    cy.visit('/')
+    cy.scrollTo(0, 1000, {duration:1000})
+    cy.scrollTo(0, 0, {duration:1000})
+    cy.scrollTo(0, 1000, {duration:1000})
+    cy.get(btnRefresh).should('not.exist')
+    cy.clearLocalStorage()
+  })
+
+  it('should be disappered when click', () => {
+    injectTokensToLocalStorage()
+    cy.visit('/')
+    cy.scrollTo(0, 1000, {duration:1000})
+    cy.scrollTo(0, 0, {duration:1000})
+    cy.get(btnRefresh).should('exist').click()
+    cy.clearLocalStorage()
+  })
 })

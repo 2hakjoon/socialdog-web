@@ -1,21 +1,21 @@
-import { gql, useApolloClient, useMutation } from '@apollo/client';
+import { gql, useApolloClient } from '@apollo/client';
 import { EDIT_POST } from 'apllo-gqls/posts';
 import React, { useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import ButtonSubmit from 'screen/common-comp/button/ButtonSubmit';
-import FormTextArea from 'screen/common-comp/input/FormTextArea';
-import PlaceSearch from 'screen/common-comp/place-search/PlaceSearch';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import ButtonSubmit from 'common/components/button/ButtonSubmit';
+import FormTextArea from 'common/components/input/FormTextArea';
+import PlaceSearch from 'common/components/place-search/PlaceSearch';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
 import { EditPostInputDto } from '__generated__/globalTypes';
-import { MEditPost, MEditPostVariables } from '__generated__/MEditPost';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import UploadImgViewer from '../components/UploadImgViewer';
 import { IPostWriteTemplate } from '../PostWriteScreen';
+import useEditPost from '../hooks/useEditPost';
+import usePostEditForm from '../hooks/usePostEditForm';
 
 interface IPostEditTemplate extends IPostWriteTemplate {
   postData: QGetSubscribingPosts_getSubscribingPosts_data;
@@ -34,8 +34,8 @@ function PostEditTemplate({
 }: IPostEditTemplate) {
   const navigate = useNavigate();
   const { cache } = useApolloClient();
-  const { register, handleSubmit, formState, getValues, setValue } = useForm<EditPostInputDto>({ mode: 'onChange' });
-  const [editPost] = useMutation<MEditPost, MEditPostVariables>(EDIT_POST);
+  const { register, handleSubmit, formState, setValue } = usePostEditForm();
+  const [editPost] = useEditPost();
   const [uploadedPhotos, setUploadedPhotos] = useState<string[]>(JSON.parse(postData.photos));
 
   useEffect(() => {
