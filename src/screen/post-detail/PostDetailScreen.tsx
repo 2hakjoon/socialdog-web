@@ -1,7 +1,7 @@
-import { gql, useApolloClient, useLazyQuery, useMutation, useQuery } from '@apollo/client';
+import { gql, useApolloClient, useQuery } from '@apollo/client';
 import { faLocationDot, faPaw, faPenToSquare, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { DELETE_POST, GET_POST_DETAIL, POST_FRAGMENT } from 'apllo-gqls/posts';
+import { POST_FRAGMENT } from 'apllo-gqls/posts';
 import { MYPROFILE } from 'apllo-gqls/users';
 import { theme } from 'assets/styles/theme';
 import useToggleLike from 'common/hooks/useToggleLike';
@@ -17,14 +17,13 @@ import WrapperButton from 'common/components/wrappers/WrapperButton';
 import WrapperColumn from 'common/components/wrappers/WrapperColumn';
 import WrapperRow from 'common/components/wrappers/WrapperRow';
 import WrapperSquare from 'common/components/wrappers/WrapperSquare';
-import PostSmallBox from 'screen/profile/components/PostSmallBox';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
-import { MDeletePost, MDeletePostVariables } from '__generated__/MDeletePost';
-import { QGetPostDetail, QGetPostDetailVariables } from '__generated__/QGetPostDetail';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import { QMe } from '__generated__/QMe';
 import PostDetailComment from './template/PostDetailComment';
+import useDeletePost from './hooks/useDeletePost';
+import useGetPostDetail from './hooks/useGetPostDetail';
 
 const ImgWrapper = styled.div`
   width: 100%;
@@ -61,17 +60,10 @@ function PostDetailScreen() {
   const authUser = meData?.me.data;
   // console.log(authUser);
 
-  const onPostDetailComplete = (result: QGetPostDetail) => {
-    if (!result.getPostDetail.ok) {
-      window.alert(result.getPostDetail.error);
-      navigate(-1);
-    }
-  };
+ 
 
-  const [deletePost] = useMutation<MDeletePost, MDeletePostVariables>(DELETE_POST);
-  const [getPostDetail] = useLazyQuery<QGetPostDetail, QGetPostDetailVariables>(GET_POST_DETAIL, {
-    onCompleted: onPostDetailComplete,
-  });
+  const [deletePost] = useDeletePost();
+  const [getPostDetail] = useGetPostDetail();
   const [post, setPost] = useState<QGetSubscribingPosts_getSubscribingPosts_data | null>();
 
   const moveToPostEdit = (postId: string) => {
