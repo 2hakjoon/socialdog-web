@@ -22,7 +22,7 @@ import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
 import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
 import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
 import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import { QGetUserProfile } from '__generated__/QGetUserProfile';
+import { QGetUserProfile, QGetUserProfile_getUserProfile, QGetUserProfile_getUserProfile_data } from '__generated__/QGetUserProfile';
 import { QMe } from '__generated__/QMe';
 import { Params } from '../ProfileScreen';
 import BlockAndRejected from './BlockAndRejected';
@@ -30,12 +30,11 @@ import SubscriberAndRequests from './SubscriberAndRequests';
 import SubscribingAndRequests from './SubscribingAndRequests';
 
 interface IUserProfileTemplate {
-  userData: QGetUserProfile;
+  user: QGetUserProfile_getUserProfile_data;
+  userProfileState: QGetUserProfile_getUserProfile | undefined;
 }
 
-function UserProfileTemplate({ userData }: IUserProfileTemplate) {
-  const user = userData.getUserProfile.data;
-  const userProfileState = userData.getUserProfile;
+function UserProfileTemplate({ user, userProfileState }: IUserProfileTemplate) {
   const { username } = useParams<Params>();
   const evictCache = useEvictCache();
   const navigate = useNavigate();
@@ -174,8 +173,8 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
               <WrapperRow>
                 <TextBase text={user.username} p="0 6px" />
                 {isMyProfile() && (
-                  <Link to={routes.profileEdit} data-cy='link-edit-profile'>
-                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color='black'/>
+                  <Link to={routes.profileEdit} data-cy="link-edit-profile">
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color="black" />
                   </Link>
                 )}
               </WrapperRow>
