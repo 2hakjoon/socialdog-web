@@ -1,15 +1,13 @@
-import { useLazyQuery, useQuery } from '@apollo/client';
-import { GET_COMMENTS } from 'apllo-gqls/comments';
-import { useMeQuery } from 'hooks/useMeQuery';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import CommentCardLoading from 'screen/comment-detail/components/CommentCardLoading';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperInfinityScroll from 'common/components/wrappers/WrapperInfinityScroll';
 import styled from 'styled-components';
 import { CursorArgs } from '__generated__/globalTypes';
-import { QGetComments, QGetCommentsVariables, QGetComments_getComments_data } from '__generated__/QGetComments';
+import { QGetComments_getComments_data } from '__generated__/QGetComments';
 import CommentCard from '../../comment-detail/components/CommentCard';
 import CommentInput from '../components/CommentInput';
+import useGetComments from '../hooks/useGetComments';
 
 const Wrapper = styled.div`
   > div {
@@ -24,9 +22,8 @@ interface PostDetailComment {
 
 function PostDetailComment({ postId, authorId }: PostDetailComment) {
   const pageItemCount = 6;
-  const me = useMeQuery();
   const [isLastPage, setIsLastPage] = useState(false);
-  const [fetchCommentsQuery, commentsQuery] = useLazyQuery<QGetComments, QGetCommentsVariables>(GET_COMMENTS);
+  const [fetchCommentsQuery, commentsQuery] = useGetComments();
 
   const [commentResult, setCommentResult] = useState<QGetComments_getComments_data[]>([]);
   const [parentComment, setParentComment] = useState<QGetComments_getComments_data | null>(null);

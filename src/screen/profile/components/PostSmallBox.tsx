@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import ImageBase from 'screen/common-comp/image/ImageBase';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import ImageBase from 'common/components/image/ImageBase';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import styled from 'styled-components';
 

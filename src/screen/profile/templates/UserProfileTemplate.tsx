@@ -1,50 +1,45 @@
-import { useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { MYPROFILE } from 'apllo-gqls/users';
-import useEvictCache from 'hooks/useEvictCache';
+import useEvictCache from 'common/hooks/useEvictCache';
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
-import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
-import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import DropdownEllipsis from 'screen/common-comp/dropdown/DropdownEllipsis';
-import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
-import ModalBackground from 'screen/common-comp/modal/ModalBackground';
-import ReportModal from 'screen/common-comp/report/ReportModal';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import { Link, useParams } from 'react-router-dom';
+import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
+import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
+import DropdownEllipsis from 'common/components/dropdown/DropdownEllipsis';
+import ProfilePhoto from 'common/components/image/ProfilePhoto';
+import ModalBackground from 'common/components/modal/ModalBackground';
+import ReportModal from 'common/components/report/ReportModal';
+import TextBase from 'common/components/texts/TextBase';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { BLOCKANDREJECT, REPORT_USER, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
-import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
-import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
-import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import { QGetUserProfile } from '__generated__/QGetUserProfile';
-import { QMe } from '__generated__/QMe';
+import { QGetUserProfile_getUserProfile, QGetUserProfile_getUserProfile_data } from '__generated__/QGetUserProfile';
 import { Params } from '../ProfileScreen';
 import BlockAndRejected from './BlockAndRejected';
 import SubscriberAndRequests from './SubscriberAndRequests';
 import SubscribingAndRequests from './SubscribingAndRequests';
+import useMyProfile from 'common/hooks/useMyProfile';
+import useRequestSubscribe from '../hooks/useRequestSubscribe';
+import useCancelSubscribing from '../hooks/useCancelSubscribing';
+import useChangeBlockState from '../hooks/useChangeBlockState';
 
 interface IUserProfileTemplate {
-  userData: QGetUserProfile;
+  user: QGetUserProfile_getUserProfile_data;
+  userProfileState: QGetUserProfile_getUserProfile | undefined;
 }
 
-function UserProfileTemplate({ userData }: IUserProfileTemplate) {
-  const user = userData.getUserProfile.data;
-  const userProfileState = userData.getUserProfile;
+function UserProfileTemplate({ user, userProfileState }: IUserProfileTemplate) {
   const { username } = useParams<Params>();
   const evictCache = useEvictCache();
-  const navigate = useNavigate();
   const { cache } = useApolloClient();
-  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
-  const authUser = authUserData?.me.data;
-  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
-  const [cancelSubscribing] = useMutation<McancelSubscribing, McancelSubscribingVariables>(CANCEL_SUBSCRIBE);
-  const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
+  const { authUser } = useMyProfile();
+  const [requestSubscribe] = useRequestSubscribe();
+  const [cancelSubscribing] = useCancelSubscribing();
+  const [changeBlockState] = useChangeBlockState();
   const [modalType, setModalType] = useState<string | null>(null);
 
   // 구독 요청 함수

@@ -1,34 +1,30 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
-import dayjs from 'dayjs';
-import useEvictCache from 'hooks/useEvictCache';
-import React, { useRef, useState } from 'react';
+import useEvictCache from 'common/hooks/useEvictCache';
+import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import MainHeader from 'screen/common-comp/header/MainHeader';
-import ProfilePhoto from 'screen/common-comp/image/ProfilePhoto';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import BaseWrapper from 'screen/common-comp/wrappers/BaseWrapper';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperInfinityScroll from 'screen/common-comp/wrappers/WrapperInfinityScroll';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import MainHeader from 'common/components/header/MainHeader';
+import ProfilePhoto from 'common/components/image/ProfilePhoto';
+import TextBase from 'common/components/texts/TextBase';
+import BaseWrapper from 'common/components/wrappers/BaseWrapper';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperInfinityScroll from 'common/components/wrappers/WrapperInfinityScroll';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
-import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
-import { QGetComment, QGetCommentVariables } from '__generated__/QGetComment';
 import {
-  QGetReComments,
-  QGetReCommentsVariables,
   QGetReComments_getReComments_data,
 } from '__generated__/QGetReComments';
 import CommentCard from './components/CommentCard';
 import CommentCardLoading from './components/CommentCardLoading';
 import ReCommentInput from './components/ReCommentInput';
-import TextParagraph from 'screen/common-comp/texts/TextParagraph';
+import TextParagraph from 'common/components/texts/TextParagraph';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
-import TextLink from 'screen/common-comp/texts/TextLink';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
+import TextLink from 'common/components/texts/TextLink';
+import useDeleteComment from './hooks/useDeleteComment';
+import useGetComment from './hooks/useGetComment';
+import useReCommentData from './hooks/useReCommentData';
 
 const CommentWrapper = styled.div`
   max-width: ${({ theme }) => theme.layout.screenMaxWidth};
@@ -54,16 +50,11 @@ function CommentDetailScreen() {
     return <></>;
   }
 
-  const { data: commentData } = useQuery<QGetComment, QGetCommentVariables>(GET_COMMENT, {
-    variables: { args: { id: commentId } },
-  });
-  const comment = commentData?.getComment.data;
+  const { comment } = useGetComment({ commentId });
   const postId = comment?.postId;
-  const [deleteComment] = useMutation<MDeleteComment, MDeleteCommentVariables>(DELETE_COMMENT);
+  const [deleteComment] = useDeleteComment();
 
-  const [getReCommentsData, { loading: reCommentLoading }] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(
-    GET_RECOMMENTS,
-  );
+  const [getReCommentsData, { loading: reCommentLoading }] = useReCommentData();
 
   const refetchReComments = async () => {
     if (isLastPage) {

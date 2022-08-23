@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery } from '@apollo/client';
 import { GET_MY_LIKED_POSTS } from 'apllo-gqls/posts';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
 import PostSmallBox from '../components/PostSmallBox';
 import { QGetMyLikedPosts, QGetMyLikedPostsVariables } from '__generated__/QGetMyLikedPosts';
-import NoContents from 'screen/common-comp/no-contents/NoContents';
-import WrapperInfinityQueryScroll from 'screen/common-comp/wrappers/WrapperInfinityQueryScroll';
+import NoContents from 'common/components/no-contents/NoContents';
+import WrapperInfinityQueryScroll from 'common/components/wrappers/WrapperInfinityQueryScroll';
+import useMyLikedPosts from '../hooks/useMyLikedPosts';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -30,10 +31,7 @@ function MyLikedPosts({ itemsCount }: IMyLikedPosts) {
   const [itemLimit, setItemLimit] = useState<number>(itemsCount);
   const [isLastPage, setIsLastPage] = useState(false);
 
-  const myLikedPosts = useQuery<QGetMyLikedPosts, QGetMyLikedPostsVariables>(GET_MY_LIKED_POSTS, {
-    variables: { page: { take: itemLimit } },
-    notifyOnNetworkStatusChange: true,
-  });
+  const myLikedPosts = useMyLikedPosts({ itemLimit });
   const posts = myLikedPosts.data?.getMyLikedPosts.data;
 
   return (

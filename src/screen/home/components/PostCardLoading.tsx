@@ -1,9 +1,9 @@
 import React from 'react';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
-import WrapperSquare from 'screen/common-comp/wrappers/WrapperSquare';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
+import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
-import SkeletonCircle from 'screen/common-comp/skeleton/SkeletonCircle';
-import SkeletonBox from 'screen/common-comp/skeleton/SkeletonBox';
+import SkeletonCircle from 'common/components/skeleton/SkeletonCircle';
+import SkeletonBox from 'common/components/skeleton/SkeletonBox';
 
 const Wrapper = styled.article`
   margin: 16px 0;

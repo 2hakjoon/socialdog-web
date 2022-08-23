@@ -1,7 +1,7 @@
 import React, { ReactNode } from 'react';
 import { faXmark } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from '../texts/TextBase';
 import { theme } from 'assets/styles/theme';

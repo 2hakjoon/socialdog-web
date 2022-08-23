@@ -1,21 +1,17 @@
 import React, { useEffect, useState } from 'react';
-import { gql, useMutation } from '@apollo/client';
 import { getAccessToken, removeAllTokens, setAccessToken, setRefreshToken } from 'utils/local-storage';
 import dayjs from 'dayjs';
-import { MKakaoLogin, MKakaoLoginVariables } from '../../__generated__/MKakaoLogin';
 import { loginState } from 'apollo-setup';
-import { KAKAO_LOGIN } from 'apllo-gqls/auth';
-import ImageBase from 'screen/common-comp/image/ImageBase';
+import ImageBase from 'common/components/image/ImageBase';
 import KakaoImg from '../../assets/png/kakao_login_medium_wide.png';
 import SplashImg from '../../assets/png/splash.png';
 import styled from 'styled-components';
-import { useNavigate } from 'react-router-dom';
-import { routes } from 'screen/routes';
-import ModalBackground from 'screen/common-comp/modal/ModalBackground';
+import ModalBackground from 'common/components/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
 import TermTemplate from './template/TermTemplate';
-import WrapperButton from 'screen/common-comp/wrappers/WrapperButton';
+import WrapperButton from 'common/components/wrappers/WrapperButton';
 import { theme } from 'assets/styles/theme';
+import useKakaoLogin from './hooks/useKakaoLogin';
 
 const Wrapper = styled.div`
   width: 100vw;
@@ -54,10 +50,8 @@ interface IkakaoLoginSuccess {
 }
 
 function LoginScreen() {
-  const navigate = useNavigate();
   const [modalOpen, setModalOpen] = useState<'LOADING' | 'TERM' | null>(null);
-  const [acceptTermState, setAccecptTermState] = useState(false);
-  const [kakaoAuthLogin] = useMutation<MKakaoLogin, MKakaoLoginVariables>(KAKAO_LOGIN);
+  const [kakaoAuthLogin] = useKakaoLogin();
 
   useEffect(() => {
     if (getAccessToken()) {
@@ -107,7 +101,6 @@ function LoginScreen() {
   };
 
   const kakaoLogin = async ({ accecptTerms = false }) => {
-    // console.log('acceptTermState : ', accecptTerms);
     try {
       window.Kakao.Auth.login({
         success: async (authObj: IkakaoLoginSuccess) => {
@@ -130,7 +123,7 @@ function LoginScreen() {
   return (
     <Wrapper>
       <InnerWrapper>
-        <img data-cy="img-splash" alt='소셜독 아이콘' src={SplashImg} />
+        <img data-cy="img-splash" alt="소셜독 아이콘" src={SplashImg} />
         <KakaoLoginWrapper data-cy="btn-kakaologin" onClick={() => kakaoLogin({ accecptTerms: false })}>
           <WrapperButton bc={theme.color.blue.primaryBlue} w={'100%'}>
             <ImageBase url={KakaoImg} />

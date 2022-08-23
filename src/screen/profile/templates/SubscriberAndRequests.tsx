@@ -1,25 +1,23 @@
 import React, { useState } from 'react';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
-import TextBase from 'screen/common-comp/texts/TextBase';
-import ModalRound from 'screen/common-comp/modal/ModalRound';
-import { makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import UserCardThin from 'screen/common-comp/user-card/UserCardThin';
-import { GET_MY_SUBSCRIBERS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
+import TextBase from 'common/components/texts/TextBase';
+import ModalRound from 'common/components/modal/ModalRound';
+import { makeReference, useApolloClient } from '@apollo/client';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import UserCardThin from 'common/components/user-card/UserCardThin';
 import {
-  QGetMySubscribersRequests,
   QGetMySubscribersRequests_getMySubscribers,
   QGetMySubscribersRequests_getSubscribeRequests,
 } from '__generated__/QGetMySubscribersRequests';
-import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
-import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
-import ButtonSmallWhite from 'screen/common-comp/button/ButtonSmallWhite';
-import { QMe } from '__generated__/QMe';
-import { MYPROFILE } from 'apllo-gqls/users';
-import useEvictCache from 'hooks/useEvictCache';
-import UserCardThinLoading from 'screen/common-comp/user-card/UserCardThinLoading';
+import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
+import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
+import useEvictCache from 'common/hooks/useEvictCache';
+import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
+import useMyProfile from 'common/hooks/useMyProfile';
+import useGetMySubscribersRequest from '../hooks/useGetMySubscribersRequest';
+import useResponseSubscribe from '../hooks/useResponseSubscribe';
 
 interface ITabBox {
   selected: boolean;
@@ -42,13 +40,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const { cache } = useApolloClient();
   const evitCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const { data: mySubscriberRequests, loading: mySubscriberRequestsLoading } =
-    useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
-  const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
-  const subscribers = mySubscriberRequests?.getMySubscribers.data;
-  const subscribeRequests = mySubscriberRequests?.getSubscribeRequests.data;
-  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
-  const authUser = authUserData?.me.data;
+  const { subscribers, subscribeRequests, mySubscriberRequestsLoading } = useGetMySubscribersRequest();
+  const [responseSubscribe] = useResponseSubscribe();
+  const { authUser } = useMyProfile();
 
   const onResponseSubscribe = async (fromUserId: string, subscribeRequest: SubscribeRequestState) => {
     const res = await responseSubscribe({ variables: { args: { from: fromUserId, subscribeRequest } } });

@@ -1,8 +1,8 @@
 import React from 'react';
-import SkeletonBox from 'screen/common-comp/skeleton/SkeletonBox';
-import SkeletonCircle from 'screen/common-comp/skeleton/SkeletonCircle';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import SkeletonBox from 'common/components/skeleton/SkeletonBox';
+import SkeletonCircle from 'common/components/skeleton/SkeletonCircle';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 
 function UserProfileLoading() {
   return (

@@ -2,10 +2,10 @@ import React from 'react';
 import { gql, useApolloClient, useMutation } from '@apollo/client';
 import { CREATE_RECOMMENT } from 'apllo-gqls/comments';
 import { useForm } from 'react-hook-form';
-import ButtonSmallBlue from 'screen/common-comp/button/ButtonSmallBlue';
-import FormTextArea from 'screen/common-comp/input/FormTextArea';
-import WrapperColumn from 'screen/common-comp/wrappers/WrapperColumn';
-import WrapperRow from 'screen/common-comp/wrappers/WrapperRow';
+import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
+import FormTextArea from 'common/components/input/FormTextArea';
+import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import { MCreateReComment, MCreateReCommentVariables } from '__generated__/MCreateReComment';
 
