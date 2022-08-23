@@ -1,13 +1,12 @@
-import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useEffect, useState } from 'react';
-import { FetchResult, makeReference, useApolloClient, useMutation } from '@apollo/client';
+import React, { BaseSyntheticEvent, Dispatch, SetStateAction, useState } from 'react';
+import { FetchResult, makeReference, useApolloClient } from '@apollo/client';
 import BaseWrapper from 'common/components/wrappers/BaseWrapper';
-import { MCreatePreSignedUrls, MCreatePreSignedUrlsVariables } from '../../__generated__/MCreatePreSignedUrls';
+import { MCreatePreSignedUrls } from '../../__generated__/MCreatePreSignedUrls';
 import { FileInputDto, FileType } from '../../__generated__/globalTypes';
 import axios, { AxiosResponse } from 'axios';
 import { POST_PHOTO } from 'utils/constants';
 import dayjs from 'dayjs';
 import MainHeader from 'common/components/header/MainHeader';
-import { CREATE_PRESIGNED_URL } from 'apllo-gqls/posts';
 import { useLocation } from 'react-router-dom';
 import { QGetSubscribingPosts_getSubscribingPosts_data } from '__generated__/QGetSubscribingPosts';
 import PostCreateTemplate from './template/PostCreateTemplate';
@@ -16,6 +15,7 @@ import Compressor from 'compressorjs';
 import ModalBackground from 'common/components/modal/ModalBackground';
 import LoadingSpinner from 'assets/svg/LoadingSpinner';
 import WrapperColumn from 'common/components/wrappers/WrapperColumn';
+import useCreatePreSignedUrl from 'common/hooks/useCreatePreSignedUrl';
 
 export interface IPlaceSerchResult {
   value: {
@@ -41,7 +41,7 @@ function PostWriteScreen() {
   const postData = state as QGetSubscribingPosts_getSubscribingPosts_data;
 
   const client = useApolloClient();
-  const [createPreSignedURl] = useMutation<MCreatePreSignedUrls, MCreatePreSignedUrlsVariables>(CREATE_PRESIGNED_URL);
+  const [createPreSignedURl] = useCreatePreSignedUrl();
   const [uploadedFiles, setUploadedFiles] = useState<File[] | null>();
   const [searchResult, setSearchResult] = useState<IPlaceSerchResult>();
   const [isSaving, setIsSaving] = useState<boolean>(false);
