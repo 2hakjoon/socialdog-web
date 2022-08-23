@@ -3,23 +3,21 @@ import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from 'common/components/texts/TextBase';
 import ModalRound from 'common/components/modal/ModalRound';
-import { makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { makeReference, useApolloClient } from '@apollo/client';
 import WrapperColumn from 'common/components/wrappers/WrapperColumn';
 import UserCardThin from 'common/components/user-card/UserCardThin';
-import { GET_MY_SUBSCRIBERS_REQUESTS, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
 import {
-  QGetMySubscribersRequests,
   QGetMySubscribersRequests_getMySubscribers,
   QGetMySubscribersRequests_getSubscribeRequests,
 } from '__generated__/QGetMySubscribersRequests';
-import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
-import { QMe } from '__generated__/QMe';
-import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'common/hooks/useEvictCache';
 import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
+import useMyProfile from 'common/hooks/useMyProfile';
+import useGetMySubscribersRequest from '../hooks/useGetMySubscribersRequest';
+import useResponseSubscribe from '../hooks/useResponseSubscribe';
 
 interface ITabBox {
   selected: boolean;
@@ -42,13 +40,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
   const { cache } = useApolloClient();
   const evitCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const { data: mySubscriberRequests, loading: mySubscriberRequestsLoading } =
-    useQuery<QGetMySubscribersRequests>(GET_MY_SUBSCRIBERS_REQUESTS);
-  const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
-  const subscribers = mySubscriberRequests?.getMySubscribers.data;
-  const subscribeRequests = mySubscriberRequests?.getSubscribeRequests.data;
-  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
-  const authUser = authUserData?.me.data;
+  const { subscribers, subscribeRequests, mySubscriberRequestsLoading } = useGetMySubscribersRequest();
+  const [responseSubscribe] = useResponseSubscribe();
+  const { authUser } = useMyProfile();
 
   const onResponseSubscribe = async (fromUserId: string, subscribeRequest: SubscribeRequestState) => {
     const res = await responseSubscribe({ variables: { args: { from: fromUserId, subscribeRequest } } });
@@ -129,10 +123,10 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
     <ModalRound closeModal={closeModal} title="구독자 및 신청">
       <WrapperRow jc="space-around">
         <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)}>
-          <TextBase text={'구독자'} />
+          <TextBase text={'구독자'} data-cy='tab-subscriber'/>
         </TabBox>
         <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)}>
-          <TextBase text={'구독 신청'} />
+          <TextBase text={'구독 신청'} data-cy='tab-requested'/>
         </TabBox>
       </WrapperRow>
       <WrapperColumn>
@@ -141,8 +135,9 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribers?.map((subscriber) => (
                 <WrapperRow key={subscriber.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...subscriber} />
+                  <UserCardThin onClick={closeModal} {...subscriber} data-cy="wrapper-usercard"/>
                   <ButtonSmallBlue
+                    data-cy='btn-hold-request'
                     title="보류"
                     onClick={() => onResponseSubscribe(subscriber.id, SubscribeRequestState.REQUESTED)}
                   />
@@ -154,13 +149,15 @@ function SubscriberAndRequests({ closeModal }: ISubscriberAndRequests) {
             <>
               {subscribeRequests?.map((user) => (
                 <WrapperRow key={user.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...user} />
+                  <UserCardThin onClick={closeModal} {...user} data-cy="wrapper-usercard"/>
                   <ButtonSmallBlue
+                    data-cy='btn-accecpt-request'
                     title="수락"
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.CONFIRMED)}
                   />
 
                   <ButtonSmallWhite
+                    data-cy='btn-reject-request'
                     title="거절"
                     onClick={() => onResponseSubscribe(user.id, SubscribeRequestState.REJECTED)}
                   />

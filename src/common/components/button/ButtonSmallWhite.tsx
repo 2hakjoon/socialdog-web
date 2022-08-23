@@ -20,9 +20,9 @@ interface IButtonSmallWhite extends IButtonProps {
   onClick: () => void;
 }
 
-function ButtonSmallWhite({ title, enable, onClick }: IButtonSmallWhite) {
+function ButtonSmallWhite({ title, enable, onClick, ...rest }: IButtonSmallWhite) {
   return (
-    <Button type="button" onClick={onClick} disabled={!enable} enable={enable}>
+    <Button type="button" onClick={onClick} disabled={!enable} enable={enable} {...rest}>
       {title}
     </Button>
   );

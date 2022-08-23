@@ -3,18 +3,16 @@ import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from 'common/components/texts/TextBase';
 import ModalRound from 'common/components/modal/ModalRound';
-import { makeReference, useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { makeReference, useApolloClient } from '@apollo/client';
 import WrapperColumn from 'common/components/wrappers/WrapperColumn';
 import UserCardThin from 'common/components/user-card/UserCardThin';
-import { GET_BLOCK_REJECTED, RESPONSE_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { QGetMyBlockAndReject } from '__generated__/QGetMyBlockAndReject';
-import { MResponseSubscribe, MResponseSubscribeVariables } from '__generated__/MResponseSubscribe';
 import { SubscribeRequestState } from '__generated__/globalTypes';
 import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
-import { QMe } from '__generated__/QMe';
-import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'common/hooks/useEvictCache';
 import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
+import useMyProfile from 'common/hooks/useMyProfile';
+import useResponseSubscribe from '../hooks/useResponseSubscribe';
+import useBlockAndRejectedData from '../hooks/useBlockAndRejectedData';
 
 interface ITabBox {
   selected: boolean;
@@ -37,12 +35,9 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
   const { cache } = useApolloClient();
   const evictCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const { data: blockAndRejectedData } = useQuery<QGetMyBlockAndReject>(GET_BLOCK_REJECTED);
-  const blockingUsers = blockAndRejectedData?.getMyBlockingUsers.data;
-  const rejectedUsers = blockAndRejectedData?.getMyRejectRequests.data;
-  const [responseSubscribe] = useMutation<MResponseSubscribe, MResponseSubscribeVariables>(RESPONSE_SUBSCRIBE);
-  const { data: authUserData, loading: authUserDataLoading } = useQuery<QMe>(MYPROFILE);
-  const authUser = authUserData?.me.data;
+  const { rejectedUsers, blockingUsers } = useBlockAndRejectedData();
+  const [responseSubscribe] = useResponseSubscribe();
+  const { authUser, userProfileLoading } = useMyProfile();
 
   const onConfirmRequest = async (fromId: string) => {
     const res = await responseSubscribe({
@@ -90,8 +85,8 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
             <>
               {rejectedUsers?.map((rejectedUser) => (
                 <WrapperRow key={rejectedUser.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...rejectedUser} />
-                  <ButtonSmallBlue title="수락" onClick={() => onConfirmRequest(rejectedUser.id)} />
+                  <UserCardThin onClick={closeModal} {...rejectedUser} data-cy="wrapper-usercard"/>
+                  <ButtonSmallBlue title="수락" onClick={() => onConfirmRequest(rejectedUser.id)} data-cy="btn-accecpt-request"/>
                 </WrapperRow>
               ))}
             </>
@@ -105,7 +100,7 @@ function BlockAndRejected({ closeModal }: IBlockAndRejected) {
               ))}
             </>
           )}
-          {authUserDataLoading && (
+          {userProfileLoading && (
             <>
               {Array(6)
                 .fill('')

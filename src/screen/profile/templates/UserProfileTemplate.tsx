@@ -1,11 +1,9 @@
-import { useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { CANCEL_SUBSCRIBE, CHANGE_BLOCKSTATE, REQUEST_SUBSCRIBE } from 'apllo-gqls/subscribes';
-import { MYPROFILE } from 'apllo-gqls/users';
 import useEvictCache from 'common/hooks/useEvictCache';
 import React, { useState } from 'react';
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import ButtonSmallBlue from 'common/components/button/ButtonSmallBlue';
 import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
 import DropdownEllipsis from 'common/components/dropdown/DropdownEllipsis';
@@ -19,32 +17,29 @@ import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { BLOCKANDREJECT, REPORT_USER, SUBSCRIBER, SUBSCRIBING } from 'utils/constants';
 import { BlockState, SubscribeRequestState } from '__generated__/globalTypes';
-import { McancelSubscribing, McancelSubscribingVariables } from '__generated__/McancelSubscribing';
-import { MChangeBlockState, MChangeBlockStateVariables } from '__generated__/MChangeBlockState';
-import { MRequestSubscribe, MRequestSubscribeVariables } from '__generated__/MRequestSubscribe';
-import { QGetUserProfile } from '__generated__/QGetUserProfile';
-import { QMe } from '__generated__/QMe';
+import { QGetUserProfile_getUserProfile, QGetUserProfile_getUserProfile_data } from '__generated__/QGetUserProfile';
 import { Params } from '../ProfileScreen';
 import BlockAndRejected from './BlockAndRejected';
 import SubscriberAndRequests from './SubscriberAndRequests';
 import SubscribingAndRequests from './SubscribingAndRequests';
+import useMyProfile from 'common/hooks/useMyProfile';
+import useRequestSubscribe from '../hooks/useRequestSubscribe';
+import useCancelSubscribing from '../hooks/useCancelSubscribing';
+import useChangeBlockState from '../hooks/useChangeBlockState';
 
 interface IUserProfileTemplate {
-  userData: QGetUserProfile;
+  user: QGetUserProfile_getUserProfile_data;
+  userProfileState: QGetUserProfile_getUserProfile | undefined;
 }
 
-function UserProfileTemplate({ userData }: IUserProfileTemplate) {
-  const user = userData.getUserProfile.data;
-  const userProfileState = userData.getUserProfile;
+function UserProfileTemplate({ user, userProfileState }: IUserProfileTemplate) {
   const { username } = useParams<Params>();
   const evictCache = useEvictCache();
-  const navigate = useNavigate();
   const { cache } = useApolloClient();
-  const { data: authUserData } = useQuery<QMe>(MYPROFILE);
-  const authUser = authUserData?.me.data;
-  const [requestSubscribe] = useMutation<MRequestSubscribe, MRequestSubscribeVariables>(REQUEST_SUBSCRIBE);
-  const [cancelSubscribing] = useMutation<McancelSubscribing, McancelSubscribingVariables>(CANCEL_SUBSCRIBE);
-  const [changeBlockState] = useMutation<MChangeBlockState, MChangeBlockStateVariables>(CHANGE_BLOCKSTATE);
+  const { authUser } = useMyProfile();
+  const [requestSubscribe] = useRequestSubscribe();
+  const [cancelSubscribing] = useCancelSubscribing();
+  const [changeBlockState] = useChangeBlockState();
   const [modalType, setModalType] = useState<string | null>(null);
 
   // 구독 요청 함수
@@ -172,10 +167,10 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
             <WrapperColumn h="140px" jc="space-around">
               <ProfilePhoto size="80px" url={user.photo} />
               <WrapperRow>
-                <TextBase text={user.username} p="0 6px" />
+                <TextBase text={user.username} p="0 6px" data-cy="text-username" />
                 {isMyProfile() && (
-                  <Link to={routes.profileEdit} data-cy='link-edit-profile'>
-                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color='black'/>
+                  <Link to={routes.profileEdit} data-cy="link-edit-profile">
+                    <FontAwesomeIcon icon={faPenToSquare} size="1x" color="black" />
                   </Link>
                 )}
               </WrapperRow>
@@ -187,6 +182,7 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                   h="50px"
                   jc="space-around"
                   onClick={isMyProfile() ? openSubscribingModal : () => {}}
+                  data-cy="btn-subscribings-modal"
                 >
                   <TextBase text={'구독중'} />
                   <TextBase text={user.subscribings || 0} />
@@ -196,26 +192,47 @@ function UserProfileTemplate({ userData }: IUserProfileTemplate) {
                   h="50px"
                   jc="space-around"
                   onClick={isMyProfile() ? openSubscriberModal : () => {}}
+                  data-cy="btn-subscribers-modal"
                 >
                   <TextBase text={'구독자'} />
                   <TextBase text={user.subscribers || 0} />
                 </WrapperButton>
               </WrapperRow>
               {isMyProfile() ? (
-                <ButtonSmallBlue title={'차단-거절 관리'} onClick={() => openBlockAndRejected()} />
+                <ButtonSmallBlue
+                  title={'차단-거절 관리'}
+                  onClick={() => openBlockAndRejected()}
+                  data-cy="btn-block-reject-modal"
+                />
               ) : (
                 <WrapperRow w="100%" jc="space-between" p="16px 0 0 0">
                   {isSubscribeConfrimed() && (
-                    <ButtonSmallWhite title="구독취소" onClick={() => oncancelSubscribing(user.id)} />
+                    <ButtonSmallWhite
+                      title="구독취소"
+                      onClick={() => oncancelSubscribing(user.id)}
+                      data-cy="btn-cancel-subscribe"
+                    />
                   )}
-                  {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} />}
+                  {isSubscribeReqested() && <TextBase text={'구독 신청 보냄'} data-cy="text-subscribe-requested" />}
                   {isNotSubscribeReqested() && (
-                    <ButtonSmallBlue title="구독신청" onClick={() => onRequestSubscribe(user.id)} />
+                    <ButtonSmallBlue
+                      title="구독신청"
+                      onClick={() => onRequestSubscribe(user.id)}
+                      data-cy="btn-request-subscribe"
+                    />
                   )}
                   {isBlokingPerson() ? (
-                    <ButtonSmallBlue title="차단해제" onClick={() => changeUserBlock(username, false)} />
+                    <ButtonSmallBlue
+                      title="차단해제"
+                      onClick={() => changeUserBlock(username, false)}
+                      data-cy="btn-unblock"
+                    />
                   ) : (
-                    <ButtonSmallWhite title="차단" onClick={() => changeUserBlock(username, true)} />
+                    <ButtonSmallWhite
+                      title="차단"
+                      onClick={() => changeUserBlock(username, true)}
+                      data-cy="btn-block"
+                    />
                   )}
                 </WrapperRow>
               )}

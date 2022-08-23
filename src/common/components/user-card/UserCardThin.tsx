@@ -19,10 +19,10 @@ interface IUserCardThin {
   onClick?: () => void;
 }
 
-function UserCardThin({ id, username, photo, onClick = () => {} }: IUserCardThin) {
+function UserCardThin({ id, username, photo, onClick = () => {}, ...rest }: IUserCardThin) {
 
   return (
-    <Wrapper>
+    <Wrapper {...rest}>
       <Link to={`/${username}`}>
         <ProfilePhoto url={photo} size="48px" />
       </Link>

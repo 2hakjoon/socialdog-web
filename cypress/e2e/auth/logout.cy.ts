@@ -7,23 +7,27 @@ const btnKakaoLogin ="[data-cy=btn-kakaologin]"
 
 
 describe('logout test', () => {
-  it('should login success', ()=>{
-    injectTokensToLocalStorage()
 
+  beforeEach(()=>{
+    injectTokensToLocalStorage();
     cy.visit("/")
+  })
+  
+  afterEach(()=>{
+    cy.clearLocalStorage();
+  })
+
+  it('should login success', ()=>{
+    
     cy.get(linkUser).should('exist')
   })
   it('should move to profile edit page', ()=>{
-    injectTokensToLocalStorage()
 
-    cy.visit("/")
     cy.get(linkUser).click()
     cy.get(linkEditProfile).should('exist').click()
   })
   it('should logout successfully', ()=>{
-    injectTokensToLocalStorage()
 
-    cy.visit("/")
     cy.get(linkUser).click()
     cy.get(linkEditProfile).click()
     cy.get(btnLogout).should('exist').click()

@@ -1,8 +1,5 @@
-import { useLazyQuery, useMutation, useQuery } from '@apollo/client';
-import { DELETE_COMMENT, GET_COMMENT, GET_RECOMMENTS } from 'apllo-gqls/comments';
-import dayjs from 'dayjs';
 import useEvictCache from 'common/hooks/useEvictCache';
-import React, { useRef, useState } from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import MainHeader from 'common/components/header/MainHeader';
 import ProfilePhoto from 'common/components/image/ProfilePhoto';
@@ -13,11 +10,7 @@ import WrapperInfinityScroll from 'common/components/wrappers/WrapperInfinityScr
 import WrapperRow from 'common/components/wrappers/WrapperRow';
 import { routes } from 'screen/routes';
 import { alretError } from 'utils/alret';
-import { MDeleteComment, MDeleteCommentVariables } from '__generated__/MDeleteComment';
-import { QGetComment, QGetCommentVariables } from '__generated__/QGetComment';
 import {
-  QGetReComments,
-  QGetReCommentsVariables,
   QGetReComments_getReComments_data,
 } from '__generated__/QGetReComments';
 import CommentCard from './components/CommentCard';
@@ -29,6 +22,9 @@ import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import styled from 'styled-components';
 import WrapperButton from 'common/components/wrappers/WrapperButton';
 import TextLink from 'common/components/texts/TextLink';
+import useDeleteComment from './hooks/useDeleteComment';
+import useGetComment from './hooks/useGetComment';
+import useReCommentData from './hooks/useReCommentData';
 
 const CommentWrapper = styled.div`
   max-width: ${({ theme }) => theme.layout.screenMaxWidth};
@@ -54,16 +50,11 @@ function CommentDetailScreen() {
     return <></>;
   }
 
-  const { data: commentData } = useQuery<QGetComment, QGetCommentVariables>(GET_COMMENT, {
-    variables: { args: { id: commentId } },
-  });
-  const comment = commentData?.getComment.data;
+  const { comment } = useGetComment({ commentId });
   const postId = comment?.postId;
-  const [deleteComment] = useMutation<MDeleteComment, MDeleteCommentVariables>(DELETE_COMMENT);
+  const [deleteComment] = useDeleteComment();
 
-  const [getReCommentsData, { loading: reCommentLoading }] = useLazyQuery<QGetReComments, QGetReCommentsVariables>(
-    GET_RECOMMENTS,
-  );
+  const [getReCommentsData, { loading: reCommentLoading }] = useReCommentData();
 
   const refetchReComments = async () => {
     if (isLastPage) {

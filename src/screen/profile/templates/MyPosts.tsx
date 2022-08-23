@@ -1,12 +1,10 @@
-import { useQuery } from '@apollo/client';
-import { GET_USER_POSTS } from 'apllo-gqls/posts';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import NoContents from 'common/components/no-contents/NoContents';
 import WrapperInfinityQueryScroll from 'common/components/wrappers/WrapperInfinityQueryScroll';
 import WrapperSquare from 'common/components/wrappers/WrapperSquare';
 import styled from 'styled-components';
-import { QGetUserPosts, QGetUserPostsVariables } from '__generated__/QGetUserPosts';
 import PostSmallBox from '../components/PostSmallBox';
+import useMyPosts from '../hooks/useMyPosts';
 
 const PostsGrid = styled.div`
   width: 100%;
@@ -32,10 +30,7 @@ function MyPosts({ username, itemsCount }: IMyPosts) {
   const [isLastPage, setIsLastPage] = useState(false);
 
   // console.log(itemLimit);
-  const userPosts = useQuery<QGetUserPosts, QGetUserPostsVariables>(GET_USER_POSTS, {
-    variables: { username, page: { take: itemLimit } },
-    notifyOnNetworkStatusChange: true,
-  });
+  const userPosts = useMyPosts({ username, itemLimit });
   const posts = userPosts.data?.getUserPosts.data;
 
   return (

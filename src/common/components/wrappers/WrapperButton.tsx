@@ -28,9 +28,9 @@ interface IWrapperButton {
   onClick?: (e: any) => void;
 }
 
-function WrapperButton({ children, jc, p, w, h, ai, m, bc, fd, onClick }: IWrapperButton) {
+function WrapperButton({ children, jc, p, w, h, ai, m, bc, fd, onClick, ...rest }: IWrapperButton) {
   return (
-    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} bc={bc} fd={fd} onClick={onClick}>
+    <Wrapper jc={jc} p={p} w={w} h={h} ai={ai} m={m} bc={bc} fd={fd} onClick={onClick} {...rest}>
       {children}
     </Wrapper>
   );

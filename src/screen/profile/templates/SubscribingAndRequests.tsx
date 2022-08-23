@@ -3,15 +3,14 @@ import WrapperRow from 'common/components/wrappers/WrapperRow';
 import styled from 'styled-components';
 import TextBase from 'common/components/texts/TextBase';
 import ModalRound from 'common/components/modal/ModalRound';
-import { useApolloClient, useMutation, useQuery } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import WrapperColumn from 'common/components/wrappers/WrapperColumn';
 import UserCardThin from 'common/components/user-card/UserCardThin';
-import { CANCEL_SUBSCRIBE_REQUEST, GET_MY_SUBSCRIBINGS_REQUESTS } from 'apllo-gqls/subscribes';
-import { QGetMySubscribingsRequests } from '__generated__/QGetMySubscribingsRequests';
-import { MCancelSubscribingRequest, MCancelSubscribingRequestVariables } from '__generated__/MCancelSubscribingRequest';
 import ButtonSmallWhite from 'common/components/button/ButtonSmallWhite';
 import useEvictCache from 'common/hooks/useEvictCache';
 import UserCardThinLoading from 'common/components/user-card/UserCardThinLoading';
+import useCancleSubscribingRequest from '../hooks/useCancleSubscribingRequest';
+import useGetMySubscribingsRequest from '../hooks/useGetMySubscribingsRequest';
 
 interface ITabBox {
   selected: boolean;
@@ -34,13 +33,8 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   const { cache } = useApolloClient();
   const evictCache = useEvictCache();
   const [selectedTab, setSelectedTab] = useState<number>(0);
-  const [cancleSubscribingRequest] = useMutation<MCancelSubscribingRequest, MCancelSubscribingRequestVariables>(
-    CANCEL_SUBSCRIBE_REQUEST,
-  );
-  const { data: mySubscribingsRequests, loading: mySubscribingsRequestsLoading } =
-    useQuery<QGetMySubscribingsRequests>(GET_MY_SUBSCRIBINGS_REQUESTS);
-  const subscribingUsers = mySubscribingsRequests?.getMySubscribings.data;
-  const subscribingRequests = mySubscribingsRequests?.getSubscribingRequests.data;
+  const [cancleSubscribingRequest] = useCancleSubscribingRequest();
+  const { subscribingUsers, subscribingRequests, mySubscribingsRequestsLoading } = useGetMySubscribingsRequest();
 
   const cancleSubscribingRequestHandler = async (toId: string) => {
     const res = await cancleSubscribingRequest({ variables: { args: { to: toId } } });
@@ -68,10 +62,10 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
   return (
     <ModalRound closeModal={closeModal} title="구독 및 신청">
       <WrapperRow jc="space-around">
-        <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)}>
+        <TabBox selected={selectedTab === 0} onClick={() => setSelectedTab(0)} data-cy='tab-subscribing'>
           <TextBase text={'구독 중'} />
         </TabBox>
-        <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)}>
+        <TabBox selected={selectedTab === 1} onClick={() => setSelectedTab(1)} data-cy='tab-request'>
           <TextBase text={'구독 신청'} />
         </TabBox>
       </WrapperRow>
@@ -81,7 +75,7 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             <>
               {subscribingUsers?.map((subscribingUser) => (
                 <WrapperRow key={subscribingUser.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} />
+                  <UserCardThin key={subscribingUser.id} onClick={closeModal} {...subscribingUser} data-cy="wrapper-usercard"/>
                 </WrapperRow>
               ))}
             </>
@@ -90,8 +84,9 @@ function SubscribingAndRequests({ closeModal }: ISubscribingAndRequests) {
             <>
               {subscribingRequests?.map((subscribingRequest) => (
                 <WrapperRow key={subscribingRequest.id} w="100%" p={'0px 12px'}>
-                  <UserCardThin onClick={closeModal} {...subscribingRequest} />
+                  <UserCardThin onClick={closeModal} {...subscribingRequest} data-cy="wrapper-usercard"/>
                   <ButtonSmallWhite
+                  data-cy="btn-cancle-request"
                     title="취소"
                     onClick={() => cancleSubscribingRequestHandler(subscribingRequest.id)}
                   />
