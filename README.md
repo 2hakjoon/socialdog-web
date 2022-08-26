@@ -26,8 +26,8 @@ App 다운로드(안드로이드) : https://play.google.com/store/apps/details?i
 [screen-recording (5).webm](https://user-images.githubusercontent.com/61589338/185916610-2815c400-84ba-4102-85fb-61a4e5eb31dc.webm)
 
 ### 지역별 게시물 보기
-screen-recording.webm](https://user-images.githubusercontent.com/61589338/185916606-16530304-7b6e-4723-ba3c-1211fc587f8f.webm)
-[
+[screen-recording.webm](https://user-images.githubusercontent.com/61589338/185916606-16530304-7b6e-4723-ba3c-1211fc587f8f.webm)
+
 ### 구독신청, 수락, 거절
 [screen-recording (6).webm](https://user-images.githubusercontent.com/61589338/185916618-c841afd7-ae3c-491e-ae82-b7229a3de0a8.webm)
 
