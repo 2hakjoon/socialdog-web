@@ -6,6 +6,7 @@ name: CI
 on:
   pull_request:
     branches: [ "main" ]
+    types: [ "close" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,4 +24,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ${{ env.AWS_AMPLIFY_MAIN_BUILD }}
+        run: ${{ secrets.AWS_AMPLIFY_MAIN_BUILD }}
