@@ -4,11 +4,9 @@ name: CI
 
 # Controls when the workflow will run
 on:
-  pull_request:
-    branches: [ "develop" ]
-
-  # Allows you to run this workflow manually from the Actions tab
-  workflow_dispatch:
+    pull_request:
+      branches: [ "develop" ]
+      types: ["closed"]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -24,4 +22,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ${{ env.AWS_AMPLIFY_DEVELOP_BUILD }}
+        run: ${{ secrets.AWS_AMPLIFY_DEVELOP_BUILD }}
