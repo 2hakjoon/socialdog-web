@@ -5,7 +5,7 @@ name: CI
 # Controls when the workflow will run
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "develop" ]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -23,4 +23,4 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: Run a one-line script
-        run: ${{ secrets.AWS_AMPLIFY_MAIN_BUILD }}
+        run: ${{ secrets.AWS_AMPLIFY_DEVELOP_BUILD }}
