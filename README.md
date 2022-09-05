@@ -57,6 +57,8 @@ App 다운로드(안드로이드) : https://play.google.com/store/apps/details?i
  - 클라이언트 사이드 캐싱
  게시물 및 유저정보 캐싱. 데이터 변경시 캐시 수정.
 
+ - Github Action 추가.
+ Pull Request후 merge시 build
 
  ## 폴더 구조
  ```
